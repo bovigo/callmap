@@ -13,7 +13,7 @@ namespace bovigo\callmap;
  */
 class SelfDefined
 {
-    public function action(self $self, callable $something, array $optional = [], $roland = 313)
+    public function action(self $self, callable $something, array $optional = [], $roland = 303)
     {
         return 'selfdefined';
     }
