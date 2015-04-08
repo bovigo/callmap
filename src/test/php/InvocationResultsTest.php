@@ -23,7 +23,7 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->proxy = NewInstance::of('\ReflectionObject', [], [$this]);
+        $this->proxy = NewInstance::of('\ReflectionObject', [$this]);
     }
 
     /**

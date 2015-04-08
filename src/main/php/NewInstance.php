@@ -25,12 +25,11 @@ class NewInstance
      *
      * @api
      * @param   string|\ReflectionClass  $target           interface or class to create a new instance of
-     * @param   array                    $callmap          map of functions to overwrite with according closure
-     * @param   mixed[]                  $constructorArgs  list of arguments for the constructor
+     * @param   mixed[]                  $constructorArgs  optional  list of arguments for the constructor
      * @return  \bovigo\callmap\Proxy
      * @throws  \InvalidArgumentException
      */
-    public static function of($target, array $callmap = [], array $constructorArgs = [])
+    public static function of($target, array $constructorArgs = [])
     {
         $class = self::reflect($target);
         if (!isset(self::$classes[$class->getName()])) {
@@ -38,8 +37,7 @@ class NewInstance
         }
 
         return self::$classes[$class->getName()]
-                ->newInstanceArgs($constructorArgs)
-                ->mapCalls($callmap);
+                ->newInstanceArgs($constructorArgs);
     }
 
     /**
