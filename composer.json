@@ -2,6 +2,9 @@
     "name": "bovigo/callmap",
     "description": "Allows to stub and mock method calls by applying a callmap.",
     "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.4.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "~4.6"
     },
