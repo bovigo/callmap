@@ -31,10 +31,11 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
      */
     public function mapToInvocationResultsReturnsResultOnMethodCall()
     {
+        $returnValues = ['foo', 'bar', 'baz'];
         $this->proxy->mapCalls(
-            ['getName' => new InvocationResults(['foo', 'bar', 'baz'])]
+            ['getName' => new InvocationResults($returnValues)]
         );
-        foreach (['foo', 'bar', 'baz'] as $expected) {
+        foreach ($returnValues as $expected) {
             assertEquals($expected, $this->proxy->getName());
         }
     }
