@@ -1,0 +1,25 @@
+{
+    "name": "bovigo/callmap",
+    "description": "Allows to stub and mock method calls by applying a callmap.",
+    "license": "BSD-3-Clause",
+    "require-dev": {
+        "phpunit/phpunit": "~4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "bovigo\\callmap\\": "src/main/php"
+        }
+    },
+    "autoload-dev": {
+        "files": [
+            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
