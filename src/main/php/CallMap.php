@@ -56,8 +56,12 @@ trait CallMap
             return $this->callMap[$method];
         }
 
-        if (is_callable('parent::' . $method)) {
-            return call_user_func_array('parent::' . $method, $arguments);
+        if (is_callable(['parent', $method])) {
+            // is_callable() returns true even for abstract methods
+            $refMethod = new \ReflectionMethod(get_parent_class(), $method);
+            if (!$refMethod->isAbstract()) {
+                return call_user_func_array(['parent', $method], $arguments);
+            }
         }
 
         return null;

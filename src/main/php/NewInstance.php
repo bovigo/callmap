@@ -75,8 +75,7 @@ class NewInstance
             $class = self::forkTrait($class);
         }
 
-        $code = self::createCallmapClassCode($class);
-        if (false === eval($code)) {
+        if (false === eval(self::createCallmapProxyCode($class))) {
             throw new \ReflectionException(
                     'Failure while creating CallMap instance of '
                     . $class->getName()
@@ -126,7 +125,7 @@ class NewInstance
      * @param   \ReflectionClass  $class
      * @return  string
      */
-    private static function createCallmapClassCode(\ReflectionClass $class)
+    private static function createCallmapProxyCode(\ReflectionClass $class)
     {
         $code = self::createClassDefinition($class)
                 . self::createMethods($class)
