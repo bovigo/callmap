@@ -35,12 +35,13 @@ class InvocationResults
      *
      * @param   int  $number
      * @return  mixed
+     * @throws  \Exception
      */
     public function valueForInvocation($number)
     {
         if (isset($this->results[$number])) {
-            if (is_callable($this->results[$number])) {
-                return $this->results[$number]();
+            if ($this->results[$number] instanceof Throwable) {
+                throw $this->results[$number]->exception();
             }
 
             return $this->results[$number];

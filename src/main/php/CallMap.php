@@ -59,6 +59,7 @@ trait CallMap
      * @param   string   $method
      * @param   mixed[]  $arguments
      * @return  mixed
+     * @throws  \Exception
      */
     protected function handleMethodCall($method, $arguments)
     {
@@ -68,6 +69,8 @@ trait CallMap
                 return call_user_func_array($this->callMap[$method], $arguments);
             } elseif ($this->callMap[$method] instanceof InvocationResults) {
                 return $this->callMap[$method]->valueForInvocation($invokationCount - 1);
+            } elseif ($this->callMap[$method] instanceof Throwable) {
+                throw $this->callMap[$method]->exception();
             }
 
             return $this->callMap[$method];

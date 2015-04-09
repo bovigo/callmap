@@ -12,10 +12,10 @@ namespace bovigo\callmap;
  * creates a closure which throws the given exception
  *
  * @param   \Exception  $e
- * @return  \Closure
+ * @return  \bovigo\callmap\Throwable
  * @since   0.2.0
  */
 function throws(\Exception $e)
 {
-    return function() use ($e) { throw $e; };
+    return new Throwable($e);
 }
