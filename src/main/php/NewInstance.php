@@ -49,15 +49,15 @@ class NewInstance
      */
     private static function reflect($class)
     {
-        if (is_string($class) && (class_exists($class) || interface_exists($class))) {
+        if (is_string($class) && (class_exists($class) || interface_exists($class) || trait_exists($class))) {
             return new \ReflectionClass($class);
         } elseif (is_object($class)) {
             return new \ReflectionObject($class);
         }
 
         throw new \InvalidArgumentException(
-                'Given class must either be an existing class or interface name'
-                . ' or class instance, ' . \gettype($class)
+                'Given class must either be an existing class, interface or'
+                . ' trait name or class instance, ' . \gettype($class)
                 . ' with value "' . $class . '" given'
         );
     }
@@ -71,7 +71,12 @@ class NewInstance
      */
     private static function forkCallMapClass(\ReflectionClass $class)
     {
-        if (false === eval(self::createCallmapClassCode($class))) {
+        if ($class->isTrait()) {
+            $class = self::forkTrait($class);
+        }
+
+        $code = self::createCallmapClassCode($class);
+        if (false === eval($code)) {
             throw new \ReflectionException(
                     'Failure while creating CallMap instance of '
                     . $class->getName()
@@ -82,6 +87,40 @@ class NewInstance
     }
 
     /**
+     * create an intermediate class for the trait so that any methods of the
+     * trait become callable as parent
+     *
+     * @param   \ReflectionClass  $class
+     * @return  \ReflectionClass
+     * @throws  \ReflectionException
+     */
+    private static function forkTrait(\ReflectionClass $class)
+    {
+        $code = sprintf(
+                "abstract class %sFork {\n"
+                . "    use \%s;\n}",
+                $class->getShortName(),
+                $class->getName()
+        );
+        if ($class->inNamespace()) {
+            $code = sprintf(
+                    "namespace %s {\n%s}\n",
+                    $class->getNamespaceName(),
+                    $code
+            );
+        }
+
+        if (false === eval($code)) {
+            throw new \ReflectionException(
+                    'Failure while creating forked trait instance of '
+                    . $class->getName()
+            );
+        }
+
+        return new \ReflectionClass($class->getName() . 'Fork');
+    }
+
+    /**
      * creates code for new class
      *
      * @param   \ReflectionClass  $class
@@ -89,13 +128,47 @@ class NewInstance
      */
     private static function createCallmapClassCode(\ReflectionClass $class)
     {
-        $code = sprintf(
-                "class %sCallMapProxy %s \\%s %s\bovigo\callmap\Proxy{\n    use \bovigo\callmap\CallMap;\n",
+        $code = self::createClassDefinition($class)
+                . self::createMethods($class)
+                . "}\n";
+        if ($class->inNamespace()) {
+            return sprintf(
+                    "namespace %s {\n%s}\n",
+                    $class->getNamespaceName(),
+                    $code
+            );
+        }
+
+        return $code;
+    }
+
+    /**
+     * creates class definition for the proxy
+     *
+     * @param   \ReflectionClass $class
+     * @return  string
+     */
+    private static function createClassDefinition(\ReflectionClass $class)
+    {
+        return sprintf(
+                "class %sCallMapProxy %s \\%s %s\bovigo\callmap\Proxy{\n"
+                . "    use \bovigo\callmap\CallMap;\n",
                 $class->getShortName(),
                 $class->isInterface() ? 'implements' : 'extends',
                 $class->getName(),
                 $class->isInterface() ? ',' : ' implements'
         );
+    }
+
+    /**
+     * creates methods for the proxy
+     *
+     * @param  \ReflectionClass  $class
+     * @return  string
+     */
+    private static function createMethods(\ReflectionClass $class)
+    {
+        $code = '';
         foreach (self::methodsOf($class) as $method) {
             /* @var  $method \ReflectionMethod */
             $code .= sprintf(
@@ -108,16 +181,6 @@ class NewInstance
                     $method->getName()
             );
         }
-
-        $code .= "}\n";
-        if ($class->inNamespace()) {
-            return sprintf(
-                    "namespace %s {\n%s}\n",
-                    $class->getNamespaceName(),
-                    $code
-            );
-        }
-
         return $code;
     }
 
