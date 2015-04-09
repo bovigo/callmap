@@ -12,8 +12,17 @@ Build status
 Installation
 ------------
 
-tbd
+bovigo/callmap is distributed as [Composer](https://getcomposer.org/) package. To install it as a development dependency of your package add the following line to the `require-dev` package links: 
 
+    "bovigo/callmap": "~0.1"
+
+In case you want to install it globally use the following command:
+
+    composer global require "bovigo/callmap=~0.1"
+
+To install it as a runtime dependency for your package use the following command:
+
+    composer require "bovigo/callmap=~0.1"
 
 Usage
 -----
