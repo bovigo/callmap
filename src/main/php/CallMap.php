@@ -18,11 +18,28 @@ trait CallMap
      *
      * @type  array
      */
-    private $callMap   = [];
+    private $callMap = [];
     /**
      * @var  array
      */
     private $callHistory = [];
+    /**
+     * switch whether passing calls to parent class is allowed
+     *
+     * @type  bool
+     */
+    private $parentCallsAllowed = true;
+
+    /**
+     * disable passing calls to parent class
+     *
+     * @return  $this
+     */
+    public function preventParentCalls()
+    {
+        $this->parentCallsAllowed = false;
+        return $this;
+    }
 
     /**
      * sets the call map to use
@@ -56,7 +73,7 @@ trait CallMap
             return $this->callMap[$method];
         }
 
-        if (is_callable(['parent', $method])) {
+        if ($this->parentCallsAllowed && is_callable(['parent', $method])) {
             // is_callable() returns true even for abstract methods
             $refMethod = new \ReflectionMethod(get_parent_class(), $method);
             if (!$refMethod->isAbstract()) {

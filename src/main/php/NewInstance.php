@@ -23,21 +23,52 @@ class NewInstance
     /**
      * returns a new instance of the given class or interface
      *
+     * This instance is created with calling the constructor of the target
+     * class. Method calls for non-mapped methods will be forwared to the method
+     * of the target class.
+     *
      * @api
-     * @param   string|\ReflectionClass  $target           interface or class to create a new instance of
-     * @param   mixed[]                  $constructorArgs  optional  list of arguments for the constructor
+     * @param   string|object  $target           interface or class to create a new instance of
+     * @param   mixed[]        $constructorArgs  optional  list of arguments for the constructor
      * @return  \bovigo\callmap\Proxy
-     * @throws  \InvalidArgumentException
      */
     public static function of($target, array $constructorArgs = [])
+    {
+        return self::callMapClass($target)
+                ->newInstanceArgs($constructorArgs);
+    }
+
+    /**
+     * returns a new stub of the given class or interface
+     *
+     * The instance is created without calling the constructor of the target
+     * class. In contrast to instances returned by of(), method calls are not
+     * passed to the target method if no mapping exists, but return null.
+     *
+     * @api
+     * @param   string|object  $target  interface or class to create a new instance of
+     * @return  \bovigo\callmap\Proxy
+     */
+    public static function stub($target)
+    {
+        return self::callMapClass($target)
+                ->newInstanceWithoutConstructor()
+                ->preventParentCalls();
+    }
+
+    /**
+     *
+     * @param   string|object  $target
+     * @return  \ReflectionClass
+     */
+    private static function callMapClass($target)
     {
         $class = self::reflect($target);
         if (!isset(self::$classes[$class->getName()])) {
             self::$classes[$class->getName()] = self::forkCallMapClass($class);
         }
 
-        return self::$classes[$class->getName()]
-                ->newInstanceArgs($constructorArgs);
+        return self::$classes[$class->getName()];
     }
 
     /**
