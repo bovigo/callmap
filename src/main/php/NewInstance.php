@@ -57,6 +57,19 @@ class NewInstance
     }
 
     /**
+     * returns the class name of any new instance for given target class or interface
+     *
+     * @api
+     * @param   string|object  $target
+     * @return  string
+     * @since   0.2.0
+     */
+    public static function classname($target)
+    {
+        return self::callMapClass($target)->getName();
+    }
+
+    /**
      *
      * @param   string|object  $target
      * @return  \ReflectionClass
