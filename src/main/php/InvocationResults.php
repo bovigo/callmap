@@ -39,6 +39,10 @@ class InvocationResults
     public function valueForInvocation($number)
     {
         if (isset($this->results[$number])) {
+            if (is_callable($this->results[$number])) {
+                return $this->results[$number]();
+            }
+
             return $this->results[$number];
         }
 

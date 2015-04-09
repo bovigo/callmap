@@ -48,4 +48,36 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
         $this->proxy->mapCalls(['getName' => new InvocationResults([])]);
         assertNull($this->proxy->getName());
     }
+
+    /**
+     * helper method for callable test invocationResultsCallsCallable()
+     *
+     * @return  string
+     */
+    public static function foo()
+    {
+        return 'foo';
+    }
+
+    /**
+     * @return  array
+     */
+    public function callables()
+    {
+        return [[function() { return 'foo';}], [[__CLASS__, 'foo']]];
+    }
+
+    /**
+     * @param  callable  $callable
+     * @test
+     * @dataProvider  callables
+     * @since  0.2.0
+     */
+    public function invocationResultsCallsCallable(callable $callable)
+    {
+        $this->proxy->mapCalls(
+                ['getName' => new InvocationResults([$callable])]
+        );
+        assertEquals('foo', $this->proxy->getName());
+    }
 }
