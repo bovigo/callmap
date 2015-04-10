@@ -31,11 +31,10 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
      */
     public function mapToInvocationResultsReturnsResultOnMethodCall()
     {
-        $returnValues = ['foo', 'bar', 'baz'];
         $this->proxy->mapCalls(
-            ['getName' => new InvocationResults($returnValues)]
+            ['getName' => onConsecutiveCalls('foo', 'bar', 'baz')]
         );
-        foreach ($returnValues as $expected) {
+        foreach (['foo', 'bar', 'baz'] as $expected) {
             assertEquals($expected, $this->proxy->getName());
         }
     }
@@ -45,7 +44,8 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
      */
     public function invocationResultIsNullIfCalledMoreOftenThenResultsDefined()
     {
-        $this->proxy->mapCalls(['getName' => new InvocationResults([])]);
+        $this->proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
+        $this->proxy->getName(); // foo
         assertNull($this->proxy->getName());
     }
 }

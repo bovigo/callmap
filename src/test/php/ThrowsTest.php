@@ -48,8 +48,10 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
     public function throwsExceptionPassedViaInvocationResults()
     {
         $e = new \ReflectionException('some error');
-        $this->proxy->mapCalls(['getName' => new InvocationResults(['foo', throws($e)])]);
-        $this->proxy->getName();
-        $this->proxy->getName();
+        $this->proxy->mapCalls(
+                ['getName' => onConsecutiveCalls('foo', throws($e))]
+        );
+        $this->proxy->getName(); // foo
+        $this->proxy->getName(); // throws $e
     }
 }

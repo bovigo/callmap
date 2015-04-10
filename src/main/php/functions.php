@@ -20,3 +20,16 @@ function throws(\Exception $e)
 {
     return new Throwable($e);
 }
+
+/**
+ * creates a list of invocation results
+ *
+ * @api
+ * @param   mixed  $value, ...
+ * @return  \bovigo\callmap\InvocationResults
+ * @since   0.2.0
+ */
+function onConsecutiveCalls()
+{
+    return new InvocationResults(func_get_args());
+}

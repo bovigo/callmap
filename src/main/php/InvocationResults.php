@@ -11,7 +11,7 @@ namespace bovigo\callmap;
 /**
  * Represents a list of invocation results.
  *
- * @api
+ * @internal
  */
 class InvocationResults
 {
