@@ -216,12 +216,13 @@ class NewInstance
             /* @var  $method \ReflectionMethod */
             $code .= sprintf(
                     "    %s function %s(%s) {\n"
-                  . "        return \$this->handleMethodCall('%s', func_get_args());\n"
+                  . "        return \$this->handleMethodCall('%s', func_get_args(), %s);\n"
                   . "    }\n",
                     ($method->isPublic() ? 'public' : 'protected'),
                     $method->getName(),
                     self::params($method),
-                    $method->getName()
+                    $method->getName(),
+                    self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
         }
         return $code;
@@ -280,5 +281,46 @@ class NewInstance
         }
 
         return $params;
+    }
+
+    /**
+     * detects whether a method should return the instance or null
+     *
+     * @param   \ReflectionClass $class
+     * @param   \ReflectionMethod $method
+     * @return  bool
+     */
+    private static function shouldReturnSelf(\ReflectionClass $class, \ReflectionMethod $method)
+    {
+        $returnPart = strstr($method->getDocComment(), '@return');
+        if (false === $returnPart) {
+            return false;
+        }
+
+        $returnParts = explode(' ', trim(str_replace('@return', '', $returnPart)));
+        $returnType  = ltrim(trim($returnParts[0]), '\\');
+        if (empty($returnType) || strpos($returnType, '*') !== false) {
+            return false;
+        }
+
+        if (in_array($returnType, ['$this', 'self', $class->getName(), $class->getShortName()])) {
+            return true;
+        }
+
+        foreach ($class->getInterfaces() as $interface) {
+            if ($interface->getName() !== 'Traversable' && ($interface->getName() === $returnType || $interface->getShortName() === $returnType)) {
+                return true;
+            }
+        }
+
+        while ($parent = $class->getParentClass()) {
+            if ($parent->getName() === $returnType || $parent->getShortName() === $returnType) {
+                return true;
+            }
+
+            $class = $parent;
+        }
+
+        return false;
     }
 }

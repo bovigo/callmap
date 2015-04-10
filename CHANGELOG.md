@@ -1,3 +1,9 @@
+0.3.0 (2015-??-??)
+------------------
+
+  * added automatic return of instance when return type hint denotes a type within the type hierarchy of the proxied class
+
+
 0.2.0 (2015-04-10)
 ------------------
 

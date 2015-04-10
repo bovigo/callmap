@@ -58,12 +58,13 @@ trait CallMap
     /**
      * handles actual method calls
      *
-     * @param   string   $method
-     * @param   mixed[]  $arguments
+     * @param   string   $method            actually called method
+     * @param   mixed[]  $arguments         list of given arguments for methods
+     * @param   bool     $shouldReturnSelf  whether the return value should be the instance itself
      * @return  mixed
      * @throws  \Exception
      */
-    protected function handleMethodCall($method, $arguments)
+    protected function handleMethodCall($method, $arguments, $shouldReturnSelf)
     {
         $invokationCount = $this->recordCall($method, $arguments);
         if (isset($this->callMap[$method])) {
@@ -84,6 +85,10 @@ trait CallMap
             if (!$refMethod->isAbstract()) {
                 return call_user_func_array(['parent', $method], $arguments);
             }
+        }
+
+        if ($shouldReturnSelf) {
+            return $this;
         }
 
         return null;
