@@ -66,6 +66,41 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return  array
+     */
+    public function arguments()
+    {
+        return [[null, 'blubber'], [808, 'ba-dummz!'], [909, 'foo']];
+    }
+
+    /**
+     * @test
+     * @dataProvider  arguments
+     * @since  0.2.0
+     */
+    public function givenArgumentsArePassedToClosure($argument, $expectedResult)
+    {
+        $this->proxy->mapCalls(
+                ['play' => function($roland = 303)
+                            {
+                                if (303 === $roland) {
+                                    return 'blubber';
+                                } elseif (808 === $roland) {
+                                    return 'ba-dummz!';
+                                }
+
+                                return 'foo';
+                            }
+                ]
+        );
+
+        assertEquals(
+                $expectedResult,
+                null === $argument ? $this->proxy->play() : $this->proxy->play($argument)
+        );
+    }
+
+    /**
      * @test
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
