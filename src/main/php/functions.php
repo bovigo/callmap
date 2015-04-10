@@ -11,6 +11,7 @@ namespace bovigo\callmap;
 /**
  * creates a closure which throws the given exception
  *
+ * @api
  * @param   \Exception  $e
  * @return  \bovigo\callmap\Throwable
  * @since   0.2.0

@@ -10,6 +10,8 @@
 namespace bovigo\callmap;
 /**
  * A callmap proxy can stub method calls and record all method calls.
+ *
+ * @api
  */
 interface Proxy
 {

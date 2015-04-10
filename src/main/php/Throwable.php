@@ -11,6 +11,7 @@ namespace bovigo\callmap;
 /**
  * Container to pass exceptions to be throwed on a method invocation.
  *
+ * @internal
  * @since  0.2.0
  */
 class Throwable
