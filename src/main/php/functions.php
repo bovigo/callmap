@@ -9,7 +9,7 @@
  */
 namespace bovigo\callmap;
 /**
- * creates a closure which throws the given exception
+ * creates an invocation result which throws the given exception
  *
  * @api
  * @param   \Exception  $e
