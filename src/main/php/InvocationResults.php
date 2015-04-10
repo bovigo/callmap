@@ -40,7 +40,7 @@ class InvocationResults
     public function valueForInvocation($number)
     {
         if (isset($this->results[$number])) {
-            if ($this->results[$number] instanceof Throwable) {
+            if ($this->results[$number] instanceof InvocationThrow) {
                 throw $this->results[$number]->exception();
             }
 

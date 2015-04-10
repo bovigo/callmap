@@ -14,7 +14,7 @@ namespace bovigo\callmap;
  * @internal
  * @since  0.2.0
  */
-class Throwable
+class InvocationThrow
 {
     /**
      * @type  \Exception

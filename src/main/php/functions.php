@@ -13,12 +13,12 @@ namespace bovigo\callmap;
  *
  * @api
  * @param   \Exception  $e
- * @return  \bovigo\callmap\Throwable
+ * @return  \bovigo\callmap\InvocationThrow
  * @since   0.2.0
  */
 function throws(\Exception $e)
 {
-    return new Throwable($e);
+    return new InvocationThrow($e);
 }
 
 /**
