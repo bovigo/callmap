@@ -95,6 +95,14 @@ class Extended extends Base implements Bar, \IteratorAggregate
     }
 
     /**
+     * @return  Extended
+     */
+    public function minorAction()
+    {
+        // no actual return on purpose
+    }
+
+    /**
      * @return  \Traversable
      */
     public function getIterator()
@@ -153,6 +161,14 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassNameWithoutLeadingBackslash()
     {
         assertSame($this->proxy, $this->proxy->moreAction());
+    }
+
+    /**
+     * @test
+     */
+    public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsNonFullyQualifiedClassName()
+    {
+        assertSame($this->proxy, $this->proxy->minorAction());
     }
 
     /**
