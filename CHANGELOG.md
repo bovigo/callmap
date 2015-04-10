@@ -1,4 +1,4 @@
-0.2.0 (2015-04-??)
+0.2.0 (2015-04-10)
 ------------------
 
   * added possibility to force a method to throw an exception using `bovigo\callmap\throws()`
