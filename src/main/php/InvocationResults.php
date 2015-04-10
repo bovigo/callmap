@@ -4,18 +4,18 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
 /**
  * Represents a list of invocation results.
  *
- * @internal
+ * @internal  Do not use directly, call bovigo\callmap\onConsecutiveCalls() instead.
  */
 class InvocationResults
 {
     /**
+     * list of invocation results
+     *
      * @type  mixed[]
      */
     private $results;

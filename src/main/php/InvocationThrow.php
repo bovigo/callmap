@@ -4,19 +4,18 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
 /**
  * Container to pass exceptions to be throwed on a method invocation.
  *
- * @internal
+ * @internal  Do not use directly, call bovigo\callmap\throws() instead.
  * @since  0.2.0
  */
 class InvocationThrow
 {
     /**
+     * exception to be thrown on invocation of the method it has been assigned to
      * @type  \Exception
      */
     private $e;
@@ -24,7 +23,7 @@ class InvocationThrow
     /**
      * constructor
      *
-     * @param  \Exception  $e
+     * @param  \Exception  $e  exception to be thrown
      */
     public function __construct(\Exception $e)
     {
