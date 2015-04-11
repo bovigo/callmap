@@ -17,6 +17,11 @@ class SelfDefined
     {
         return 'selfdefined';
     }
+
+    public function passByReference(&$foo)
+    {
+        
+    }
 }
 /**
  * Applies tests to a self defined class.

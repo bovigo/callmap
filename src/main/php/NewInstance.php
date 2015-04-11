@@ -256,30 +256,33 @@ class NewInstance
      */
     private static function params(\ReflectionMethod $method)
     {
-        $params = '';
+        $params = [];
         foreach ($method->getParameters() as $parameter) {
             /* @var $parameter \ReflectionParameter */
-            if (strlen($params) > 0) {
-                $params .= ', ';
-            }
-
+            $param = '';
             if ($parameter->isArray()) {
-                $params .= 'array ';
+                $param .= 'array ';
             } elseif ($parameter->getClass() !== null) {
-                $params .= '\\' . $parameter->getClass()->getName() . ' ';
+                $param .= '\\' . $parameter->getClass()->getName() . ' ';
             } elseif ($parameter->isCallable()) {
-                $params .= 'callable ';
+                $param .= 'callable ';
             }
 
-            $params .= '$' . $parameter->getName();
-            if ($parameter->allowsNull() || $method->isInternal()) {
-                $params .= ' = null';
-            } elseif ($parameter->isOptional()) {
-                $params .= ' = ' . ($parameter->isArray() ? '[]' : $parameter->getDefaultValue());
+            if ($parameter->isPassedByReference()) {
+                $param .= '&';
             }
+
+            $param .= '$' . $parameter->getName();
+            if ($parameter->allowsNull() || $method->isInternal()) {
+                $param .= ' = null';
+            } elseif ($parameter->isOptional()) {
+                $param .= ' = ' . ($parameter->isArray() ? '[]' : $parameter->getDefaultValue());
+            }
+
+            $params[] = $param;
         }
 
-        return $params;
+        return join(', ', $params);
     }
 
     /**
