@@ -98,7 +98,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
      */
     public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
     {
-        assertNull($this->proxy->argumentsReceived('action'));
+        assertNull($this->proxy->argumentsReceivedFor('action'));
     }
 
     /**
@@ -109,7 +109,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
         $this->proxy->action(313);
         assertEquals(
                 [313],
-                $this->proxy->argumentsReceived('action')
+                $this->proxy->argumentsReceivedFor('action')
         );
     }
 
@@ -121,7 +121,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
         $this->proxy->other();
         assertEquals(
                 [],
-                $this->proxy->argumentsReceived('other')
+                $this->proxy->argumentsReceivedFor('other')
         );
     }
 
@@ -133,7 +133,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
         $this->proxy->other(['play' => 808]);
         assertEquals(
                 [['play' => 808]],
-                $this->proxy->argumentsReceived('other')
+                $this->proxy->argumentsReceivedFor('other')
         );
     }
 
@@ -143,6 +143,6 @@ class TraitTest extends \PHPUnit_Framework_TestCase
     public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
     {
         $this->proxy->action(313);
-        assertNull($this->proxy->argumentsReceived('action', 2));
+        assertNull($this->proxy->argumentsReceivedFor('action', 2));
     }
 }

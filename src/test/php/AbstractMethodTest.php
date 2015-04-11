@@ -123,7 +123,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
      */
     public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
     {
-        assertNull($this->proxy->argumentsReceived('play'));
+        assertNull($this->proxy->argumentsReceivedFor('play'));
     }
 
     /**
@@ -134,7 +134,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
         $this->proxy->play();
         assertEquals(
                 [],
-                $this->proxy->argumentsReceived('play')
+                $this->proxy->argumentsReceivedFor('play')
         );
     }
 
@@ -146,7 +146,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
         $this->proxy->play(808);
         assertEquals(
                 [808],
-                $this->proxy->argumentsReceived('play')
+                $this->proxy->argumentsReceivedFor('play')
         );
     }
 
@@ -156,6 +156,6 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
     public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
     {
         $this->proxy->play(808);
-        assertNull($this->proxy->argumentsReceived('play', 2));
+        assertNull($this->proxy->argumentsReceivedFor('play', 2));
     }
 }

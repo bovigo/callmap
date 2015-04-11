@@ -75,7 +75,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
      */
     public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
     {
-        assertNull($this->proxy->argumentsReceived('count'));
+        assertNull($this->proxy->argumentsReceivedFor('count'));
     }
 
     /**
@@ -86,7 +86,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
         $this->proxy->count('bovigo\callmap\Proxy');
         assertEquals(
                 ['bovigo\callmap\Proxy'],
-                $this->proxy->argumentsReceived('count')
+                $this->proxy->argumentsReceivedFor('count')
         );
     }
 
@@ -96,6 +96,6 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
     public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
     {
         $this->proxy->count('bovigo\callmap\Proxy');
-        assertNull($this->proxy->argumentsReceived('count', 2));
+        assertNull($this->proxy->argumentsReceivedFor('count', 2));
     }
 }

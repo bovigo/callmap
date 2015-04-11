@@ -2,6 +2,7 @@
 ------------------
 
   * added automatic return of instance when return type hint denotes a type within the type hierarchy of the proxied class
+  * renamed `bovigo\callmap\Proxy::argumentsReceived()` to `bovigo\callmap\Proxy::argumentsReceivedFor()`
 
 
 0.2.0 (2015-04-10)

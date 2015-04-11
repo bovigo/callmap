@@ -36,5 +36,5 @@ interface Proxy
      * @param   int     $invocation  nth invocation to check
      * @return  mixed[]
      */
-    public function argumentsReceived($method, $invocation = 0);
+    public function argumentsReceivedFor($method, $invocation = 0);
 }

@@ -130,7 +130,7 @@ trait CallMap
      * @param   int     $invocation  nth invocation to check, defaults to 1 aka first invocation
      * @return  mixed[]
      */
-    public function argumentsReceived($method, $invocation = 1)
+    public function argumentsReceivedFor($method, $invocation = 1)
     {
         if (isset($this->callHistory[$method]) && isset($this->callHistory[$method][$invocation - 1])) {
             return $this->callHistory[$method][$invocation - 1];

@@ -77,7 +77,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
      */
     public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
     {
-        assertNull($this->proxy->argumentsReceived('implementsInterface'));
+        assertNull($this->proxy->argumentsReceivedFor('implementsInterface'));
     }
 
     /**
@@ -88,7 +88,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
         $this->proxy->implementsInterface('bovigo\callmap\Proxy');
         assertEquals(
                 ['bovigo\callmap\Proxy'],
-                $this->proxy->argumentsReceived('implementsInterface')
+                $this->proxy->argumentsReceivedFor('implementsInterface')
         );
     }
 
@@ -98,6 +98,6 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
     public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
     {
         $this->proxy->implementsInterface('bovigo\callmap\Proxy');
-        assertNull($this->proxy->argumentsReceived('implementsInterface', 2));
+        assertNull($this->proxy->argumentsReceivedFor('implementsInterface', 2));
     }
 }

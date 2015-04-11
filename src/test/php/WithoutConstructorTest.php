@@ -91,7 +91,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
      */
     public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
     {
-        assertNull($this->proxy->argumentsReceived('action'));
+        assertNull($this->proxy->argumentsReceivedFor('action'));
     }
 
     /**
@@ -102,7 +102,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
         $this->proxy->action(303);
         assertEquals(
                 [303],
-                $this->proxy->argumentsReceived('action')
+                $this->proxy->argumentsReceivedFor('action')
         );
     }
 
@@ -112,6 +112,6 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
     public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
     {
         $this->proxy->action(303);
-        assertNull($this->proxy->argumentsReceived('action', 2));
+        assertNull($this->proxy->argumentsReceivedFor('action', 2));
     }
 }

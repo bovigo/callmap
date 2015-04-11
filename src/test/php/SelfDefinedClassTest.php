@@ -94,7 +94,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
      */
     public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
     {
-        assertNull($this->proxy->argumentsReceived('action'));
+        assertNull($this->proxy->argumentsReceivedFor('action'));
     }
 
     /**
@@ -107,7 +107,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
         $this->proxy->action($arg1, $arg2);
         assertEquals(
                 [$arg1, $arg2],
-                $this->proxy->argumentsReceived('action')
+                $this->proxy->argumentsReceivedFor('action')
         );
     }
 
@@ -117,6 +117,6 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
     public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
     {
         $this->proxy->action(new SelfDefined(), function() {});
-        assertNull($this->proxy->argumentsReceived('action', 2));
+        assertNull($this->proxy->argumentsReceivedFor('action', 2));
     }
 }
