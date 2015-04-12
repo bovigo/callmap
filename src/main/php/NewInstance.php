@@ -139,7 +139,7 @@ class NewInstance
     private static function forkTrait(\ReflectionClass $class)
     {
         $code = sprintf(
-                "abstract class %sFork {\n"
+                "abstract class %sCallMapFork {\n"
                 . "    use \%s;\n}",
                 $class->getShortName(),
                 $class->getName()
@@ -159,7 +159,7 @@ class NewInstance
             );
         }
 
-        return new \ReflectionClass($class->getName() . 'Fork');
+        return new \ReflectionClass($class->getName() . 'CallMapFork');
     }
 
     /**
