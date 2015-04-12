@@ -218,7 +218,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  bovigo\callmap\MissingInvocation
-     * @expectedExceptionMessage  Missing invocation #1 for aMethod(), never invoked
+     * @expectedExceptionMessage  Missing invocation #1 for bovigo\callmap\Verified::aMethod(), never invoked
      */
     public function verifyArgumentsForMethodNotCalledThrowsMissingInvocation()
     {
@@ -228,7 +228,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  bovigo\callmap\MissingInvocation
-     * @expectedExceptionMessage  Missing invocation #2 for aMethod(), only invoked once
+     * @expectedExceptionMessage  Missing invocation #2 for bovigo\callmap\Verified::aMethod(), only invoked once
      */
     public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation6()
     {
@@ -239,7 +239,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  bovigo\callmap\MissingInvocation
-     * @expectedExceptionMessage  Missing invocation #3 for aMethod(), only invoked 2 times
+     * @expectedExceptionMessage  Missing invocation #3 for bovigo\callmap\Verified::aMethod(), only invoked 2 times
      */
     public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation()
     {

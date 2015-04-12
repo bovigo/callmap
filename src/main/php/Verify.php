@@ -40,20 +40,6 @@ class Verify
     }
 
     /**
-     * returns name of the proxied class/interface/trait
-     *
-     * @return  string
-     */
-    private function methodName()
-    {
-        return str_replace(
-                ['CallMapProxy', 'CallMapFork'],
-                '',
-                get_class($this->callmap)
-        ) . '::' . $this->method . '()';
-    }
-
-    /**
      * verifies that the method on the class was not called more than $times
      *
      * @api
@@ -68,7 +54,7 @@ class Verify
                     sprintf(
                             '%s was expected to be called at most %d time(s),'
                             . ' but actually called %d time(s).',
-                            $this->methodName(),
+                            methodName($this->callmap, $this->method),
                             $times,
                             $this->callmap->callsReceivedFor($this->method)
                     )
@@ -92,7 +78,7 @@ class Verify
                     sprintf(
                             '%s was expected to be called at least once,'
                             . ' but actually never called.',
-                            $this->methodName()
+                            methodName($this->callmap, $this->method)
                     )
             );
         }
@@ -115,7 +101,7 @@ class Verify
                     sprintf(
                             '%s was expected to be called at least %d time(s),'
                             . ' but actually called %d time(s).',
-                            $this->methodName(),
+                            methodName($this->callmap, $this->method),
                             $times,
                             $this->callmap->callsReceivedFor($this->method)
                     )
@@ -139,7 +125,7 @@ class Verify
             throw new CallAmountViolation(
                     sprintf(
                             '%s was expected to be called once, but actually %s.',
-                            $this->methodName(),
+                            methodName($this->callmap, $this->method),
                             1 < $callsReceived ?
                                 'called ' . $callsReceived . ' time(s)' :
                                 'never called'
@@ -165,7 +151,7 @@ class Verify
                     sprintf(
                             '%s was expected to be called %d time(s),'
                             . ' but actually called %d time(s).',
-                            $this->methodName(),
+                            methodName($this->callmap, $this->method),
                             $times,
                             $this->callmap->callsReceivedFor($this->method)
                     )
@@ -189,7 +175,7 @@ class Verify
                     sprintf(
                             '%s was not expected to be called,'
                             . ' but actually called %d time(s).',
-                            $this->methodName(),
+                            methodName($this->callmap, $this->method),
                             $this->callmap->callsReceivedFor($this->method)
                     )
             );
@@ -218,7 +204,7 @@ class Verify
                     'Argument count for invocation #%d of %s is too'
                     . ' high: received %d argument(s), expected no arguments.',
                     $invocation,
-                    $this->methodName(),
+                    methodName($this->callmap, $this->method),
                     count($received)
                 )
         );
@@ -276,7 +262,7 @@ class Verify
                     'Argument count for invocation #%d of %s is too'
                     . ' low: received %d argument(s), expected %d argument(s).',
                     $invocation,
-                    $this->methodName(),
+                    methodName($this->callmap, $this->method),
                     count($received),
                     count($expected)
             ));
@@ -310,7 +296,7 @@ class Verify
                             . ' does not match expected value',
                             $key,
                             1,
-                            $this->methodName(),
+                            methodName($this->callmap, $this->method),
                             $this->method
                     )
             );

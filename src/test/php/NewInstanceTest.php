@@ -119,7 +119,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to map method "doesNotExist()", but it does not exist. Probably a typo?
+     * @expectedExceptionMessage  Trying to map method bovigo\callmap\AnotherTestHelperClass::doesNotExist(), but it does not exist. Probably a typo?
      * @since  0.4.0
      */
     public function mapNonExistingMethodThrowsInvalidArgumentException()
@@ -131,7 +131,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to map method "doSomethingy()", but it does not exist. Probably a typo?
+     * @expectedExceptionMessage  Trying to map method bovigo\callmap\AnotherTestHelperClass::doSomethingy(), but it does not exist. Probably a typo?
      * @since  0.4.0
      */
     public function mapExistingMethodWithTypoThrowsInvalidArgumentException()
@@ -143,7 +143,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to map method "doNotTouchThis()", but it is not applicable for mapping.
+     * @expectedExceptionMessage  Trying to map method bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(), but it is not applicable for mapping.
      * @since  0.4.0
      */
     public function mapNonApplicableMethodThrowsInvalidArgumentException()
@@ -155,7 +155,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to retrieve call amount for method "doesNotExist()", but it does not exist. Probably a typo?
+     * @expectedExceptionMessage  Trying to retrieve call amount for method bovigo\callmap\AnotherTestHelperClass::doesNotExist(), but it does not exist. Probably a typo?
      * @since  0.5.0
      */
     public function checkCallAmountForNonExistingMethodThrowsInvalidArgumentException()
@@ -167,7 +167,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to retrieve call amount for method "doSomethingy()", but it does not exist. Probably a typo?
+     * @expectedExceptionMessage  Trying to retrieve call amount for method bovigo\callmap\AnotherTestHelperClass::doSomethingy(), but it does not exist. Probably a typo?
      * @since  0.5.0
      */
     public function checkCallAmountForExistingMethodWithTypoThrowsInvalidArgumentException()
@@ -179,7 +179,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to retrieve call amount for method "doNotTouchThis()", but it is not applicable for mapping.
+     * @expectedExceptionMessage  Trying to retrieve call amount for method bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(), but it is not applicable for mapping.
      * @since  0.5.0
      */
     public function checkCallAmountForNonApplicableMethodThrowsInvalidArgumentException()
@@ -191,7 +191,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to retrieve received arguments for method "doesNotExist()", but it does not exist. Probably a typo?
+     * @expectedExceptionMessage  Trying to retrieve received arguments for method bovigo\callmap\AnotherTestHelperClass::doesNotExist(), but it does not exist. Probably a typo?
      * @since  0.5.0
      */
     public function retrieveReceivedArgumentsForNonExistingMethodThrowsInvalidArgumentException()
@@ -203,7 +203,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to retrieve received arguments for method "doSomethingy()", but it does not exist. Probably a typo?
+     * @expectedExceptionMessage  Trying to retrieve received arguments for method bovigo\callmap\AnotherTestHelperClass::doSomethingy(), but it does not exist. Probably a typo?
      * @since  0.5.0
      */
     public function retrieveReceivedArgumentsForExistingMethodWithTypoThrowsInvalidArgumentException()
@@ -215,7 +215,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Trying to retrieve received arguments for method "doNotTouchThis()", but it is not applicable for mapping.
+     * @expectedExceptionMessage  Trying to retrieve received arguments for method bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(), but it is not applicable for mapping.
      * @since  0.5.0
      */
     public function retrieveReceivedArgumentsForNonApplicableMethodThrowsInvalidArgumentException()

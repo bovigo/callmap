@@ -33,9 +33,10 @@ function onConsecutiveCalls()
 }
 
 /**
- * returns possibilities to verify the amount of calls for method on callmap
+ * returns possibilities to verify method invocations on the callmap
  *
- * @param   \bovigo\callmap\Proxy  $callmap  callmap to verify method call amount of
+ * @api
+ * @param   \bovigo\callmap\Proxy  $callmap  callmap to verify
  * @param   string                 $method   actual method to verify
  * @return  \bovigo\callmap\Verify
  * @since   0.5.0
@@ -43,4 +44,21 @@ function onConsecutiveCalls()
 function verify(Proxy $callmap, $method)
 {
     return new Verify($callmap, $method);
+}
+
+/**
+ * returns name of the proxied class/interface/trait
+ *
+ * @internal
+ * @param   \bovigo\callmap\Proxy  $callmap  callmap to return method name for
+ * @param   string                 $method   actual method to return
+ * @return  string
+ */
+function methodName(Proxy $callmap, $method)
+{
+    return str_replace(
+            ['CallMapProxy', 'CallMapFork'],
+            '',
+            get_class($callmap)
+    ) . '::' . $method . '()';
 }

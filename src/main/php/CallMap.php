@@ -53,11 +53,7 @@ trait CallMap
         foreach (array_keys($callMap) as $method) {
             if (!isset($this->_allowedMethods[$method])) {
                 throw new \InvalidArgumentException(
-                        'Trying to map method "' . $method . '()", but it '
-                        . (method_exists($this, $method) ?
-                            'is not applicable for mapping.' :
-                            'does not exist. Probably a typo?'
-                        )
+                        $this->callmapInvalidMethod($method, 'map')
                 );
             }
         }
@@ -132,11 +128,7 @@ trait CallMap
     {
         if (!isset($this->_allowedMethods[$method])) {
             throw new \InvalidArgumentException(
-                    'Trying to retrieve call amount for method "' . $method . '()", but it '
-                    . (method_exists($this, $method) ?
-                        'is not applicable for mapping.' :
-                        'does not exist. Probably a typo?'
-                    )
+                    $this->callmapInvalidMethod($method, 'retrieve call amount for')
             );
         }
 
@@ -145,6 +137,25 @@ trait CallMap
         }
 
         return 0;
+    }
+
+    /**
+     * creates complete error message when called with invalid method
+     *
+     * @param  string  $invalidMethod
+     * @param  string  $message
+     */
+    private function callmapInvalidMethod($invalidMethod, $message)
+    {
+        return sprintf(
+                'Trying to %s method %s, but it %s',
+                $message,
+                methodName($this, $invalidMethod),
+                (method_exists($this, $invalidMethod) ?
+                    'is not applicable for mapping.' :
+                    'does not exist. Probably a typo?'
+                )
+        );
     }
 
     /**
@@ -160,11 +171,7 @@ trait CallMap
     {
         if (!isset($this->_allowedMethods[$method])) {
             throw new \InvalidArgumentException(
-                    'Trying to retrieve received arguments for method "' . $method . '()", but it '
-                    . (method_exists($this, $method) ?
-                        'is not applicable for mapping.' :
-                        'does not exist. Probably a typo?'
-                    )
+                    $this->callmapInvalidMethod($method, 'retrieve received arguments for')
             );
         }
 
@@ -175,9 +182,9 @@ trait CallMap
         $invocations = $this->callsReceivedFor($method);
         throw new MissingInvocation(
                 sprintf(
-                    'Missing invocation #%d for %s(), %s',
+                    'Missing invocation #%d for %s, %s',
                     $invocation,
-                    $method,
+                    methodName($this, $method),
                     ($invocations === 0 ?
                             'never invoked' :
                             ('only invoked ' . ($invocations === 1 ?
