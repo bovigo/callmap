@@ -122,7 +122,7 @@ trait CallMap
      *
      * @param   string  $method  name of method to check
      * @return  int
-     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
+     * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
      */
     public function callsReceivedFor($method)
     {
@@ -140,31 +140,12 @@ trait CallMap
     }
 
     /**
-     * creates complete error message when called with invalid method
-     *
-     * @param  string  $invalidMethod
-     * @param  string  $message
-     */
-    private function callmapInvalidMethod($invalidMethod, $message)
-    {
-        return sprintf(
-                'Trying to %s method %s, but it %s',
-                $message,
-                methodName($this, $invalidMethod),
-                (method_exists($this, $invalidMethod) ?
-                    'is not applicable for mapping.' :
-                    'does not exist. Probably a typo?'
-                )
-        );
-    }
-
-    /**
      * returns the arguments received for a specific call
      *
      * @param   string  $method      name of method to check
      * @param   int     $invocation  nth invocation to check, defaults to 1 aka first invocation
      * @return  mixed[]
-     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
+     * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
      * @throws  \bovigo\callmap\MissingInvocation  in case no such invocation was received
      */
     public function argumentsReceivedFor($method, $invocation = 1)
@@ -191,6 +172,25 @@ trait CallMap
                                 'once' : $invocations . ' times')
                             )
                     )
+                )
+        );
+    }
+
+    /**
+     * creates complete error message when called with invalid method
+     *
+     * @param  string  $invalidMethod
+     * @param  string  $message
+     */
+    private function callmapInvalidMethod($invalidMethod, $message)
+    {
+        return sprintf(
+                'Trying to %s method %s, but it %s',
+                $message,
+                methodName($this, $invalidMethod),
+                (method_exists($this, $invalidMethod) ?
+                    'is not applicable for mapping.' :
+                    'does not exist. Probably a typo?'
                 )
         );
     }
