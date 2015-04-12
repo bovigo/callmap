@@ -2,6 +2,7 @@
 ------------------
 
   * calling `bovigo\callmap\NewInstance::*()` with a final class now throws an `\InvalidArgumentException`
+  * passing a method within the callmap to `bovigo\callmap\Proxy::mapCalls()` which doesn't exist or is not applicable for mapping now throws an `\InvalidArgumentException`
 
 
 0.3.0 (2015-04-11)

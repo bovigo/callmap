@@ -214,9 +214,10 @@ class NewInstance
      */
     private static function createMethods(\ReflectionClass $class)
     {
-        $code = '';
+        $code    = '';
+        $methods = [];
         foreach (self::methodsOf($class) as $method) {
-            /* @var  $method \ReflectionMethod */
+            /* @var $method \ReflectionMethod */
             $code .= sprintf(
                     "    %s function %s(%s) {\n"
                   . "        return \$this->handleMethodCall('%s', func_get_args(), %s);\n"
@@ -227,9 +228,13 @@ class NewInstance
                     $method->getName(),
                     self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
+            $methods[] = "'" . $method->getName() . "' => '" . $method->getName() . "'";
         }
 
-        return $code;
+        return $code . sprintf(
+                "\n    private \$_allowedMethods = [%s];\n",
+                join(', ', $methods)
+        );
     }
 
     /**

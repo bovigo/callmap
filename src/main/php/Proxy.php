@@ -18,6 +18,7 @@ interface Proxy
      *
      * @param   array  $callMap
      * @return  $this
+     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
     public function mapCalls(array $callMap);
 

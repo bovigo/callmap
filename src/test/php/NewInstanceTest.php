@@ -13,7 +13,9 @@ namespace bovigo\callmap;
  */
 class AnotherTestHelperClass
 {
+    public function doSomething() { }
 
+    private function doNotTouchThis() { }
 }
 /**
  * Another helper class.
@@ -112,5 +114,41 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
                 NewInstance::stub('bovigo\callmap\AnotherTestHelperClass'),
                 NewInstance::stub('bovigo\callmap\AnotherTestHelperClass')
         );
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to map method "doesNotExist()", but it does not exist. Probably a typo?
+     * @since  0.4.0
+     */
+    public function mapNonExistingMethodThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->mapCalls(['doesNotExist' => true]);
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to map method "doSomethingy()", but it does not exist. Probably a typo?
+     * @since  0.4.0
+     */
+    public function mapExistingMethodWithTypoThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->mapCalls(['doSomethingy' => true]);
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to map method "doNotTouchThis()", but it is not applicable for mapping.
+     * @since  0.4.0
+     */
+    public function mapInApplicableThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->mapCalls(['doNotTouchThis' => true]);
     }
 }

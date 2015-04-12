@@ -46,9 +46,22 @@ trait CallMap
      *
      * @param   array  $callMap
      * @return  $this
+     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
     public function mapCalls(array $callMap)
     {
+        foreach (array_keys($callMap) as $method) {
+            if (!isset($this->_allowedMethods[$method])) {
+                throw new \InvalidArgumentException(
+                        'Trying to map method "' . $method . '()", but it '
+                        . (method_exists($this, $method) ?
+                            'is not applicable for mapping.' :
+                            'does not exist. Probably a typo?'
+                        )
+                );
+            }
+        }
+
         $this->callMap = $callMap;
         return $this;
     }
