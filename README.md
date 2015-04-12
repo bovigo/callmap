@@ -266,6 +266,9 @@ in case the test method doesn't have any other assertion and you want to have on
 $this->assertTrue(verify($yourClass, 'aMethod')->wasCalledOnce());
 ```
 
+Of course you can verify the call amount even if you didn't specify the method
+in the callmap.
+
 Here is a list of method that the instance returned by `verify()` offers:
 
 *   `wasCalledAtMost($times)`<br/>
