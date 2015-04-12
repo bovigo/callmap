@@ -31,3 +31,16 @@ function onConsecutiveCalls()
 {
     return new InvocationResults(func_get_args());
 }
+
+/**
+ * returns possibilities to verify the amount of calls for method on callmap
+ *
+ * @param   \bovigo\callmap\Proxy  $callmap  callmap to verify method call amount of
+ * @param   string                 $method   actual method to verify
+ * @return  \bovigo\callmap\Verify
+ * @since   0.5.0
+ */
+function verify(Proxy $callmap, $method)
+{
+    return new Verify($callmap, $method);
+}

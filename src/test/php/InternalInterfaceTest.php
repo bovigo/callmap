@@ -57,7 +57,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertEquals(0, $this->proxy->callsReceivedFor('count'));
+        assertTrue(verify($this->proxy, 'count')->wasNeverCalled());
     }
 
     /**
@@ -67,7 +67,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->count();
         $this->proxy->count();
-        assertEquals(2, $this->proxy->callsReceivedFor('count'));
+        assertTrue(verify($this->proxy, 'count')->wasCalled(2));
     }
 
     /**

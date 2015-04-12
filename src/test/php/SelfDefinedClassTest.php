@@ -20,7 +20,7 @@ class SelfDefined
 
     public function passByReference(&$foo)
     {
-        
+
     }
 }
 /**
@@ -81,7 +81,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertEquals(0, $this->proxy->callsReceivedFor('action'));
+        assertTrue(verify($this->proxy, 'action')->wasNeverCalled());
     }
 
     /**
@@ -91,7 +91,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->action(new SelfDefined(), function() {});
         $this->proxy->action(new SelfDefined(), function() {});
-        assertEquals(2, $this->proxy->callsReceivedFor('action'));
+        assertTrue(verify($this->proxy, 'action')->wasCalled(2));
     }
 
     /**

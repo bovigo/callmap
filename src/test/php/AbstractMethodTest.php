@@ -105,7 +105,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertEquals(0, $this->proxy->callsReceivedFor('play'));
+        assertTrue(verify($this->proxy, 'play')->wasNeverCalled());
     }
 
     /**
@@ -115,7 +115,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->play();
         $this->proxy->play(808);
-        assertEquals(2, $this->proxy->callsReceivedFor('play'));
+        assertTrue(verify($this->proxy, 'play')->wasCalled(2));
     }
 
     /**

@@ -247,7 +247,46 @@ for mapping (see above) `mapCalls()` will throw and `\InvalidArgumentException`.
 This also prevents typos and wondering why something doesn't work as expected.
 
 
-### Verifying method invocation and passed arguments ###
+### Verifying method invocations ###
+
+_Available since 0.5.0_
+
+Sometimes it is required to ensure that a method was invoked a certain amount of
+times. In order to do that, _bovigo/callmap_ provides the `verify()` function:
+
+```php
+verify($yourClass, 'aMethod')->wasCalledOnce();
+```
+
+In case it was not called exactly once, this will throw a `CallAmountViolation`.
+Otherwise, it will simply return true. This allows you to use it in an assertion
+in case the test method doesn't have any other assertion and you want to have one:
+
+```php
+$this->assertTrue(verify($yourClass, 'aMethod')->wasCalledOnce());
+```
+
+Here is a list of method that the instance returned by `verify()` offers:
+
+*   `wasCalledAtMost($times)`<br/>
+    Asserts that the method was invoked at maximum the given amount of times.
+*   `wasCalledAtLeastOnce()`<br/>
+    Asserts that the method was invoked at least once.
+*   `wasCalledAtLeast($times)`<br/>
+    Asserts that the method was invoked at minimum the given amount of times.
+*   `wasCalledOnce()`<br/>
+    Asserts that the method was invoked exactly once.
+*   `wasCalled($times)`<br/>
+    Asserts that the method was invoked exactly the given amount of times.
+*   `wasNeverCalled()`<br/>
+    Asserts that the method was never invoked.
+
+By the way, if PHPUnit is available, `CallAmountViolation` will extend
+`PHPUnit_Framework_ExpectationFailedException`. In case it isn't available it
+will simply extend `\Exception`.
+
+
+### Verifying passed arguments ###
 
 This is very much work in progress, so it's a bit to early to write documentation
 for this. Just one important note: When retrieving the arguments that were passed

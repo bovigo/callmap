@@ -67,7 +67,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertEquals(0, $this->proxy->callsReceivedFor('getNamespaceName'));
+        assertTrue(verify($this->proxy, 'getNamespaceName')->wasNeverCalled());
     }
 
     /**
@@ -78,8 +78,8 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
         $this->proxy->getName();
         $this->proxy->getName();
         $this->proxy->getShortName();
-        assertEquals(2, $this->proxy->callsReceivedFor('getName'));
-        assertEquals(1, $this->proxy->callsReceivedFor('getShortName'));
+        assertTrue(verify($this->proxy,'getName')->wasCalled(2));
+        assertTrue(verify($this->proxy, 'getShortName')->wasCalledOnce());
     }
 
     /**

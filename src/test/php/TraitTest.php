@@ -80,7 +80,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertEquals(0, $this->proxy->callsReceivedFor('action'));
+        assertTrue(verify($this->proxy, 'action')->wasNeverCalled());
     }
 
     /**
@@ -90,7 +90,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->action(303);
         $this->proxy->action(313);
-        assertEquals(2, $this->proxy->callsReceivedFor('action'));
+        assertTrue(verify($this->proxy, 'action')->wasCalled(2));
     }
 
     /**
