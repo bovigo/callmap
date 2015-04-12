@@ -170,6 +170,10 @@ class NewInstance
      */
     private static function createCallmapProxyCode(\ReflectionClass $class)
     {
+        if ($class->isFinal()) {
+            throw new \InvalidArgumentException('Can not create mapping proxy for final class ' . $class->getName());
+        }
+
         $code = self::createClassDefinition($class)
                 . self::createMethods($class)
                 . "}\n";
@@ -224,6 +228,7 @@ class NewInstance
                     self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
         }
+
         return $code;
     }
 
