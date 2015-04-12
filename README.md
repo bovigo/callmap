@@ -343,8 +343,7 @@ Please not that each method has its own invocation count (whereas in PHPUnit the
 invocation count is for the whole mock object). Also, invocation count starts at
 1 for the first invocation, not at 0.
 
-Both `reveived()` and `receivedOn()` also accept any instance of
-`PHPUnit_Framework_Constraint`:
+Both `reveived()` and `receivedOn()` also accept any instance of `PHPUnit_Framework_Constraint`:
 
 ```php
 verify($yourClass, 'aMethod')->received($this->isInstanceOf('another\ExampleClass'));
