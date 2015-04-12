@@ -41,6 +41,7 @@ to see how _bovigo/callmap_ can be used. For the very eager, here's a code
 example which features almost all of the possibilities:
 
 ```php
+// set up the instance to be used
 $yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
         ->mapCalls(
                 ['aMethod'     => 313,
@@ -50,6 +51,13 @@ $yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
                  'hey'         => 'strtoupper'
                 ]
         );
+
+// do some stuff, e.g. execute the logic to test
+...
+
+// verify method invocations and received arguments
+verify($yourClass, 'aMethod')->wasCalledOnce();
+verify($yourClass, 'hey')->received('foo');
 ```
 
 However, if you prefer text instead of code, read on.
@@ -60,10 +68,11 @@ are imported into the current namespace via
 use bovigo\callmap\NewInstance;
 use function bovigo\callmap\throws;
 use function bovigo\callmap\onConsecutiveCalls;
+use function bovigo\callmap\verify;
 ```
 
-_(For PHP versions older than 5.6.0, you can do `use bovigo\callmap` and call them
-with `callmap\throws()` and `callmap\onConsecutiveCalls()`.)_
+_For PHP versions older than 5.6.0, you can do `use bovigo\callmap` and call them
+with `callmap\throws()`, `callmap\onConsecutiveCalls()`, and `callmap\verify()`._
 
 
 ### Specify return values for method invocations ###
@@ -351,3 +360,14 @@ verify($yourClass, 'aMethod')->received($this->isInstanceOf('another\ExampleClas
 
 In case a bare value is passed it is assumed that `PHPUnit_Framework_Constraint_IsEqual`
 is meant.
+
+If the verification succeeds, it will simply return true. This allows you to use
+it in an assertion in case the test method doesn't have any other assertion and
+you want to have one:
+
+```php
+$this->assertTrue(verify($yourClass, 'aMethod')->receivedNothing());
+```
+
+In case the verification fails an `PHPUnit_Framework_ExpectationFailedException`
+will be thrown by the used `PHPUnit_Framework_Constraint`.
