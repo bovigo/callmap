@@ -243,7 +243,7 @@ final.
 ### What happens if a method specified in the callmap doesn't exist? ###
 
 In case the callmap contains a method which doesn't exist or is not applicable
-for mapping (see above) `mapCalls()` will throw and `\InvalidArgumentException`.
+for mapping (see above) `mapCalls()` will throw an `\InvalidArgumentException`.
 This also prevents typos and wondering why something doesn't work as expected.
 
 
@@ -283,6 +283,10 @@ Here is a list of methods that the instance returned by `verify()` offers:
     Asserts that the method was invoked exactly the given amount of times.
 *   `wasNeverCalled()`<br/>
     Asserts that the method was never invoked.
+
+In case the method to check doesn't exist or is not applicable for mapping (see
+above) all of those methods throw an `\InvalidArgumentException`. This also
+prevents typos and wondering why something doesn't work as expected.
 
 By the way, if PHPUnit is available, `CallAmountViolation` will extend
 `PHPUnit_Framework_ExpectationFailedException`. In case it isn't available it

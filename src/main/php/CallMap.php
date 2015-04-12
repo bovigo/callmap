@@ -126,9 +126,20 @@ trait CallMap
      *
      * @param   string  $method  name of method to check
      * @return  int
+     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
     public function callsReceivedFor($method)
     {
+        if (!isset($this->_allowedMethods[$method])) {
+            throw new \InvalidArgumentException(
+                    'Trying to retrieve call amount for method "' . $method . '()", but it '
+                    . (method_exists($this, $method) ?
+                        'is not applicable for mapping.' :
+                        'does not exist. Probably a typo?'
+                    )
+            );
+        }
+
         if (isset($this->callHistory[$method])) {
             return count($this->callHistory[$method]);
         }
@@ -142,9 +153,20 @@ trait CallMap
      * @param   string  $method      name of method to check
      * @param   int     $invocation  nth invocation to check, defaults to 1 aka first invocation
      * @return  mixed[]
+     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
     public function argumentsReceivedFor($method, $invocation = 1)
     {
+        if (!isset($this->_allowedMethods[$method])) {
+            throw new \InvalidArgumentException(
+                    'Trying to retrieve received arguments for method "' . $method . '()", but it '
+                    . (method_exists($this, $method) ?
+                        'is not applicable for mapping.' :
+                        'does not exist. Probably a typo?'
+                    )
+            );
+        }
+
         if (isset($this->callHistory[$method]) && isset($this->callHistory[$method][$invocation - 1])) {
             return $this->callHistory[$method][$invocation - 1];
         }

@@ -146,9 +146,81 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage  Trying to map method "doNotTouchThis()", but it is not applicable for mapping.
      * @since  0.4.0
      */
-    public function mapInApplicableThrowsInvalidArgumentException()
+    public function mapNonApplicableMethodThrowsInvalidArgumentException()
     {
         NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
                 ->mapCalls(['doNotTouchThis' => true]);
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to retrieve call amount for method "doesNotExist()", but it does not exist. Probably a typo?
+     * @since  0.5.0
+     */
+    public function checkCallAmountForNonExistingMethodThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->callsReceivedFor('doesNotExist');
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to retrieve call amount for method "doSomethingy()", but it does not exist. Probably a typo?
+     * @since  0.5.0
+     */
+    public function checkCallAmountForExistingMethodWithTypoThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->callsReceivedFor('doSomethingy');
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to retrieve call amount for method "doNotTouchThis()", but it is not applicable for mapping.
+     * @since  0.5.0
+     */
+    public function checkCallAmountForNonApplicableMethodThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->callsReceivedFor('doNotTouchThis');
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to retrieve received arguments for method "doesNotExist()", but it does not exist. Probably a typo?
+     * @since  0.5.0
+     */
+    public function retrieveReceivedArgumentsForNonExistingMethodThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->argumentsReceivedFor('doesNotExist');
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to retrieve received arguments for method "doSomethingy()", but it does not exist. Probably a typo?
+     * @since  0.5.0
+     */
+    public function retrieveReceivedArgumentsForExistingMethodWithTypoThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->argumentsReceivedFor('doSomethingy');
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Trying to retrieve received arguments for method "doNotTouchThis()", but it is not applicable for mapping.
+     * @since  0.5.0
+     */
+    public function retrieveReceivedArgumentsForNonApplicableMethodThrowsInvalidArgumentException()
+    {
+        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+                ->argumentsReceivedFor('doNotTouchThis');
     }
 }
