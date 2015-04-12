@@ -11,7 +11,7 @@ namespace bovigo\callmap;
  *
  * @since  0.5.0
  */
-class Verify
+class Verification
 {
     /**
      * callmap to verify method call amount of

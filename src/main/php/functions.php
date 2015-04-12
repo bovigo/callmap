@@ -43,7 +43,7 @@ function onConsecutiveCalls()
  */
 function verify(Proxy $callmap, $method)
 {
-    return new Verify($callmap, $method);
+    return new Verification($callmap, $method);
 }
 
 /**
