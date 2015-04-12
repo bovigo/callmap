@@ -16,7 +16,7 @@ Please note that a stable release is not available yet. Releases with version nu
 Installation
 ------------
 
-bovigo/callmap is distributed as [Composer](https://getcomposer.org/) package.
+_bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package add the following line
 to the `require-dev` package links:
 
@@ -30,13 +30,13 @@ Usage
 -----
 
 Explore the [tests](https://github.com/mikey179/bovigo-callmap/tree/master/src/test/php)
-to see how bovigo/callmap can be used. However, if you prefer text instead of
+to see how _bovigo/callmap_ can be used. However, if you prefer text instead of
 code, here's a summary:
 
 ### Specify return values for method invocations ###
 
 As the first step, you need to get an instance of the class, interface or trait
-you want to specify return values for. To do this, bovigo/callmap provides two
+you want to specify return values for. To do this, _bovigo/callmap_ provides two
 possibilities. The first one is to create a new instance where this instance is
 a proxy to the actual class:
 
@@ -44,8 +44,8 @@ a proxy to the actual class:
 $yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments']);
 ```
 
-This creates an instance where each method call is passed to original class in
-case no return value was specified via the callmap. Also, it calls the
+This creates an instance where each method call is passed to the original class
+in case no return value was specified via the callmap. Also, it calls the
 constructor of the class to instantiate of. If the class doesn't have a
 constructor, or you create an instance of an interface or trait, the list of
 constructor arguments can be left away.
@@ -57,7 +57,9 @@ $yourClass = NewInstance::stub('name\of\YourClass');
 ```
 
 Instances created that way don't forward method calls. Note: in case you use a
-PHP version older than 5.6.0, this won't work with PHP's internal classes.
+PHP version older than 5.6.0, this won't work with PHP's internal classes, and
+you will get an `ReflectionException` instead. See [PHP manual](http://php.net/manual/en/reflectionclass.newinstancewithoutconstructor.php)
+for details.
 
 Ok, so we created an instance of the thing that we want to specify return values
 for, how to do that?
@@ -92,19 +94,19 @@ Depending on what is instantiated and how, there will be default return values
 for the case that no call mapping has been passed for a method which actually is
 called.
 
-1.  Interfaces
+1.  Interfaces<br/>
     Default return value is always `null`, except the `@return` type hint in the
     doc comment specifies the short class name or the fully qualified class name
     of the interface itself or any other interface it extends. In that case the
     default return value will be the instance itself.
 
-2.  Traits
+2.  Traits<br/>
     When instantiated with `NewInstance::of()` the default return value will be
     the value a call to the according method returns.
     For abstract methods with the trait the default return value is `null`,
     except the `@return` type hint in the doc comment specifies `$this` or `self`.
 
-3.  Classes
+3.  Classes<br/>
     When instantiated with `NewInstance::of()` the default return value will be
     the value a call to the according method returns.
     When instantiated with `NewInstance::stub()` and for abstract methods the
@@ -146,17 +148,23 @@ Of course this can be combined with a series of return values:
 $yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, throws(new \Exception('error')))]);
 ```
 
+Here, the first invocation of `$yourClass->aMethod()` will return `303`, whereas
+the second call will lead to the exception being thrown.
+
+
 ### How do I specify that an object returns itself? ###
 
-Actually, you don't. `bovigo/callmap` is smart enough to detect when it should
+Actually, you don't. _bovigo/callmap_ is smart enough to detect when it should
 return the object instance instead of null when no call mapping for a method was
-provided. To achieve that, `bovigo/callmap` tries to detect the return type of a
+provided. To achieve that, _bovigo/callmap_ tries to detect the return type of a
 method from its doc comment. If the return type specified there is one of `$this`,
 `self`, the short class name or the fully qualified class name of the class or
 of a parent class or any interface the class implements, it will return the
 instance instead of null.
 
 Exception to this: if the return type is `\Traversable` this doesn't apply.
+
+*Btw: looking forward to return type hints with PHP 7. ;-)*
 
 
 ### Verifying method invocation and passed arguments ###
