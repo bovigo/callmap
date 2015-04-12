@@ -45,13 +45,19 @@ $yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
         );
 ```
 
-However, if you prefer text instead of code, here's a summary. Note: for all
-classes and functions mentioned below it is assumed it has been imported into
-the namespace via `use bovigo\callmap\NewInstance`,
-`use function bovigo\callmap\throws,  and
-`use function bovigo\callmap\onConsecutiveCalls`.<br/>
+However, if you prefer text instead of code, here's a summary.
+
+Note: for all classes and functions mentioned below it is assumed it has been
+ imported into the namespace via
+```php
+use bovigo\callmap\NewInstance;
+use function bovigo\callmap\throws;
+use function bovigo\callmap\onConsecutiveCalls;
+```
+
 _(For PHP versions older than 5.6.0, you can do `use bovigo\callmap` and call them
 with `callmap\throws()` and `callmap\onConsecutiveCalls()`.)_
+
 
 ### Specify return values for method invocations ###
 
