@@ -269,7 +269,7 @@ $this->assertTrue(verify($yourClass, 'aMethod')->wasCalledOnce());
 Of course you can verify the call amount even if you didn't specify the method
 in the callmap.
 
-Here is a list of method that the instance returned by `verify()` offers:
+Here is a list of methods that the instance returned by `verify()` offers:
 
 *   `wasCalledAtMost($times)`<br/>
     Asserts that the method was invoked at maximum the given amount of times.
