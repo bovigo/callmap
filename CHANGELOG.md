@@ -4,6 +4,8 @@
   * added `bovigo\callmap\verify()` as possibility to verify an expected call amount as well as expected arguments
   * retrieving call for a method which doesn't exist or is not applicable for mapping now throws an `\InvalidArgumentException`
   * retrieving received arguments for a method which doesn't exist or is not applicable for mapping now throws an `\InvalidArgumentException`
+  * changed API status for `bovigo\callmap\Proxy::callsReceivedFor()` to internal, use verify()->was*() instead
+  * changed API status for `bovigo\callmap\Proxy::argumentsReceivedFor()` to internal, use verify()->received*() instead
 
 
 0.4.0 (2015-04-12)
