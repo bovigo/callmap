@@ -13,7 +13,7 @@ namespace bovigo\callmap;
  */
 class Verified
 {
-    public function aMethod()
+    public function aMethod($roland = 303)
     {
 
     }
@@ -70,7 +70,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  bovigo\callmap\CallAmountViolation
-     * @expectedExceptionMessage bovigo\callmap\Verified::aMethod() was expected to be called 2 times, but actually called 1 time(s)
+     * @expectedExceptionMessage bovigo\callmap\Verified::aMethod() was expected to be called 2 time(s), but actually called 1 time(s).
      */
     public function wasCalledThrowsCallAmountViolationWhenCalledTooSeldom()
     {
@@ -81,7 +81,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  bovigo\callmap\CallAmountViolation
-     * @expectedExceptionMessage bovigo\callmap\Verified::aMethod() was expected to be called 2 times, but actually called 3 time(s)
+     * @expectedExceptionMessage bovigo\callmap\Verified::aMethod() was expected to be called 2 time(s), but actually called 3 time(s).
      */
     public function wasCalledThrowsCallAmountViolationWhenCalledTooOften()
     {
@@ -213,5 +213,60 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
         $this->proxy->aMethod();
         $this->proxy->aMethod();
         verify($this->proxy, 'aMethod')->wasCalledAtMost(2);
+    }
+
+    /**
+     * @test
+     * @expectedException  bovigo\callmap\MissingInvocation
+     * @expectedExceptionMessage  Missing invocation #1 for aMethod(), never invoked
+     */
+    public function verifyArgumentsForMethodNotCalledThrowsMissingInvocation()
+    {
+        verify($this->proxy, 'aMethod')->receivedNothing();
+    }
+
+    /**
+     * @test
+     * @expectedException  bovigo\callmap\MissingInvocation
+     * @expectedExceptionMessage  Missing invocation #2 for aMethod(), only invoked once
+     */
+    public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation6()
+    {
+        $this->proxy->aMethod(808);
+        verify($this->proxy, 'aMethod')->receivedOn(2, 808);
+    }
+
+    /**
+     * @test
+     * @expectedException  bovigo\callmap\MissingInvocation
+     * @expectedExceptionMessage  Missing invocation #3 for aMethod(), only invoked 2 times
+     */
+    public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation()
+    {
+        $this->proxy->aMethod(808);
+        $this->proxy->aMethod(808);
+        verify($this->proxy, 'aMethod')->receivedOn(3, 808);
+    }
+
+    /**
+     * @test
+     * @expectedException  bovigo\callmap\ArgumentMismatch
+     * @expectedExceptionMessage  Argument count for invocation #1 of bovigo\callmap\Verified::aMethod() is too high: received 1 argument(s), expected no arguments.
+     */
+    public function verifyReceivedNothingThrowsArgumentMismatchWhenArgumentsReceived()
+    {
+        $this->proxy->aMethod(808);
+        verify($this->proxy, 'aMethod')->receivedNothing();
+    }
+
+    /**
+     * @test
+     * @expectedException  bovigo\callmap\ArgumentMismatch
+     * @expectedExceptionMessage  Argument count for invocation #1 of bovigo\callmap\Verified::aMethod() is too low: received 0 argument(s), expected 1 argument(s).
+     */
+    public function verifyReceivedThrowsArgumentMismatchWhenLessArgumentsReceivedThanExpected()
+    {
+        $this->proxy->aMethod();
+        verify($this->proxy, 'aMethod')->received(808);
     }
 }

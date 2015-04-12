@@ -73,7 +73,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertTrue(verify($this->proxy, 'action')->wasNeverCalled());
+        verify($this->proxy, 'action')->wasNeverCalled();
     }
 
     /**
@@ -83,15 +83,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->action();
         $this->proxy->action();
-        assertTrue(verify($this->proxy, 'action')->wasCalled(2));
-    }
-
-    /**
-     * @test
-     */
-    public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
-    {
-        assertNull($this->proxy->argumentsReceivedFor('action'));
+        verify($this->proxy, 'action')->wasCalled(2);
     }
 
     /**
@@ -100,18 +92,6 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {
         $this->proxy->action(303);
-        assertEquals(
-                [303],
-                $this->proxy->argumentsReceivedFor('action')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
-    {
-        $this->proxy->action(303);
-        assertNull($this->proxy->argumentsReceivedFor('action', 2));
+        verify($this->proxy, 'action')->received(303);
     }
 }

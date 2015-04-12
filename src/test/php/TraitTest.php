@@ -80,7 +80,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertTrue(verify($this->proxy, 'action')->wasNeverCalled());
+        verify($this->proxy, 'action')->wasNeverCalled();
     }
 
     /**
@@ -90,15 +90,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->action(303);
         $this->proxy->action(313);
-        assertTrue(verify($this->proxy, 'action')->wasCalled(2));
-    }
-
-    /**
-     * @test
-     */
-    public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
-    {
-        assertNull($this->proxy->argumentsReceivedFor('action'));
+        verify($this->proxy, 'action')->wasCalled(2);
     }
 
     /**
@@ -107,22 +99,16 @@ class TraitTest extends \PHPUnit_Framework_TestCase
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {
         $this->proxy->action(313);
-        assertEquals(
-                [313],
-                $this->proxy->argumentsReceivedFor('action')
-        );
+        verify($this->proxy, 'action')->received(313);
     }
 
     /**
      * @test
      */
-    public function listOfReceivedArgumentsDoesNotContainOptionalArguments()
+    public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed()
     {
         $this->proxy->other();
-        assertEquals(
-                [],
-                $this->proxy->argumentsReceivedFor('other')
-        );
+        verify($this->proxy, 'other')->receivedNothing();
     }
 
     /**
@@ -131,18 +117,6 @@ class TraitTest extends \PHPUnit_Framework_TestCase
     public function listOfReceivedArgumentsContainsGivenArguments()
     {
         $this->proxy->other(['play' => 808]);
-        assertEquals(
-                [['play' => 808]],
-                $this->proxy->argumentsReceivedFor('other')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
-    {
-        $this->proxy->action(313);
-        assertNull($this->proxy->argumentsReceivedFor('action', 2));
+        verify($this->proxy, 'other')->received($this->containsOnly('int'));
     }
 }

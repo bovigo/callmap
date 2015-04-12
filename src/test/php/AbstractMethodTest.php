@@ -105,7 +105,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertTrue(verify($this->proxy, 'play')->wasNeverCalled());
+        verify($this->proxy, 'play')->wasNeverCalled();
     }
 
     /**
@@ -115,47 +115,34 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->play();
         $this->proxy->play(808);
-        assertTrue(verify($this->proxy, 'play')->wasCalled(2));
+        verify($this->proxy, 'play')->wasCalled(2);
     }
 
     /**
      * @test
      */
-    public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
-    {
-        assertNull($this->proxy->argumentsReceivedFor('play'));
-    }
-
-    /**
-     * @test
-     */
-    public function listOfReceivedArgumentsDoesNotContainOptionalArguments()
+    public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed()
     {
         $this->proxy->play();
-        assertEquals(
-                [],
-                $this->proxy->argumentsReceivedFor('play')
-        );
+        verify($this->proxy, 'play')->receivedNothing();
     }
 
     /**
      * @test
      */
-    public function listOfReceivedArgumentsContainsGivenArguments()
+    public function canVerifyReceivedArguments()
     {
         $this->proxy->play(808);
-        assertEquals(
-                [808],
-                $this->proxy->argumentsReceivedFor('play')
-        );
+        verify($this->proxy, 'play')->received(808);
     }
 
     /**
      * @test
      */
-    public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
+    public function canVerifyReceivedArgumentsOfSpecificInvocation()
     {
         $this->proxy->play(808);
-        assertNull($this->proxy->argumentsReceivedFor('play', 2));
+        $this->proxy->play(909);
+        verify($this->proxy, 'play')->receivedOn(2, 909);
     }
 }

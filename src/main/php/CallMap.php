@@ -154,6 +154,7 @@ trait CallMap
      * @param   int     $invocation  nth invocation to check, defaults to 1 aka first invocation
      * @return  mixed[]
      * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
+     * @throws  \bovigo\callmap\MissingInvocation  in case no such invocation was received
      */
     public function argumentsReceivedFor($method, $invocation = 1)
     {
@@ -171,6 +172,19 @@ trait CallMap
             return $this->callHistory[$method][$invocation - 1];
         }
 
-        return null;
+        $invocations = $this->callsReceivedFor($method);
+        throw new MissingInvocation(
+                sprintf(
+                    'Missing invocation #%d for %s(), %s',
+                    $invocation,
+                    $method,
+                    ($invocations === 0 ?
+                            'never invoked' :
+                            ('only invoked ' . ($invocations === 1 ?
+                                'once' : $invocations . ' times')
+                            )
+                    )
+                )
+        );
     }
 }

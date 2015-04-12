@@ -27,6 +27,7 @@ interface Proxy
      *
      * @param   string  $method  name of method to check
      * @return  int
+     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
     public function callsReceivedFor($method);
 
@@ -36,6 +37,8 @@ interface Proxy
      * @param   string  $method      name of method to check
      * @param   int     $invocation  nth invocation to check
      * @return  mixed[]
+     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
+     * @throws  \bovigo\callmap\MissingInvocation  in case no such invocation was received
      */
     public function argumentsReceivedFor($method, $invocation = 0);
 }

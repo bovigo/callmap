@@ -1,7 +1,7 @@
 0.5.0 (2015-??-??)
 ------------------
 
-  * added `bovigo\callmap\verify()` as possibility to verify an expected call amount
+  * added `bovigo\callmap\verify()` as possibility to verify an expected call amount as well as expected arguments
   * retrieving call for a method which doesn't exist or is not applicable for mapping now throws an `\InvalidArgumentException`
   * retrieving received arguments for a method which doesn't exist or is not applicable for mapping now throws an `\InvalidArgumentException`
 

@@ -44,13 +44,13 @@ class Verify
      *
      * @return  string
      */
-    private function callmapClass()
+    private function methodName()
     {
         return str_replace(
                 ['CallMapProxy', 'CallMapFork'],
                 '',
                 get_class($this->callmap)
-        );
+        ) . '::' . $this->method . '()';
     }
 
     /**
@@ -65,10 +65,13 @@ class Verify
     {
         if ($this->callmap->callsReceivedFor($this->method) > $times) {
             throw new CallAmountViolation(
-                    $this->callmapClass() . '::' . $this->method . '() '
-                    . 'was expected to be called at most ' . $times
-                    . ' time(s), but actually called '
-                    . $this->callmap->callsReceivedFor($this->method) . ' time(s).'
+                    sprintf(
+                            '%s was expected to be called at most %d time(s),'
+                            . ' but actually called %d time(s).',
+                            $this->methodName(),
+                            $times,
+                            $this->callmap->callsReceivedFor($this->method)
+                    )
             );
         }
 
@@ -86,9 +89,11 @@ class Verify
     {
         if ($this->callmap->callsReceivedFor($this->method) < 1) {
             throw new CallAmountViolation(
-                    $this->callmapClass() . '::' . $this->method . '() '
-                    . 'was expected to be called at least once, '
-                    . 'but actually never called.'
+                    sprintf(
+                            '%s was expected to be called at least once,'
+                            . ' but actually never called.',
+                            $this->methodName()
+                    )
             );
         }
 
@@ -107,10 +112,13 @@ class Verify
     {
         if ($this->callmap->callsReceivedFor($this->method) < $times) {
             throw new CallAmountViolation(
-                    $this->callmapClass() . '::' . $this->method . '() '
-                    . 'was expected to be called at least ' . $times
-                    . ' time(s), but actually called '
-                    . $this->callmap->callsReceivedFor($this->method) . ' time(s).'
+                    sprintf(
+                            '%s was expected to be called at least %d time(s),'
+                            . ' but actually called %d time(s).',
+                            $this->methodName(),
+                            $times,
+                            $this->callmap->callsReceivedFor($this->method)
+                    )
             );
         }
 
@@ -126,18 +134,16 @@ class Verify
      */
     public function wasCalledOnce()
     {
-        if ($this->callmap->callsReceivedFor($this->method) !== 1) {
-            if ($this->callmap->callsReceivedFor($this->method) > 1) {
-                $amount = 'called '
-                    . $this->callmap->callsReceivedFor($this->method) . ' time(s).';
-            } else {
-                $amount = 'never called.';
-            }
-
+        $callsReceived = $this->callmap->callsReceivedFor($this->method);
+        if (1 !== $callsReceived) {
             throw new CallAmountViolation(
-                    $this->callmapClass() . '::' . $this->method . '() '
-                    . 'was expected to be called once, but actually '
-                    . $amount
+                    sprintf(
+                            '%s was expected to be called once, but actually %s.',
+                            $this->methodName(),
+                            1 < $callsReceived ?
+                                'called ' . $callsReceived . ' time(s)' :
+                                'never called'
+                    )
             );
         }
 
@@ -156,9 +162,13 @@ class Verify
     {
         if ($this->callmap->callsReceivedFor($this->method) != $times) {
             throw new CallAmountViolation(
-                    $this->callmapClass() . '::' . $this->method . '() '
-                    . 'was expected to be called ' . $times . ' times, but actually called '
-                    . $this->callmap->callsReceivedFor($this->method) . ' time(s).'
+                    sprintf(
+                            '%s was expected to be called %d time(s),'
+                            . ' but actually called %d time(s).',
+                            $this->methodName(),
+                            $times,
+                            $this->callmap->callsReceivedFor($this->method)
+                    )
             );
         }
 
@@ -176,12 +186,140 @@ class Verify
     {
         if ($this->callmap->callsReceivedFor($this->method) > 0) {
             throw new CallAmountViolation(
-                    $this->callmapClass() . '::' . $this->method . '() '
-                    . 'was not expected to be called, but actually called '
-                    . $this->callmap->callsReceivedFor($this->method) . ' time(s).'
+                    sprintf(
+                            '%s was not expected to be called,'
+                            . ' but actually called %d time(s).',
+                            $this->methodName(),
+                            $this->callmap->callsReceivedFor($this->method)
+                    )
             );
         }
 
         return true;
+    }
+
+    /**
+     * verifies that the method received nothing on the given invocation
+     *
+     * @api
+     * @param   int  $invocation  optional  nth invocation to check, defaults to 1 aka first invocation
+     * @return  bool
+     * @throws  \bovigo\callmap\ArgumentMismatch
+     */
+    public function receivedNothing($invocation = 1)
+    {
+        $received = $this->callmap->argumentsReceivedFor($this->method, $invocation);
+        if  (count($received) === 0) {
+            return true;
+        }
+
+        throw new ArgumentMismatch(
+                sprintf(
+                    'Argument count for invocation #%d of %s is too'
+                    . ' high: received %d argument(s), expected no arguments.',
+                    $invocation,
+                    $this->methodName(),
+                    count($received)
+                )
+        );
+    }
+
+    /**
+     * verifies that the received arguments match expected arguments for the first invocation
+     *
+     * If a constraint is not an instance of PHPUnit_Framework_Constraint it
+     * will automatically use PHPUnit_Framework_Constraint_IsEqual.
+     *
+     * @api
+     * @param   mixed|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
+     * @return  bool
+     */
+    public function received()
+    {
+        return $this->verifyArgs(1, func_get_args());
+    }
+
+    /**
+     * verifies that the received arguments match expected arguments for the given invocation
+     *
+     * If a constraint is not an instance of PHPUnit_Framework_Constraint it
+     * will automatically use PHPUnit_Framework_Constraint_IsEqual.
+     *
+     * @api
+     * @param   int                                    $invocation   nth invocation to check
+     * @param   mixed|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
+     * @return  bool
+     */
+    public function receivedOn()
+    {
+        $args = func_get_args();
+        $invocation = array_shift($args);
+        return $this->verifyArgs($invocation, $args);
+    }
+
+    /**
+     * verifies arguments of given invocation with the expected constraints
+     *
+     * If a constraint is not an instance of PHPUnit_Framework_Constraint it
+     * will automatically use PHPUnit_Framework_Constraint_IsEqual.
+     *
+     * @param   int                                    $invocation  number of invocation to check
+     * @param   mixed|\PHPUnit_Framework_Constraint[]  $expected    constraints which describe expected parameters
+     * @return  bool
+     * @throws  \bovigo\callmap\ArgumentMismatch
+     */
+    private function verifyArgs($invocation, array $expected)
+    {
+        $received = $this->callmap->argumentsReceivedFor($this->method, $invocation);
+        if (count($received) < count($expected)) {
+            throw new ArgumentMismatch(sprintf(
+                    'Argument count for invocation #%d of %s is too'
+                    . ' low: received %d argument(s), expected %d argument(s).',
+                    $invocation,
+                    $this->methodName(),
+                    count($received),
+                    count($expected)
+            ));
+        }
+
+        foreach ($expected as $key => $constraint) {
+            $this->evaluate(
+                    $constraint,
+                    $key,
+                    isset($received[$key]) ? $received[$key] : null
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * evaluates given constraint given received argument
+     *
+     * @param   mixed|\PHPUnit_Framework_Constraint  $constraint  constraint for argument
+     * @param   int                                  $key         position of argument
+     * @param   mixed                                $received    actually received argument
+     */
+    private function evaluate($constraint, $key, $received)
+    {
+        if ($constraint instanceof \PHPUnit_Framework_Constraint) {
+            return $constraint->evaluate(
+                    $received,
+                    sprintf(
+                            'Parameter %s for invocation #%s of %s'
+                            . ' does not match expected value',
+                            $key,
+                            1,
+                            $this->methodName(),
+                            $this->method
+                    )
+            );
+        }
+
+        return $this->evaluate(
+                new \PHPUnit_Framework_Constraint_IsEqual($constraint),
+                $key,
+                $received
+        );
     }
 }

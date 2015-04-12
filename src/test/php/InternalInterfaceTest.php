@@ -57,7 +57,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertTrue(verify($this->proxy, 'count')->wasNeverCalled());
+        verify($this->proxy, 'count')->wasNeverCalled();
     }
 
     /**
@@ -67,35 +67,15 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->count();
         $this->proxy->count();
-        assertTrue(verify($this->proxy, 'count')->wasCalled(2));
+        verify($this->proxy, 'count')->wasCalled(2);
     }
 
     /**
      * @test
      */
-    public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
+    public function canVerifyThatMethodDidNotReveiveArguments()
     {
-        assertNull($this->proxy->argumentsReceivedFor('count'));
-    }
-
-    /**
-     * @test
-     */
-    public function returnsListOfReceivedArgumentsIfMethodCalled()
-    {
-        $this->proxy->count('bovigo\callmap\Proxy');
-        assertEquals(
-                ['bovigo\callmap\Proxy'],
-                $this->proxy->argumentsReceivedFor('count')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
-    {
-        $this->proxy->count('bovigo\callmap\Proxy');
-        assertNull($this->proxy->argumentsReceivedFor('count', 2));
+        $this->proxy->count();
+        verify($this->proxy, 'count')->receivedNothing();
     }
 }

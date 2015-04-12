@@ -81,7 +81,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
-        assertTrue(verify($this->proxy, 'action')->wasNeverCalled());
+        verify($this->proxy, 'action')->wasNeverCalled();
     }
 
     /**
@@ -91,15 +91,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->action(new SelfDefined(), function() {});
         $this->proxy->action(new SelfDefined(), function() {});
-        assertTrue(verify($this->proxy, 'action')->wasCalled(2));
-    }
-
-    /**
-     * @test
-     */
-    public function listOfReceivedArgumentsIsNullIfMethodNotCalled()
-    {
-        assertNull($this->proxy->argumentsReceivedFor('action'));
+        verify($this->proxy, 'action')->wasCalled(2);
     }
 
     /**
@@ -110,18 +102,9 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
         $arg1 = new SelfDefined();
         $arg2 = function() {};
         $this->proxy->action($arg1, $arg2);
-        assertEquals(
-                [$arg1, $arg2],
-                $this->proxy->argumentsReceivedFor('action')
+        verify($this->proxy, 'action')->received(
+                $this->isInstanceOf('bovigo\callmap\SelfDefined'),
+                $arg2
         );
-    }
-
-    /**
-     * @test
-     */
-    public function listOfReceivedArgumentsIsNullWhenNotCalledForRequestedInvocationCount()
-    {
-        $this->proxy->action(new SelfDefined(), function() {});
-        assertNull($this->proxy->argumentsReceivedFor('action', 2));
     }
 }

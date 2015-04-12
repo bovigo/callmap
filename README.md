@@ -26,6 +26,13 @@ To install it as a runtime dependency for your package use the following command
 
     composer require "bovigo/callmap=~0.4"
 
+Requirements
+------------
+
+_bovigo/callmap_ requires at least PHP 5.4. For argument verification PHPUnit
+is required.
+
+
 Usage
 -----
 
@@ -247,7 +254,7 @@ for mapping (see above) `mapCalls()` will throw an `\InvalidArgumentException`.
 This also prevents typos and wondering why something doesn't work as expected.
 
 
-### Verifying method invocations ###
+### Verify method invocations ###
 
 _Available since 0.5.0_
 
@@ -269,7 +276,8 @@ $this->assertTrue(verify($yourClass, 'aMethod')->wasCalledOnce());
 Of course you can verify the call amount even if you didn't specify the method
 in the callmap.
 
-Here is a list of methods that the instance returned by `verify()` offers:
+Here is a list of methods that the instance returned by `verify()` offers for
+verifying the amount of method invocations:
 
 *   `wasCalledAtMost($times)`<br/>
     Asserts that the method was invoked at maximum the given amount of times.
@@ -293,11 +301,54 @@ By the way, if PHPUnit is available, `CallAmountViolation` will extend
 will simply extend `\Exception`.
 
 
-### Verifying passed arguments ###
+### Verify passed arguments ###
 
-This is very much work in progress, so it's a bit to early to write documentation
-for this. Just one important note: When retrieving the arguments that were passed
-in a method call please be aware that each method has its own invocation count
-(whereas in PHPUnit the invocation count is for the whole mock object). Also,
-invocation count starts at 1 for the first invocation, not at 0.
+_Available since 0.5.0_
 
+_Please note that for this feature at the current time PHPUnit must be present,
+as argument verification makes use of the `PHPUnit_Framework_Constraint` classes._
+
+In some cases it is useful to verify that an instance received the correct
+arguments. You can do this with `verify()` as well:
+
+```php
+verify($yourClass, 'aMethod')->received(303, 'foo');
+```
+
+This will verify that each of the expected arguments matches the actually
+received arguments of the first invocation of that method. In case you want to
+verify another invocation, we got you covered:
+
+```php
+verify($yourClass, 'aMethod')->receivedOn(3, 303, 'foo');
+```
+
+This applies verification to the arguments the method received on the third
+invocation.
+
+There is also a shortcut to verify that the method didn't receive any arguments:
+
+```php
+verify($yourClass, 'aMethod')->receivedNothing(); // received nothing on first invocation
+verify($yourClass, 'aMethod')->receivedNothing(3); // received nothing on third invocation
+```
+
+In case the method wasn't invoked (that much), a `MissingInvocation` exception
+will be thrown.<br/>
+In case the method received less arguments than expected, a `ArgumentMismatch`
+exception will be thrown. It will also be thrown when `receivedNothing()` detects
+that at least one argument was received.
+
+Please not that each method has its own invocation count (whereas in PHPUnit the
+invocation count is for the whole mock object). Also, invocation count starts at
+1 for the first invocation, not at 0.
+
+Both `reveived()` and `receivedOn()` also accept any instance of
+`PHPUnit_Framework_Constraint`:
+
+```php
+verify($yourClass, 'aMethod')->received($this->isInstanceOf('another\ExampleClass'));
+```
+
+In case a bare value is passed it is assumed that `PHPUnit_Framework_Constraint_IsEqual`
+is meant.
