@@ -54,7 +54,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @since  0.3.0
+     * @since  0.4.0
      */
     public function mapToCallableReturnsCallableReturnValueOnMethodCall()
     {
