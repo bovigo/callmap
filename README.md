@@ -31,7 +31,7 @@ Usage
 
 Explore the [tests](https://github.com/mikey179/bovigo-callmap/tree/master/src/test/php)
 to see how _bovigo/callmap_ can be used. For the very eager, here's a code
-example which features all the possibilities:
+example which features almost all of the possibilities:
 
 ```php
 $yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
@@ -45,7 +45,13 @@ $yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
         );
 ```
 
-However, if you prefer text instead of code, here's a summary:
+However, if you prefer text instead of code, here's a summary. Note: for all
+classes and functions mentioned below it is assumed it has been imported into
+the namespace via `use bovigo\callmap\NewInstance`,
+`use function bovigo\callmap\throws,  and
+`use function bovigo\callmap\onConsecutiveCalls`.<br/>
+_(For PHP versions older than 5.6.0, you can do `use bovigo\callmap` and call them
+with `callmap\throws()` and `callmap\onConsecutiveCalls()`.)_
 
 ### Specify return values for method invocations ###
 
@@ -93,7 +99,7 @@ will be returned.
 
 Please be aware that the array provided with the `mapCalls()` method should
 contain all methods that should be stubbed. If you call this method a second
-time everything from the first call will be overwritten:
+time the complete callmap will be replaced:
 
 ```php
 $yourClass->mapCalls(['aMethod' => 303]);
@@ -116,13 +122,14 @@ called.
 
 2.  Traits<br/>
     When instantiated with `NewInstance::of()` the default return value will be
-    the value a call to the according method returns.
-    For abstract methods with the trait the default return value is `null`,
-    except the `@return` type hint in the doc comment specifies `$this` or `self`.
+    the value a call to the according method returns.<br/>
+    When instantiated with `NewInstance::stub()` and for abstract methods the
+    default return value is `null`, except the `@return` type hint in the doc
+    comment specifies `$this` or `self`.
 
 3.  Classes<br/>
     When instantiated with `NewInstance::of()` the default return value will be
-    the value a call to the according method returns.
+    the value which is returned by the according method of the original class.<br/>
     When instantiated with `NewInstance::stub()` and for abstract methods the
     default return value is `null`, except the `@return` type hint in the doc
     comment specifies `$this` or `self`, the short class name or the fully
@@ -140,8 +147,8 @@ $yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, 808, 909)]);
 ```
 
 This will return a different value on each invocation of `$yourClass->aMethod()`
-in the order of the specified return values. If the method is called more than
-return values are specified, each subsequent call will return `null`.
+in the order of the specified return values. If the method is called more often
+than return values are specified, each subsequent call will return `null`.
 
 
 ### Let's throw an exception ###
@@ -180,7 +187,7 @@ echo $yourClass->aMethod(303, 'foo'); // prints foo
 
 However, if a method has optional parameters the default value will *not* be
 passed as argument if it wasn't given in the actual method call. Only explicitly
-passed arguments will be forwared to the callable.
+passed arguments will be forwarded to the callable.
 
 
 ### Do I have to specify a closure or can I use an arbitrary callable? ###
@@ -206,7 +213,13 @@ instance instead of null.
 
 Exception to this: if the return type is `\Traversable` this doesn't apply.
 
+Please note that `@inheritDoc` is not supported at the moment.
+
 *Btw: looking forward to return type hints with PHP 7. ;-)*
+
+In case this leads to a false interpretation and the instance is returned when
+in fact it should not, you can always overrule that by explicitly stating a
+return value in the callmap.
 
 
 ### Verifying method invocation and passed arguments ###
