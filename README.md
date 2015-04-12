@@ -239,6 +239,13 @@ Oh, and of course you can't use all of this with a class which is declared as
 final.
 
 
+### What happens if a method specified in the callmap doesn't exist? ###
+
+In case the callmap contains a method which doesn't exist or is not applicable
+for mapping (see above) `mapCalls()` will throw and `\InvalidArgumentException`.
+This also prevents typos and wondering why something doesn't work as expected.
+
+
 ### Verifying method invocation and passed arguments ###
 
 This is very much work in progress, so it's a bit to early to write documentation
