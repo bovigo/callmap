@@ -1,4 +1,4 @@
-0.5.0 (2015-??-??)
+0.5.0 (2015-04-12)
 ------------------
 
   * added `bovigo\callmap\verify()` as possibility to verify an expected call amount as well as expected arguments

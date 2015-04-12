@@ -20,11 +20,11 @@ _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package add the following line
 to the `require-dev` package links:
 
-    "bovigo/callmap": "~0.4"
+    "bovigo/callmap": "~0.5"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=~0.4"
+    composer require "bovigo/callmap=~0.5"
 
 Requirements
 ------------
@@ -265,8 +265,6 @@ This also prevents typos and wondering why something doesn't work as expected.
 
 ### Verify method invocations ###
 
-_Available since 0.5.0_
-
 Sometimes it is required to ensure that a method was invoked a certain amount of
 times. In order to do that, _bovigo/callmap_ provides the `verify()` function:
 
@@ -311,8 +309,6 @@ will simply extend `\Exception`.
 
 
 ### Verify passed arguments ###
-
-_Available since 0.5.0_
 
 _Please note that for this feature at the current time PHPUnit must be present,
 as argument verification makes use of the `PHPUnit_Framework_Constraint` classes._
