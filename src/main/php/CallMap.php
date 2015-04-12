@@ -20,7 +20,7 @@ trait CallMap
      */
     private $callMap = [];
     /**
-     * @var  array
+     * @type  array
      */
     private $callHistory = [];
     /**
