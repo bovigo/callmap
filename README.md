@@ -217,7 +217,8 @@ method from its doc comment. If the return type specified there is one of `$this
 of a parent class or any interface the class implements, it will return the
 instance instead of null.
 
-Exception to this: if the return type is `\Traversable` this doesn't apply.
+Exception to this: if the return type is `\Traversable` this doesn't apply, even
+if the class implements this interface.
 
 Please note that `@inheritDoc` is not supported at the moment.
 
