@@ -30,8 +30,22 @@ Usage
 -----
 
 Explore the [tests](https://github.com/mikey179/bovigo-callmap/tree/master/src/test/php)
-to see how _bovigo/callmap_ can be used. However, if you prefer text instead of
-code, here's a summary:
+to see how _bovigo/callmap_ can be used. For the very eager, here's a code
+example which features all the possibilities:
+
+```php
+$yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
+        ->mapCalls(
+                ['aMethod'     => 313,
+                 'otherMethod' => function() { return 'yeah'; },
+                 'play'        => onConsecutiveCalls(303, 808, 909, throws(new \Exception('error')),
+                 'ups'         => throws(new \Exception('error')),
+                 'hey'         => 'strtoupper'
+                ]
+        );
+```
+
+However, if you prefer text instead of code, here's a summary:
 
 ### Specify return values for method invocations ###
 
@@ -74,7 +88,7 @@ $yourClass->mapCalls(
 
 We simply pass a callmap to the `mapCalls()` method. Now, if something calls
 `$yourClass->aMethod()`, the return value will always be `303`. In the case of
-`$yourClass->otherMethod()`, the closure will be evaluated and its return value
+`$yourClass->otherMethod()`, the callable will be evaluated and its return value
 will be returned.
 
 Please be aware that the array provided with the `mapCalls()` method should
@@ -133,7 +147,7 @@ return values are specified, each subsequent call will return `null`.
 ### Let's throw an exception ###
 
 Sometimes you don't need to specify a return value, but want the method to throw
-an exception on invocation. Of course you could do that by providing a closure
+an exception on invocation. Of course you could do that by providing a callable
 in the callmap which throws the exception, but there's a more handy way available:
 
 ```php
@@ -150,6 +164,34 @@ $yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, throws(new \Exception
 
 Here, the first invocation of `$yourClass->aMethod()` will return `303`, whereas
 the second call will lead to the exception being thrown.
+
+
+### Is there a way to access the passed arguments? ###
+
+It might be useful to use the arguments passed to a method before returning a
+value. If you specify a callable this callable will receive all arguments passed
+to the method:
+
+```php
+$yourClass->mapCalls(['aMethod' => function($arg1, $arg2) { return $arg2;}]);
+
+echo $yourClass->aMethod(303, 'foo'); // prints foo
+```
+
+However, if a method has optional parameters the default value will *not* be
+passed as argument if it wasn't given in the actual method call. Only explicitly
+passed arguments will be forwared to the callable.
+
+
+### Do I have to specify a closure or can I use an arbitrary callable? ###
+
+You can:
+
+```php
+$yourClass->mapCalls(['aMethod' => 'strtoupper']);
+
+echo $yourClass->aMethod('foo'); // prints FOO
+```
 
 
 ### How do I specify that an object returns itself? ###
