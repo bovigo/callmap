@@ -45,10 +45,10 @@ $yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
         );
 ```
 
-However, if you prefer text instead of code, here's a summary.
+However, if you prefer text instead of code, read on.
 
-Note: for all classes and functions mentioned below it is assumed it has been
- imported into the namespace via
+Note: for the sake of brevity below it is assumed the used classes and functions
+are imported into the current namespace via
 ```php
 use bovigo\callmap\NewInstance;
 use function bovigo\callmap\throws;
@@ -226,6 +226,17 @@ Please note that `@inheritDoc` is not supported at the moment.
 In case this leads to a false interpretation and the instance is returned when
 in fact it should not, you can always overrule that by explicitly stating a
 return value in the callmap.
+
+
+### Which methods can be used in the callmap? ###
+
+Only non-static, non-final public and protected methods can be used.
+
+In case you want to map a private, or a final, or a static method you are out of
+luck. Probably you should rethink your class design.
+
+Oh, and of course you can't use all of this with a class which is declared as
+final.
 
 
 ### Verifying method invocation and passed arguments ###
