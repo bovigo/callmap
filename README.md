@@ -18,7 +18,7 @@ Installation
 
 bovigo/callmap is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package add the following line
-to the `require-dev` package links: 
+to the `require-dev` package links:
 
     "bovigo/callmap": "~0.3"
 
@@ -30,14 +30,140 @@ Usage
 -----
 
 Explore the [tests](https://github.com/mikey179/bovigo-callmap/tree/master/src/test/php)
-to see how bovigo/callmap can be used. Please be aware that the array provided
-with the `mapCalls()` method should contain all methods that should be stubbed.
+to see how bovigo/callmap can be used. However, if you prefer text instead of
+code, here's a summary:
 
-In case you need to need to stub a series of return values for the same method
-have a look at [InvocationResults](https://github.com/mikey179/bovigo-callmap/blob/master/src/test/php/InvocationResultsTest.php).
+### Specify return values for method invocations ###
 
-When retrieving the arguments that were passed in a method call please be aware
-that each method has its own invocation count (whereas in PHPUnit the invocation
-count is for the whole mock object). Also, invocation count starts at 1 for the
-first invocation, not at 0.
+As the first step, you need to get an instance of the class, interface or trait
+you want to specify return values for. To do this, bovigo/callmap provides two
+possibilities. The first one is to create a new instance where this instance is
+a proxy to the actual class:
+
+```php
+$yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments']);
+```
+
+This creates an instance where each method call is passed to original class in
+case no return value was specified via the callmap. Also, it calls the
+constructor of the class to instantiate of. If the class doesn't have a
+constructor, or you create an instance of an interface or trait, the list of
+constructor arguments can be left away.
+
+The other option is to create a complete stub:
+
+```php
+$yourClass = NewInstance::stub('name\of\YourClass');
+```
+
+Instances created that way don't forward method calls. Note: in case you use a
+PHP version older than 5.6.0, this won't work with PHP's internal classes.
+
+Ok, so we created an instance of the thing that we want to specify return values
+for, how to do that?
+
+```php
+$yourClass->mapCalls(
+        ['aMethod'     => 303,
+         'otherMethod' => function() { return 'yeah'; }
+        ]
+);
+```
+
+We simply pass a callmap to the `mapCalls()` method. Now, if something calls
+`$yourClass->aMethod()`, the return value will always be `303`. In the case of
+`$yourClass->otherMethod()`, the closure will be evaluated and its return value
+will be returned.
+
+Please be aware that the array provided with the `mapCalls()` method should
+contain all methods that should be stubbed. If you call this method a second
+time everything from the first call will be overwritten:
+
+```php
+$yourClass->mapCalls(['aMethod' => 303]);
+$yourClass->mapCalls(['otherMethod' => function() { return 'yeah'; }]);
+```
+
+As a result of this, `$yourClass->aMethod()` is not set any more to return `303`.
+
+### Default return values ###
+
+Depending on what is instantiated and how, there will be default return values
+for the case that no call mapping has been passed for a method which actually is
+called.
+
+1.  Interfaces
+    Default return value is always `null`, except the `@return` type hint in the
+    doc comment specifies the short class name or the fully qualified class name
+    of the interface itself or any other interface it extends. In that case the
+    default return value will be the instance itself.
+
+2.  Traits
+    When instantiated with `NewInstance::of()` the default return value will be
+    the value a call to the according method returns.
+    For abstract methods with the trait the default return value is `null`,
+    except the `@return` type hint in the doc comment specifies `$this` or `self`.
+
+3.  Classes
+    When instantiated with `NewInstance::of()` the default return value will be
+    the value a call to the according method returns.
+    When instantiated with `NewInstance::stub()` and for abstract methods the
+    default return value is `null`, except the `@return` type hint in the doc
+    comment specifies `$this` or `self`, the short class name or the fully
+    qualified class name of the class or of a parent class or any interface the
+    class implements. Exception to this: if the return type is `\Traversable`
+    and the class implements this interface return value will be `null`.
+
+### Specify a series of return values ###
+
+Sometimes a method gets called more than once and you need to specify different
+return values for each call.
+
+```php
+$yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, 808, 909)]);
+```
+
+This will return a different value on each invocation of `$yourClass->aMethod()`
+in the order of the specified return values. If the method is called more than
+return values are specified, each subsequent call will return `null`.
+
+
+### Let's throw an exception ###
+
+Sometimes you don't need to specify a return value, but want the method to throw
+an exception on invocation. Of course you could do that by providing a closure
+in the callmap which throws the exception, but there's a more handy way available:
+
+```php
+$yourClass->mapCalls(['aMethod' => throws(new \Exception('error'))]);
+```
+
+Now each call to this method will throw this exception.
+
+Of course this can be combined with a series of return values:
+
+```php
+$yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, throws(new \Exception('error')))]);
+```
+
+### How do I specify that an object returns itself? ###
+
+Actually, you don't. `bovigo/callmap` is smart enough to detect when it should
+return the object instance instead of null when no call mapping for a method was
+provided. To achieve that, `bovigo/callmap` tries to detect the return type of a
+method from its doc comment. If the return type specified there is one of `$this`,
+`self`, the short class name or the fully qualified class name of the class or
+of a parent class or any interface the class implements, it will return the
+instance instead of null.
+
+Exception to this: if the return type is `\Traversable` this doesn't apply.
+
+
+### Verifying method invocation and passed arguments ###
+
+This is very much work in progress, so it's a bit to early to write documentation
+for this. Just one important note: When retrieving the arguments that were passed
+in a method call please be aware that each method has its own invocation count
+(whereas in PHPUnit the invocation count is for the whole mock object). Also,
+invocation count starts at 1 for the first invocation, not at 0.
 
