@@ -99,7 +99,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {
-        $this->proxy->action(303);#$this->once();
+        $this->proxy->action(303);
         assertEquals(
                 [303],
                 $this->proxy->argumentsReceivedFor('action')
