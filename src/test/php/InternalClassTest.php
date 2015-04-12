@@ -54,6 +54,16 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  0.3.0
+     */
+    public function mapToCallableReturnsCallableReturnValueOnMethodCall()
+    {
+        $this->proxy->mapCalls(['getName' => 'strtoupper']);
+        assertEquals('FOO', $this->proxy->getName('foo'));
+    }
+
+    /**
+     * @test
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
