@@ -20,11 +20,11 @@ _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package add the following line
 to the `require-dev` package links:
 
-    "bovigo/callmap": "~0.3"
+    "bovigo/callmap": "~0.4"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=~0.3"
+    composer require "bovigo/callmap=~0.4"
 
 Usage
 -----

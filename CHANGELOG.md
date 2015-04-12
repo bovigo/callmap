@@ -1,4 +1,4 @@
-0.4.0 (2015-??-??)
+0.4.0 (2015-04-12)
 ------------------
 
   * calling `bovigo\callmap\NewInstance::*()` with a final class now throws an `\InvalidArgumentException`
