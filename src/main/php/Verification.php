@@ -195,7 +195,7 @@ class Verification
     public function receivedNothing($invocation = 1)
     {
         $received = $this->callmap->argumentsReceivedFor($this->method, $invocation);
-        if  (count($received) === 0) {
+        if  (count($received['arguments']) === 0) {
             return true;
         }
 
@@ -205,7 +205,7 @@ class Verification
                     . ' high: received %d argument(s), expected no arguments.',
                     $invocation,
                     methodName($this->callmap, $this->method),
-                    count($received)
+                    count($received['arguments'])
                 )
         );
     }
@@ -257,22 +257,24 @@ class Verification
     private function verifyArgs($invocation, array $expected)
     {
         $received = $this->callmap->argumentsReceivedFor($this->method, $invocation);
-        if (count($received) < count($expected)) {
+        if (count($received['arguments']) < count($expected)) {
             throw new ArgumentMismatch(sprintf(
                     'Argument count for invocation #%d of %s is too'
                     . ' low: received %d argument(s), expected %d argument(s).',
                     $invocation,
                     methodName($this->callmap, $this->method),
-                    count($received),
+                    count($received['arguments']),
                     count($expected)
             ));
         }
 
-        foreach ($expected as $key => $constraint) {
+        foreach ($expected as $index => $constraint) {
             $this->evaluate(
                     $constraint,
-                    $key,
-                    isset($received[$key]) ? $received[$key] : null
+                    isset($received['arguments'][$index]) ? $received['arguments'][$index] : null,
+                    isset($received['names'][$index]) ? $received['names'][$index] : null,
+                    $index,
+                    $invocation
             );
         }
 
@@ -283,19 +285,22 @@ class Verification
      * evaluates given constraint given received argument
      *
      * @param   mixed|\PHPUnit_Framework_Constraint  $constraint  constraint for argument
-     * @param   int                                  $key         position of argument
      * @param   mixed                                $received    actually received argument
+     * @param   string                               $name        name of parameter
+     * @param   int                                  $index       position of parameter
+     * @param   int                                  $invocation  number of invocation
      */
-    private function evaluate($constraint, $key, $received)
+    private function evaluate($constraint, $received, $name, $index, $invocation)
     {
         if ($constraint instanceof \PHPUnit_Framework_Constraint) {
             return $constraint->evaluate(
                     $received,
                     sprintf(
-                            'Parameter %s for invocation #%s of %s'
+                            'Parameter %sat position %d for invocation #%s of %s'
                             . ' does not match expected value',
-                            $key,
-                            1,
+                            null !== $name ? '$' . $name . ' ' : '',
+                            $index,
+                            $invocation,
                             methodName($this->callmap, $this->method),
                             $this->method
                     )
@@ -304,8 +309,10 @@ class Verification
 
         return $this->evaluate(
                 new \PHPUnit_Framework_Constraint_IsEqual($constraint),
-                $key,
-                $received
+                $received,
+                $name,
+                $index,
+                $invocation
         );
     }
 }

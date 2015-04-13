@@ -65,15 +65,16 @@ trait CallMap
     /**
      * handles actual method calls
      *
-     * @param   string   $method            actually called method
-     * @param   mixed[]  $arguments         list of given arguments for methods
-     * @param   bool     $shouldReturnSelf  whether the return value should be the instance itself
+     * @param   string    $method            actually called method
+     * @param   mixed[]   $arguments         list of given arguments for methods
+     * @param   bool      $shouldReturnSelf  whether the return value should be the instance itself
+     * @param   string[]  $paramNames        list of actual parameter names
      * @return  mixed
      * @throws  \Exception
      */
-    protected function handleMethodCall($method, $arguments, $shouldReturnSelf)
+    protected function handleMethodCall($method, $arguments, $shouldReturnSelf, array $paramNames)
     {
-        $invokationCount = $this->recordCall($method, $arguments);
+        $invokationCount = $this->recordCall($method, $arguments, $paramNames);
         if (isset($this->callMap[$method])) {
             if (is_callable($this->callMap[$method])) {
                 return call_user_func_array($this->callMap[$method], $arguments);
@@ -104,16 +105,20 @@ trait CallMap
     /**
      * records method call for given method
      *
-     * @param   string  $method
+     * @param   string    $method      name of called method
+     * @param   mixed[]   $arguments   list of passed arguments
+     * @param   string[]  $paramNames  list of actual parameter names
      * @return  int  amount of calls for given record
      */
-    private function recordCall($method, $arguments)
+    private function recordCall($method, $arguments, array $paramNames)
     {
         if (!isset($this->callHistory[$method])) {
             $this->callHistory[$method] = [];
         }
 
-        $this->callHistory[$method][] = $arguments;
+        $this->callHistory[$method][] = [
+            'arguments' => $arguments, 'names' => $paramNames
+        ];
         return count($this->callHistory[$method]);
     }
 

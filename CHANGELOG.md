@@ -1,6 +1,7 @@
-?.?.? (2015-??-??)
+0.?.? (2015-??-??)
 ------------------
 
+  * failing argument verification now also lists the name of the argument, not just its position, fixes #2
   * fixed bug with optional array parameters
 
 

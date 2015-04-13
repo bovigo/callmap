@@ -217,16 +217,18 @@ class NewInstance
         $code    = '';
         $methods = [];
         foreach (self::methodsOf($class) as $method) {
+            $param = self::params($method);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
                     "    %s function %s(%s) {\n"
-                  . "        return \$this->handleMethodCall('%s', func_get_args(), %s);\n"
+                  . "        return \$this->handleMethodCall('%s', func_get_args(), %s, %s);\n"
                   . "    }\n",
                     ($method->isPublic() ? 'public' : 'protected'),
                     $method->getName(),
-                    self::params($method),
+                    $param['string'],
                     $method->getName(),
-                    self::shouldReturnSelf($class, $method) ? 'true' : 'false'
+                    self::shouldReturnSelf($class, $method) ? 'true' : 'false',
+                    var_export($param['names'], true)
             );
             $methods[] = "'" . $method->getName() . "' => '" . $method->getName() . "'";
         }
@@ -283,7 +285,7 @@ class NewInstance
             }
 
             $param .= '$' . $parameter->getName();
-            if ($parameter->allowsNull() || $method->isInternal()) {
+            if ($parameter->isOptional() && $method->isInternal()) {
                 $param .= ' = null';
             } elseif ($parameter->isOptional() && !$parameter->isArray()) {
                 $param .= ' = ' . $parameter->getDefaultValue();
@@ -291,10 +293,10 @@ class NewInstance
                 $param .= ' = ' . var_export($parameter->getDefaultValue(), true);
             }
 
-            $params[] = $param;
+            $params[$parameter->getName()] = $param;
         }
 
-        return join(', ', $params);
+        return ['names' => array_keys($params), 'string' => join(', ', $params)];
     }
 
     /**
