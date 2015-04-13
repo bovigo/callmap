@@ -34,17 +34,17 @@ class CallMap
      * checks whether callmap has a result for the invocation of method
      *
      * @param   string  $method           name of invoked method
-     * @param   int     $invocationCound  denotes which nth invocation of the method this is
+     * @param   int     $invocationCount  denotes which nth invocation of the method this is
      * @return  bool
      */
-    public function hasResultFor($method, $invocationCound)
+    public function hasResultFor($method, $invocationCount)
     {
         if (!isset($this->callMap[$method])) {
             return false;
         }
 
    #     if ($this->callMap[$method] instanceof InvocationResults) {
-   #         return $this->callMap[$method]->hasResultForInvocation($invocationCound - 1);
+   #         return $this->callMap[$method]->hasResultForInvocation($invocationCount - 1);
    #     }
 
         return true;
