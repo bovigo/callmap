@@ -173,6 +173,22 @@ in the order of the specified return values. If the method is called more often
 than return values are specified, each subsequent call will return `null`.
 
 
+### I want to return a callable, but it is executed on method invocation ###
+
+Because callables are executed when the method is invoked it is required to wrap
+them into another callable. To ease this, the `wrap()` function is provided:
+
+```php
+$yourClass->mapCalls(['aMethod' => wrap(function() {  })]);
+
+$this->assertTrue(is_callable($yourClass->aMethod()); // true
+```
+
+The reason it is that way is that it is far more likely you want to calculate
+the return value with a callable instead of simply returning the callable as a
+result of the method call.
+
+
 ### Let's throw an exception ###
 
 Sometimes you don't need to specify a return value, but want the method to throw
