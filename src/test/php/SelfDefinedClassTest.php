@@ -18,7 +18,7 @@ class SelfDefined
         return 'selfdefined';
     }
 
-    public function passByReference(&$foo)
+    public function passByReference(&$foo, array $bar = ['baz' => 303])
     {
 
     }

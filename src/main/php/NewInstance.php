@@ -285,8 +285,10 @@ class NewInstance
             $param .= '$' . $parameter->getName();
             if ($parameter->allowsNull() || $method->isInternal()) {
                 $param .= ' = null';
+            } elseif ($parameter->isOptional() && !$parameter->isArray()) {
+                $param .= ' = ' . $parameter->getDefaultValue();
             } elseif ($parameter->isOptional()) {
-                $param .= ' = ' . ($parameter->isArray() ? '[]' : $parameter->getDefaultValue());
+                $param .= ' = ' . var_export($parameter->getDefaultValue(), true);
             }
 
             $params[] = $param;
