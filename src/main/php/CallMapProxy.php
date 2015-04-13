@@ -16,9 +16,9 @@ trait CallMapProxy
     /**
      * map of method with closures to call instead
      *
-     * @type  array
+     * @type  \bovigo\callmap\CallMap
      */
-    private $callMap = [];
+    private $callMap;
     /**
      * @type  array
      */
@@ -58,7 +58,7 @@ trait CallMapProxy
             }
         }
 
-        $this->callMap = $callMap;
+        $this->callMap = new CallMap($callMap);
         return $this;
     }
 
@@ -73,17 +73,9 @@ trait CallMapProxy
      */
     protected function handleMethodCall($method, $arguments, $shouldReturnSelf)
     {
-        $invokationCount = $this->recordCall($method, $arguments);
-        if (isset($this->callMap[$method])) {
-            if (is_callable($this->callMap[$method])) {
-                return call_user_func_array($this->callMap[$method], $arguments);
-            } elseif ($this->callMap[$method] instanceof InvocationResults) {
-                return $this->callMap[$method]->valueForInvocation($invokationCount - 1);
-            } elseif ($this->callMap[$method] instanceof InvocationThrow) {
-                throw $this->callMap[$method]->exception();
-            }
-
-            return $this->callMap[$method];
+        $invocation = $this->recordCall($method, $arguments);
+        if (null !== $this->callMap && $this->callMap->hasResultFor($method, $invocation)) {
+            return $this->callMap->resultFor($method, $arguments, $invocation);
         }
 
         if ($this->parentCallsAllowed && is_callable(['parent', $method])) {
