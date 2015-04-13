@@ -51,10 +51,6 @@ class InvocationResults
     public function resultForInvocation($number)
     {
         if (isset($this->results[$number])) {
-            if ($this->results[$number] instanceof InvocationThrow) {
-                throw $this->results[$number]->exception();
-            }
-
             return $this->results[$number];
         }
 

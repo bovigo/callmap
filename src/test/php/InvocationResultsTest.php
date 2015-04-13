@@ -51,6 +51,16 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  0.6.0
+     */
+    public function mapToInvocationResultsWithCallableReturnsResultOfCallable()
+    {
+        $this->proxy->mapCalls(['getName' => onConsecutiveCalls(function() { return 'foo'; })]);
+        $this->proxy->getName(); // foo
+    }
+
+    /**
+     * @test
      */
     public function invocationResultIsResultOfOriginalMethodIfCalledMoreOftenThenResultsDefined()
     {

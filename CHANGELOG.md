@@ -4,6 +4,7 @@
   * failing argument verification now also lists the name of the argument, not just its position, fixes #2
   * fixed bug with optional array parameters
   * `onConsecutiveCalls()` now falls back to the default return value in case a method gets invoked more often than results are defined
+  * fixed #4: `onConsecutiveCalls()` should allow callables which are executed
 
 
 0.5.0 (2015-04-12)
