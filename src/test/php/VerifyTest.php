@@ -269,4 +269,15 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
         $this->proxy->aMethod();
         verify($this->proxy, 'aMethod')->received(808);
     }
+
+    /**
+     * @test
+     * @expectedException  PHPUnit_Framework_ExpectationFailedException
+     * @expectedExceptionMessage Parameter 0 for invocation #1 of bovigo\callmap\Verified::aMethod() does not match expected value
+     */
+    public function verifyReceivedPassesExceptionThrownByConstraint()
+    {
+        $this->proxy->aMethod(303);
+        verify($this->proxy, 'aMethod')->received(808);
+    }
 }
