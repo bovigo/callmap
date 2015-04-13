@@ -22,6 +22,7 @@ function throws(\Exception $e)
 /**
  * wraps given callable into another callable so that the given callable is returned and not executed
  *
+ * @api
  * @param   callable  $callable
  * @return  callable
  * @since   0.6.0
