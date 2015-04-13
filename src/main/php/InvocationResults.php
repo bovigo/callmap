@@ -31,13 +31,24 @@ class InvocationResults
     }
 
     /**
+     * checks whether a result for the invocation with the given number exists
+     *
+     * @param   int  $number
+     * @return  bool
+     */
+    public function hasResultForInvocation($number)
+    {
+        return isset($this->results[$number]);
+    }
+
+    /**
      * returns the result for invocation with the given number
      *
      * @param   int  $number
      * @return  mixed
      * @throws  \Exception
      */
-    public function valueForInvocation($number)
+    public function resultForInvocation($number)
     {
         if (isset($this->results[$number])) {
             if ($this->results[$number] instanceof InvocationThrow) {

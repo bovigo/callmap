@@ -274,7 +274,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException  PHPUnit_Framework_ExpectationFailedException
      * @expectedExceptionMessage Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aMethod() does not match expected value
-     * @since  0.?.?
+     * @since  0.6.0
      */
     public function verifyReceivedPassesExceptionThrownByConstraint()
     {

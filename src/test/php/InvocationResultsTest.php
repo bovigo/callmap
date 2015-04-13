@@ -9,6 +9,16 @@
  */
 namespace bovigo\callmap;
 /**
+ * Helper class for the test.
+ */
+class OneMoreSelfDefined
+{
+    public function getName()
+    {
+        return 'bar';
+    }
+}
+/**
  * Tests for call mapping with a list of return values.
  */
 class InvocationResultsTest extends \PHPUnit_Framework_TestCase
@@ -42,10 +52,34 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function invocationResultIsNullIfCalledMoreOftenThenResultsDefined()
+    public function invocationResultIsResultOfOriginalMethodIfCalledMoreOftenThenResultsDefined()
     {
         $this->proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
         $this->proxy->getName(); // foo
-        assertNull($this->proxy->getName());
+        assertEquals(__CLASS__, $this->proxy->getName());  // falls back to original method
+    }
+
+    /**
+     * @test
+     * @since  0.6.0
+     */
+    public function invocationResultIsNullForStubIfCalledMoreOftenThenResultsDefined()
+    {
+        $proxy = NewInstance::stub('bovigo\callmap\OneMoreSelfDefined');
+        $proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
+        $proxy->getName(); // foo
+        assertNull($proxy->getName());
+    }
+
+    /**
+     * @test
+     * @since  0.6.0
+     */
+    public function invocationResultIsNullForInterfaceIfCalledMoreOftenThenResultsDefined()
+    {
+        $proxy = NewInstance::stub('\Countable');
+        $proxy->mapCalls(['count' => onConsecutiveCalls(303)]);
+        $proxy->count(); // 303
+        assertNull($proxy->count());
     }
 }

@@ -194,6 +194,9 @@ $yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, throws(new \Exception
 Here, the first invocation of `$yourClass->aMethod()` will return `303`, whereas
 the second call will lead to the exception being thrown.
 
+In case a method gets invoked more often than results are defined with
+`onConsecutiveCalls()` then it falls back to the default return value (see above).
+
 
 ### Is there a way to access the passed arguments? ###
 
