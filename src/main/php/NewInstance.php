@@ -216,26 +216,30 @@ class NewInstance
     {
         $code    = '';
         $methods = [];
+        $params  = [];
         foreach (self::methodsOf($class) as $method) {
             $param = self::params($method);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
                     "    %s function %s(%s) {\n"
-                  . "        return \$this->handleMethodCall('%s', func_get_args(), %s, %s);\n"
+                  . "        return \$this->handleMethodCall('%s', func_get_args(), %s);\n"
                   . "    }\n",
                     ($method->isPublic() ? 'public' : 'protected'),
                     $method->getName(),
                     $param['string'],
                     $method->getName(),
-                    self::shouldReturnSelf($class, $method) ? 'true' : 'false',
-                    var_export($param['names'], true)
+                    self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
             $methods[] = "'" . $method->getName() . "' => '" . $method->getName() . "'";
+            $params[$method->getName()] = $param['names'];
         }
 
         return $code . sprintf(
                 "\n    private \$_allowedMethods = [%s];\n",
                 join(', ', $methods)
+        ) . sprintf(
+                "\n    private \$_methodParams = %s;\n",
+                var_export($params, true)
         );
     }
 

@@ -68,13 +68,12 @@ trait CallMap
      * @param   string    $method            actually called method
      * @param   mixed[]   $arguments         list of given arguments for methods
      * @param   bool      $shouldReturnSelf  whether the return value should be the instance itself
-     * @param   string[]  $paramNames        list of actual parameter names
      * @return  mixed
      * @throws  \Exception
      */
-    protected function handleMethodCall($method, $arguments, $shouldReturnSelf, array $paramNames)
+    protected function handleMethodCall($method, $arguments, $shouldReturnSelf)
     {
-        $invokationCount = $this->recordCall($method, $arguments, $paramNames);
+        $invokationCount = $this->recordCall($method, $arguments);
         if (isset($this->callMap[$method])) {
             if (is_callable($this->callMap[$method])) {
                 return call_user_func_array($this->callMap[$method], $arguments);
@@ -107,18 +106,15 @@ trait CallMap
      *
      * @param   string    $method      name of called method
      * @param   mixed[]   $arguments   list of passed arguments
-     * @param   string[]  $paramNames  list of actual parameter names
      * @return  int  amount of calls for given record
      */
-    private function recordCall($method, $arguments, array $paramNames)
+    private function recordCall($method, $arguments)
     {
         if (!isset($this->callHistory[$method])) {
             $this->callHistory[$method] = [];
         }
 
-        $this->callHistory[$method][] = [
-            'arguments' => $arguments, 'names' => $paramNames
-        ];
+        $this->callHistory[$method][] = $arguments;
         return count($this->callHistory[$method]);
     }
 
@@ -162,7 +158,9 @@ trait CallMap
         }
 
         if (isset($this->callHistory[$method]) && isset($this->callHistory[$method][$invocation - 1])) {
-            return $this->callHistory[$method][$invocation - 1];
+            return ['arguments' => $this->callHistory[$method][$invocation - 1],
+                    'names'     => $this->_methodParams[$method]
+            ];
         }
 
         $invocations = $this->callsReceivedFor($method);
