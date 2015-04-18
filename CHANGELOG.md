@@ -1,4 +1,4 @@
-0.6.0 (2015-??-??)
+0.6.0 (2015-04-18)
 ------------------
 
   * failing argument verification now also lists the name of the argument, not just its position, fixes #2
