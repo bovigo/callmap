@@ -20,11 +20,11 @@ _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package add the following line
 to the `require-dev` package links:
 
-    "bovigo/callmap": "~0.5"
+    "bovigo/callmap": "~0.6"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=~0.5"
+    composer require "bovigo/callmap=~0.6"
 
 Requirements
 ------------
@@ -170,7 +170,8 @@ $yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, 808, 909)]);
 
 This will return a different value on each invocation of `$yourClass->aMethod()`
 in the order of the specified return values. If the method is called more often
-than return values are specified, each subsequent call will return `null`.
+than return values are specified, each subsequent call will return the default
+return value as if no call mapping has been specified.
 
 
 ### I want to return a callable, but it is executed on method invocation ###
