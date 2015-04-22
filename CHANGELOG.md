@@ -1,3 +1,9 @@
+0.6.1 (2015-04-22)
+------------------
+
+  * fixed bug with optional default value null in user defined classes
+
+
 0.6.0 (2015-04-18)
 ------------------
 

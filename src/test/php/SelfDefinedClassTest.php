@@ -22,6 +22,11 @@ class SelfDefined
     {
 
     }
+
+    public function optionalNull($baz = null)
+    {
+        
+    }
 }
 /**
  * Applies tests to a self defined class.

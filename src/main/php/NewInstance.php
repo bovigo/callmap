@@ -289,7 +289,7 @@ class NewInstance
             }
 
             $param .= '$' . $parameter->getName();
-            if ($parameter->isOptional() && $method->isInternal()) {
+            if ($parameter->isOptional() && ($method->isInternal() || $parameter->allowsNull())) {
                 $param .= ' = null';
             } elseif ($parameter->isOptional() && !$parameter->isArray()) {
                 $param .= ' = ' . $parameter->getDefaultValue();
