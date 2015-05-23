@@ -98,7 +98,7 @@ trait CallMapProxy
      *
      * @param   string    $method      name of called method
      * @param   mixed[]   $arguments   list of passed arguments
-     * @return  int  amount of calls for given record
+     * @return  int  amount of calls for given method
      */
     private function recordCall($method, $arguments)
     {
