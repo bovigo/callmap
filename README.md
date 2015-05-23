@@ -1,12 +1,11 @@
 bovigo/callmap
 ==============
 
-Allows to stub and mock method calls by applying a callmap.
+Allows to stub and mock method calls by applying a callmap. Compatible with any
+[unit test framework](http://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#PHP).
 
 Package status
 --------------
-
-Please note that a stable release is not available yet. Releases with version numbers below 1.0.0 should be considered as in development.
 
 [![Build Status](https://secure.travis-ci.org/mikey179/bovigo-callmap.png)](http://travis-ci.org/mikey179/bovigo-callmap) [![Coverage Status](https://coveralls.io/repos/mikey179/bovigo-callmap/badge.png?branch=master)](https://coveralls.io/r/mikey179/bovigo-callmap?branch=master)
 
@@ -17,14 +16,14 @@ Installation
 ------------
 
 _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
-To install it as a development dependency of your package add the following line
-to the `require-dev` package links:
+To install it as a development dependency of your package use the following
+command:
 
-    "bovigo/callmap": "~0.6"
+    composer require --dev "bovigo/callmap": "^1.0"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=~0.6"
+    composer require "bovigo/callmap=^1.0"
 
 Requirements
 ------------
