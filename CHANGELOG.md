@@ -1,3 +1,9 @@
+1.0.0 (2015-05-??)
+------------------
+
+  * fixed conversion spec in parameter error message
+
+
 0.6.1 (2015-04-22)
 ------------------
 

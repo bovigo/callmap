@@ -296,7 +296,7 @@ class Verification
             return $constraint->evaluate(
                     $received,
                     sprintf(
-                            'Parameter %sat position %d for invocation #%s of %s'
+                            'Parameter %sat position %d for invocation #%d of %s'
                             . ' does not match expected value',
                             null !== $name ? '$' . $name . ' ' : '',
                             $index,
