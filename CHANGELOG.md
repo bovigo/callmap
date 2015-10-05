@@ -1,4 +1,4 @@
-1.1.0 (2015-10-??)
+1.1.0 (2015-10-05)
 ------------------
 
   * added support for argument verification with xp-framework/core

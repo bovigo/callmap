@@ -19,17 +19,18 @@ _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package use the following
 command:
 
-    composer require --dev "bovigo/callmap": "^1.0"
+    composer require --dev "bovigo/callmap": "^1.1"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=^1.0"
+    composer require "bovigo/callmap=^1.1"
 
 Requirements
 ------------
 
 _bovigo/callmap_ requires at least PHP 5.4. For argument verification PHPUnit
-is required.
+is required. Since release 1.1 argument verification with xp-framework/core is
+also supported.
 
 
 Usage
@@ -330,7 +331,8 @@ will simply extend `\Exception`.
 ### Verify passed arguments ###
 
 _Please note that for this feature at the current time PHPUnit must be present,
-as argument verification makes use of the `PHPUnit_Framework_Constraint` classes._
+as argument verification makes use of the `PHPUnit_Framework_Constraint` classes.
+Alternatively, xp-framework/core can be used._
 
 In some cases it is useful to verify that an instance received the correct
 arguments. You can do this with `verify()` as well:
@@ -374,7 +376,8 @@ verify($yourClass, 'aMethod')->received($this->isInstanceOf('another\ExampleClas
 ```
 
 In case a bare value is passed it is assumed that `PHPUnit_Framework_Constraint_IsEqual`
-is meant.
+is meant when PHPUnit is present. In case xp-framework/core is present,
+`\util\Objects::equal()` will be used instead.
 
 If the verification succeeds, it will simply return true. This allows you to use
 it in an assertion in case the test method doesn't have any other assertion and
@@ -385,4 +388,5 @@ $this->assertTrue(verify($yourClass, 'aMethod')->receivedNothing());
 ```
 
 In case the verification fails an `PHPUnit_Framework_ExpectationFailedException`
-will be thrown by the used `PHPUnit_Framework_Constraint`.
+will be thrown by the used `PHPUnit_Framework_Constraint`. In case of xp-framework-core,
+the exception to be thrown will be `\unittest\AssertionFailedError`.
