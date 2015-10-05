@@ -289,6 +289,7 @@ class Verification
      * @param   string                               $name        name of parameter
      * @param   int                                  $index       position of parameter
      * @param   int                                  $invocation  number of invocation
+     * @throws  \RuntimeException  in case neither PHPUnit not xp-framework/core is present
      */
     private function evaluate($constraint, $received, $name, $index, $invocation)
     {
@@ -307,12 +308,36 @@ class Verification
             );
         }
 
-        return $this->evaluate(
-                new \PHPUnit_Framework_Constraint_IsEqual($constraint),
-                $received,
-                $name,
-                $index,
-                $invocation
-        );
+        if (class_exists('\PHPUnit_Framework_Constraint_IsEqual')) {
+            return $this->evaluate(
+                    new \PHPUnit_Framework_Constraint_IsEqual($constraint),
+                    $received,
+                    $name,
+                    $index,
+                    $invocation
+            );
+        } elseif (class_exists('\unittest\TestCase')) {
+            if (!Objects::equal($received, $constraint)) {
+                throw new AssertionFailedError(
+                        new ComparisonFailedMessage(
+                                sprintf(
+                                        'Parameter %sat position %d for invocation #%d of %s'
+                                        . ' does not match expected value',
+                                        null !== $name ? '$' . $name . ' ' : '',
+                                        $index,
+                                        $invocation,
+                                        methodName($this->callmap, $this->method),
+                                        $this->method
+                                ),
+                                $constraint,
+                                $received
+                        )
+                );
+            }
+
+            return true;
+        } else {
+            throw new \RuntimeException('Neither PHPUnit nor xp-framework/core found, can not perform argument verification');
+        }
     }
 }
