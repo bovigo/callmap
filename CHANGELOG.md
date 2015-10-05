@@ -1,4 +1,4 @@
-1.0.0 (2015-05-??)
+1.0.0 (2015-05-23)
 ------------------
 
   * fixed conversion spec in parameter error message
