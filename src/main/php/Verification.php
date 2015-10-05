@@ -317,9 +317,9 @@ class Verification
                     $invocation
             );
         } elseif (class_exists('\unittest\TestCase')) {
-            if (!Objects::equal($received, $constraint)) {
-                throw new AssertionFailedError(
-                        new ComparisonFailedMessage(
+            if (!\util\Objects::equal($received, $constraint)) {
+                throw new \unittest\AssertionFailedError(
+                        new \unittest\ComparisonFailedMessage(
                                 sprintf(
                                         'Parameter %sat position %d for invocation #%d of %s'
                                         . ' does not match expected value',
