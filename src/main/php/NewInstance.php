@@ -68,7 +68,7 @@ class NewInstance
     }
 
     /**
-     * returns the proxy class fir given target class or interface
+     * returns the proxy class for given target class or interface
      *
      * @param   string|object  $target
      * @return  \ReflectionClass
