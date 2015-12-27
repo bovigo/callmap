@@ -220,9 +220,9 @@ class Verification
      * @param   mixed|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
      * @return  bool
      */
-    public function received()
+    public function received(...$expected)
     {
-        return $this->verifyArgs(1, func_get_args());
+        return $this->verifyArgs(1, $expected);
     }
 
     /**
@@ -236,11 +236,9 @@ class Verification
      * @param   mixed|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
      * @return  bool
      */
-    public function receivedOn()
+    public function receivedOn($invocation, ...$expected)
     {
-        $args = func_get_args();
-        $invocation = array_shift($args);
-        return $this->verifyArgs($invocation, $args);
+        return $this->verifyArgs($invocation, $expected);
     }
 
     /**

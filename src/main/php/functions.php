@@ -36,13 +36,13 @@ function wrap(callable $callable)
  * creates a list of invocation results
  *
  * @api
- * @param   mixed  ...$value
+ * @param   mixed  ...$values
  * @return  \bovigo\callmap\InvocationResults
  * @since   0.2.0
  */
-function onConsecutiveCalls()
+function onConsecutiveCalls(...$values)
 {
-    return new InvocationResults(func_get_args());
+    return new InvocationResults($values);
 }
 
 /**
