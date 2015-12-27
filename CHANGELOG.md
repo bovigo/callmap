@@ -3,6 +3,7 @@
 
   * raised minimum required PHP version to 5.6.0
   * added support for argument verification with bovigo/assert
+  * added support for PHP 7 return type hints
 
 
 1.1.0 (2015-10-05)

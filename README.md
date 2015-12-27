@@ -143,9 +143,10 @@ for the case that no call mapping has been passed for a method which actually is
 called.
 
 1.  Interfaces<br/>
-    Default return value is always `null`, except the `@return` type hint in the
-    doc comment specifies the short class name or the fully qualified class name
-    of the interface itself or any other interface it extends. In that case the
+    Default return value is always `null`, except the return type declaration
+    specifies the interface itself, or the `@return` type hint in the doc
+    comment specifies the short class name or the fully qualified class name of
+    the interface itself or any other interface it extends. In that case the
     default return value will be the instance itself.
 
 2.  Traits<br/>
@@ -159,11 +160,12 @@ called.
     When instantiated with `NewInstance::of()` the default return value will be
     the value which is returned by the according method of the original class.<br/>
     When instantiated with `NewInstance::stub()` and for abstract methods the
-    default return value is `null`, except the `@return` type hint in the doc
-    comment specifies `$this` or `self`, the short class name or the fully
-    qualified class name of the class or of a parent class or any interface the
-    class implements. Exception to this: if the return type is `\Traversable`
-    and the class implements this interface return value will be `null`.
+    default return value is `null`, except the return type declaration specifies
+    the class itself, or the `@return` type hint in the doc comment specifies
+    `$this` or `self`, the short class name or the fully qualified class name of
+    the class or of a parent class or any interface the class implements.
+    Exception to this: if the return type is `\Traversable` and the class
+    implements this interface return value will be `null`.
 
 
 ### Specify a series of return values ###
@@ -255,17 +257,19 @@ echo $yourClass->aMethod('foo'); // prints FOO
 Actually, you don't. _bovigo/callmap_ is smart enough to detect when it should
 return the object instance instead of null when no call mapping for a method was
 provided. To achieve that, _bovigo/callmap_ tries to detect the return type of a
-method from its doc comment. If the return type specified there is one of `$this`,
-`self`, the short class name or the fully qualified class name of the class or
-of a parent class or any interface the class implements, it will return the
-instance instead of null.
+method from either from the return type hint (since release 2.0.0, requires
+PHP 7), or its doc comment. If the return type specified in code (PHP 7) is the
+class or interface itself it will return the instance instead of null.
+
+If no return type is defined (PHP 7) and the return type specified in the doc
+comment is one of `$this`, `self`, the short class name or the fully qualified
+class name of the class or of a parent class or any interface the class
+implements, it will return the instance instead of null.
 
 Exception to this: if the return type is `\Traversable` this doesn't apply, even
 if the class implements this interface.
 
 Please note that `@inheritDoc` is not supported at the moment.
-
-*Btw: looking forward to return type hints with PHP 7. ;-)*
 
 In case this leads to a false interpretation and the instance is returned when
 in fact it should not, you can always overrule that by explicitly stating a

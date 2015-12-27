@@ -221,12 +221,13 @@ class NewInstance
             $param = self::params($method);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
-                    "    %s function %s(%s) {\n"
+                    "    %s function %s(%s)%s {\n"
                   . "        return \$this->handleMethodCall('%s', func_get_args(), %s);\n"
                   . "    }\n",
                     ($method->isPublic() ? 'public' : 'protected'),
                     $method->getName(),
                     $param['string'],
+                    self::determinePhp7ReturnType($method),
                     $method->getName(),
                     self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
@@ -241,6 +242,26 @@ class NewInstance
                 "\n    private \$_methodParams = %s;\n",
                 var_export($params, true)
         );
+    }
+
+    /**
+     * determines return type when running on PHP 7
+     *
+     * @param   \ReflectionMethod  $method
+     * @return  string
+     */
+    private static function determinePhp7ReturnType(\ReflectionMethod $method)
+    {
+        if (!method_exists($method, 'getReturnType') || !$method->hasReturnType()) {
+            return '';
+        }
+
+        $returnType = $method->getReturnType();
+        if ($returnType->isBuiltin()) {
+            return ': ' . $returnType;
+        }
+
+        return ': \\' . $returnType;
     }
 
     /**
@@ -312,17 +333,7 @@ class NewInstance
      */
     private static function shouldReturnSelf(\ReflectionClass $class, \ReflectionMethod $method)
     {
-        $returnPart = strstr($method->getDocComment(), '@return');
-        if (false === $returnPart) {
-            return false;
-        }
-
-        $returnParts = explode(' ', trim(str_replace('@return', '', $returnPart)));
-        $returnType  = ltrim(trim($returnParts[0]), '\\');
-        if (empty($returnType) || strpos($returnType, '*') !== false) {
-            return false;
-        }
-
+        $returnType = self::detectReturnType($method);
         if (in_array($returnType, ['$this', 'self', $class->getName(), $class->getShortName()])) {
             return true;
         }
@@ -342,5 +353,37 @@ class NewInstance
         }
 
         return false;
+    }
+
+    /**
+     * detects return type of method
+     *
+     * On PHP 7 it will make use of reflection to detect the return type. In
+     * case this does not yield a result or that we run on PHP 5.6 the doc
+     * comment will be parsed for the return annotation.
+     *
+     * @param   \ReflectionMethod  $method
+     * @return  string
+     */
+    private static function detectReturnType(\ReflectionMethod $method)
+    {
+        if (method_exists($method, 'getReturnType')) {
+            if ($method->hasReturnType()) {
+                return (string) $method->getReturnType();
+            }
+        }
+
+        $returnPart = strstr($method->getDocComment(), '@return');
+        if (false === $returnPart) {
+            return null;
+        }
+
+        $returnParts = explode(' ', trim(str_replace('@return', '', $returnPart)));
+        $returnType  = ltrim(trim($returnParts[0]), '\\');
+        if (empty($returnType) || strpos($returnType, '*') !== false) {
+            return null;
+        }
+
+        return $returnType;
     }
 }

@@ -10,6 +10,7 @@
 namespace bovigo\callmap;
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isNotSameAs;
 /**
  * Helper class for the test.
@@ -26,6 +27,15 @@ class AnotherTestHelperClass
 final class ThisIsNotPossible
 {
 
+}
+if (PHP_MAJOR_VERSION >= 7) {
+    class ReturnTypeHints
+    {
+        public function something(): array
+        {
+            return [];
+        }
+    }
 }
 /**
  * All remaining tests for bovigo\callmap\NewInstance.
@@ -225,5 +235,18 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     {
         NewInstance::of(AnotherTestHelperClass::class)
                 ->argumentsReceivedFor('doNotTouchThis');
+    }
+
+    /**
+     * @test
+     * @since  2.0.0
+     * @requires  PHP 7.0.0
+     */
+    public function canCreateInstanceFromClassWithPhp7ReturnTypeHintOnMethod()
+    {
+        assert(
+                NewInstance::of(ReturnTypeHints::class),
+                isInstanceOf(ReturnTypeHints::class)
+        );
     }
 }
