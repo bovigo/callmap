@@ -19,11 +19,6 @@
         },
         "files": ["src/main/php/functions.php"]
     },
-    "autoload-dev": {
-        "files": [
-            "vendor/bovigo/assert/src/main/php/functions.php"
-        ]
-    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.2.x-dev"

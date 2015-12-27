@@ -8,6 +8,9 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isNull;
 /**
  * Helper class for the test.
  */
@@ -47,7 +50,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsNullIfMethodCallNotMapped()
     {
-        assertNull($this->proxy->action());
+        assert($this->proxy->action(), isNull());
     }
 
     /**
@@ -56,7 +59,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => 3]);
-        assertEquals(3, $this->proxy->action());
+        assert($this->proxy->action(), equals(3));
     }
 
     /**
@@ -65,7 +68,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => function() { return 42; }]);
-        assertEquals(42, $this->proxy->action());
+        assert($this->proxy->action(), equals(42));
     }
 
     /**

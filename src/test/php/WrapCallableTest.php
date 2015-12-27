@@ -8,6 +8,8 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for bovigo\callmap\callable()
  *
@@ -23,7 +25,7 @@ class WrapCallableTest extends \PHPUnit_Framework_TestCase
         $callable = function() {};
         $proxy    = NewInstance::of('ReflectionObject', [$this])
                 ->mapCalls(['getName' => wrap($callable)]);
-        assertSame($callable, $proxy->getName());
+        assert($proxy->getName(), isSameAs($callable));
     }
 
     /**
@@ -34,7 +36,7 @@ class WrapCallableTest extends \PHPUnit_Framework_TestCase
         $callable = function() {};
         $proxy    = NewInstance::of('ReflectionObject', [$this])
                 ->mapCalls(['getName' => onConsecutiveCalls(wrap($callable))]);
-        assertSame($callable, $proxy->getName());
+        assert($proxy->getName(), isSameAs($callable));
     }
 }
 

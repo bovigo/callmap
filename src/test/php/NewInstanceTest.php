@@ -8,6 +8,9 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isNotSameAs;
 /**
  * Helper class for the test.
  */
@@ -86,9 +89,9 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotGenerateClassTwice()
     {
-        assertEquals(
+        assert(
                 NewInstance::classname('\ReflectionObject'),
-                NewInstance::classname('\ReflectionObject')
+                equals(NewInstance::classname('\ReflectionObject'))
         );
     }
 
@@ -98,9 +101,9 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function doesCreateIndependentInstances()
     {
-        assertNotSame(
+        assert(
                 NewInstance::of('\ReflectionObject', [$this]),
-                NewInstance::of('\ReflectionObject', [$this])
+                isNotSameAs(NewInstance::of('\ReflectionObject', [$this]))
         );
     }
 
@@ -110,9 +113,9 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function doesCreateIndependentStubs()
     {
-        assertNotSame(
+        assert(
                 NewInstance::stub('bovigo\callmap\AnotherTestHelperClass'),
-                NewInstance::stub('bovigo\callmap\AnotherTestHelperClass')
+                isNotSameAs(NewInstance::stub('bovigo\callmap\AnotherTestHelperClass'))
         );
     }
 

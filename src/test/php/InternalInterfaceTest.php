@@ -8,6 +8,9 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isNull;
 /**
  * Applies tests to a PHP internal interface.
  */
@@ -31,7 +34,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsNullIfMethodCallNotMapped()
     {
-        assertNull($this->proxy->count());
+        assert($this->proxy->count(), isNull());
     }
 
     /**
@@ -40,7 +43,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['count' => 3]);
-        assertEquals(3, $this->proxy->count());
+        assert($this->proxy->count(), equals(3));
     }
 
     /**
@@ -49,7 +52,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['count' => function() { return 42; }]);
-        assertEquals(42, $this->proxy->count());
+        assert($this->proxy->count(), equals(42));
     }
 
     /**

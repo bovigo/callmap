@@ -8,6 +8,8 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Helper trait for the test.
  */
@@ -37,7 +39,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->proxy = NewInstance::of('bovigo\callmap\SomeTrait');
+        $this->proxy = NewInstance::of(SomeTrait::class);
     }
 
     /**
@@ -45,10 +47,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
      */
     public function callsOriginalMethodIfNoMappingProvided()
     {
-        assertEquals(
-                313,
-                $this->proxy->action(313)
-        );
+        assert($this->proxy->action(313), equals(313));
     }
 
     /**
@@ -57,10 +56,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => 'foo']);
-        assertEquals(
-                'foo',
-                $this->proxy->action(313)
-        );
+        assert($this->proxy->action(313), equals('foo'));
     }
 
     /**
@@ -69,10 +65,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => function() { return 'foo'; }]);
-        assertEquals(
-                'foo',
-                $this->proxy->action(313)
-        );
+        assert($this->proxy->action(313), equals('foo'));
     }
 
     /**

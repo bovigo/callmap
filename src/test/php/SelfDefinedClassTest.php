@@ -8,6 +8,8 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Helper class for the test.
  */
@@ -25,7 +27,7 @@ class SelfDefined
 
     public function optionalNull($baz = null)
     {
-        
+
     }
 }
 /**
@@ -51,9 +53,9 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
      */
     public function callsOriginalMethodIfNoMappingProvided()
     {
-        assertEquals(
-                'selfdefined',
-                $this->proxy->action(new SelfDefined(), function() {})
+        assert(
+                $this->proxy->action(new SelfDefined(), function() {}),
+                equals('selfdefined')
         );
     }
 
@@ -63,9 +65,9 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => 'foo']);
-        assertEquals(
-                'foo',
-                $this->proxy->action(new SelfDefined(), function() {})
+        assert(
+                $this->proxy->action(new SelfDefined(), function() {}),
+                equals('foo')
         );
     }
 
@@ -75,9 +77,9 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => function() { return 'foo'; }]);
-        assertEquals(
-                'foo',
-                $this->proxy->action(new SelfDefined(), function() {})
+        assert(
+                $this->proxy->action(new SelfDefined(), function() {}),
+                equals('foo')
         );
     }
 
@@ -108,7 +110,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
         $arg2 = function() {};
         $this->proxy->action($arg1, $arg2);
         verify($this->proxy, 'action')->received(
-                $this->isInstanceOf('bovigo\callmap\SelfDefined'),
+                $this->isInstanceOf(SelfDefined::class),
                 $arg2
         );
     }

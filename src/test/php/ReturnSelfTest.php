@@ -8,6 +8,9 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\predicate\isNull;
 /**
  * Helper interface for the test below.
  */
@@ -144,7 +147,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsThis()
     {
-        assertSame($this->proxy, $this->proxy->yo());
+        assert($this->proxy, isSameAs($this->proxy->yo()));
     }
 
     /**
@@ -152,7 +155,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassName()
     {
-        assertSame($this->proxy, $this->proxy->action());
+        assert($this->proxy, isSameAs($this->proxy->action()));
     }
 
     /**
@@ -160,7 +163,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassNameWithoutLeadingBackslash()
     {
-        assertSame($this->proxy, $this->proxy->moreAction());
+        assert($this->proxy, isSameAs($this->proxy->moreAction()));
     }
 
     /**
@@ -168,7 +171,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsNonFullyQualifiedClassName()
     {
-        assertSame($this->proxy, $this->proxy->minorAction());
+        assert($this->proxy, isSameAs($this->proxy->minorAction()));
     }
 
     /**
@@ -176,7 +179,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsImplementedInterface()
     {
-        assertSame($this->proxy, $this->proxy->foo());
+        assert($this->proxy, isSameAs($this->proxy->foo()));
     }
 
     /**
@@ -184,7 +187,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsInterfaceImplementedByParentClass()
     {
-        assertSame($this->proxy, $this->proxy->wow());
+        assert($this->proxy, isSameAs($this->proxy->wow()));
     }
 
     /**
@@ -192,7 +195,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsParentClass()
     {
-        assertSame($this->proxy, $this->proxy->aha());
+        assert($this->proxy, isSameAs($this->proxy->aha()));
     }
 
     /**
@@ -200,7 +203,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsSelf()
     {
-        assertSame($this->proxy, $this->proxy->baz());
+        assert($this->proxy, isSameAs($this->proxy->baz()));
     }
 
     /**
@@ -208,7 +211,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotReturnSelfWhenReturnTypeHintIsTraversableEvenWhenInTypeHierarchy()
     {
-        assertNull($this->proxy->getIterator());
+        assert($this->proxy->getIterator(), isNull());
     }
 
     /**
@@ -216,7 +219,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotReturnSelfWhenReturnTypeHintIsNotInTypeHierarchy()
     {
-        assertNull($this->proxy->other());
+        assert($this->proxy->other(), isNull());
     }
 
     /**
@@ -225,7 +228,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
     public function returnsSelfForInterfacesWhenCreatedWithInstanceOfAndAccordingReturnType()
     {
         $proxy = NewInstance::of('bovigo\callmap\OneMoreThing');
-        assertSame($proxy, $proxy->wow());
+        assert($proxy, isSameAs($proxy->wow()));
     }
 
     /**
@@ -233,6 +236,6 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotReturnSelfWhenReturnTypeHintEmpty()
     {
-        assertNull(NewInstance::of('bovigo\callmap\Bar')->foo());
+        assert(NewInstance::of('bovigo\callmap\Bar')->foo(), isNull());
     }
 }

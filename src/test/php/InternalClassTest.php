@@ -8,6 +8,8 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Applies tests to a PHP internal class.
  */
@@ -31,7 +33,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
      */
     public function callsOriginalMethodIfNoMappingProvided()
     {
-        assertEquals(__CLASS__, $this->proxy->getName());
+        assert($this->proxy->getName(), equals(__CLASS__));
     }
 
     /**
@@ -40,7 +42,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['getName' => 'foo']);
-        assertEquals('foo', $this->proxy->getName());
+        assert($this->proxy->getName(), equals('foo'));
     }
 
     /**
@@ -49,7 +51,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['getName' => function() { return 'foo'; }]);
-        assertEquals('foo', $this->proxy->getName());
+        assert($this->proxy->getName(), equals('foo'));
     }
 
     /**
@@ -59,7 +61,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
     public function mapToCallableReturnsCallableReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['getName' => 'strtoupper']);
-        assertEquals('FOO', $this->proxy->getName('foo'));
+        assert($this->proxy->getName('foo'), equals('FOO'));
     }
 
     /**
@@ -87,8 +89,8 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
      */
     public function canVerifyReceivedArguments()
     {
-        $this->proxy->implementsInterface('bovigo\callmap\Proxy');
-        verify($this->proxy, 'implementsInterface')->received('bovigo\callmap\Proxy');
+        $this->proxy->implementsInterface(Proxy::class);
+        verify($this->proxy, 'implementsInterface')->received(Proxy::class);
     }
 
     /**

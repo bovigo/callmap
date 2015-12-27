@@ -8,6 +8,9 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isNull;
 /**
  * Helper class for the test.
  */
@@ -45,7 +48,7 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
             ['getName' => onConsecutiveCalls('foo', 'bar', 'baz')]
         );
         foreach (['foo', 'bar', 'baz'] as $expected) {
-            assertEquals($expected, $this->proxy->getName());
+            assert($this->proxy->getName(), equals($expected));
         }
     }
 
@@ -68,7 +71,7 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
         $this->proxy->getName(); // foo
-        assertEquals(__CLASS__, $this->proxy->getName());
+        assert($this->proxy->getName(), equals(__CLASS__));
     }
 
     /**
@@ -80,7 +83,7 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
         $proxy = NewInstance::stub('bovigo\callmap\OneMoreSelfDefined');
         $proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
         $proxy->getName(); // foo
-        assertNull($proxy->getName());
+        assert($proxy->getName(), isNull());
     }
 
     /**
@@ -92,6 +95,6 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
         $proxy = NewInstance::stub('\Countable');
         $proxy->mapCalls(['count' => onConsecutiveCalls(303)]);
         $proxy->count(); // 303
-        assertNull($proxy->count());
+        assert($proxy->count(), isNull());
     }
 }

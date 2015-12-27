@@ -8,6 +8,8 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isTrue;
 /**
  * Helper for the test.
  */
@@ -43,7 +45,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function wasNeverCalledReturnsTrueWhenNeverCalled()
     {
-        assertTrue(verify($this->proxy, 'aMethod')->wasNeverCalled());
+        assert(verify($this->proxy, 'aMethod')->wasNeverCalled(), isTrue());
     }
 
     /**
@@ -64,7 +66,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalled(2));
+        assert(verify($this->proxy, 'aMethod')->wasCalled(2), isTrue());
     }
 
     /**
@@ -97,7 +99,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     public function wasCalledOnceReturnsTrueWhenCalledExactlyOnce()
     {
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledOnce());
+        assert(verify($this->proxy, 'aMethod')->wasCalledOnce(), isTrue());
     }
 
     /**
@@ -129,7 +131,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtLeast(2));
+        assert(verify($this->proxy, 'aMethod')->wasCalledAtLeast(2), isTrue());
     }
 
     /**
@@ -140,7 +142,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
         $this->proxy->aMethod();
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtLeast(2));
+        assert(verify($this->proxy, 'aMethod')->wasCalledAtLeast(2), isTrue());
     }
 
     /**
@@ -160,7 +162,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     public function wasCalledAtLeastOnceReturnsTrueWhenCalledExactlyOnce()
     {
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce());
+        assert(verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce(), isTrue());
     }
 
     /**
@@ -170,7 +172,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce());
+        assert(verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce(), isTrue());
     }
 
     /**
@@ -190,7 +192,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtMost(2));
+        assert(verify($this->proxy, 'aMethod')->wasCalledAtMost(2), isTrue());
     }
 
     /**
@@ -199,7 +201,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     public function wasCalledAtMostOnceReturnsTrueWhenCalledLessThanMaximumAmount()
     {
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtMost(2));
+        assert(verify($this->proxy, 'aMethod')->wasCalledAtMost(2), isTrue());
     }
 
     /**
