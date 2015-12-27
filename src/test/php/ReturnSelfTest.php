@@ -139,7 +139,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->proxy = NewInstance::stub('bovigo\callmap\Extended');
+        $this->proxy = NewInstance::stub(Extended::class);
     }
 
     /**
@@ -227,7 +227,7 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSelfForInterfacesWhenCreatedWithInstanceOfAndAccordingReturnType()
     {
-        $proxy = NewInstance::of('bovigo\callmap\OneMoreThing');
+        $proxy = NewInstance::of(OneMoreThing::class);
         assert($proxy, isSameAs($proxy->wow()));
     }
 
@@ -236,6 +236,6 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotReturnSelfWhenReturnTypeHintEmpty()
     {
-        assert(NewInstance::of('bovigo\callmap\Bar')->foo(), isNull());
+        assert(NewInstance::of(Bar::class)->foo(), isNull());
     }
 }

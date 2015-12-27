@@ -23,7 +23,7 @@ class WrapCallableTest extends \PHPUnit_Framework_TestCase
     public function wrappedCallableIsReturned()
     {
         $callable = function() {};
-        $proxy    = NewInstance::of('ReflectionObject', [$this])
+        $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
                 ->mapCalls(['getName' => wrap($callable)]);
         assert($proxy->getName(), isSameAs($callable));
     }
@@ -34,7 +34,7 @@ class WrapCallableTest extends \PHPUnit_Framework_TestCase
     public function wrappedCallableIsReturnedFromInvocationResults()
     {
         $callable = function() {};
-        $proxy    = NewInstance::of('ReflectionObject', [$this])
+        $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
                 ->mapCalls(['getName' => onConsecutiveCalls(wrap($callable))]);
         assert($proxy->getName(), isSameAs($callable));
     }

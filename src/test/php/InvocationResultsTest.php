@@ -36,7 +36,7 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->proxy = NewInstance::of('\ReflectionObject', [$this]);
+        $this->proxy = NewInstance::of(\ReflectionObject::class, [$this]);
     }
 
     /**
@@ -80,7 +80,7 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
      */
     public function invocationResultIsNullForStubIfCalledMoreOftenThenResultsDefined()
     {
-        $proxy = NewInstance::stub('bovigo\callmap\OneMoreSelfDefined');
+        $proxy = NewInstance::stub(OneMoreSelfDefined::class);
         $proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
         $proxy->getName(); // foo
         assert($proxy->getName(), isNull());
@@ -92,7 +92,7 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
      */
     public function invocationResultIsNullForInterfaceIfCalledMoreOftenThenResultsDefined()
     {
-        $proxy = NewInstance::stub('\Countable');
+        $proxy = NewInstance::stub(\Countable::class);
         $proxy->mapCalls(['count' => onConsecutiveCalls(303)]);
         $proxy->count(); // 303
         assert($proxy->count(), isNull());

@@ -58,7 +58,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function canNotCreateInstanceOfFinalClass()
     {
-        NewInstance::of('bovigo\callmap\ThisIsNotPossible');
+        NewInstance::of(ThisIsNotPossible::class);
     }
 
     /**
@@ -69,7 +69,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function canNotCreateStubInstanceOfFinalClass()
     {
-        NewInstance::stub('bovigo\callmap\ThisIsNotPossible');
+        NewInstance::stub(ThisIsNotPossible::class);
     }
 
     /**
@@ -80,7 +80,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function canNotRetrieveMappedClassnameForFinalClass()
     {
-        NewInstance::classname('bovigo\callmap\ThisIsNotPossible');
+        NewInstance::classname(ThisIsNotPossible::class);
     }
 
     /**
@@ -90,8 +90,8 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     public function doesNotGenerateClassTwice()
     {
         assert(
-                NewInstance::classname('\ReflectionObject'),
-                equals(NewInstance::classname('\ReflectionObject'))
+                NewInstance::classname(\ReflectionObject::class),
+                equals(NewInstance::classname(\ReflectionObject::class))
         );
     }
 
@@ -102,8 +102,8 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     public function doesCreateIndependentInstances()
     {
         assert(
-                NewInstance::of('\ReflectionObject', [$this]),
-                isNotSameAs(NewInstance::of('\ReflectionObject', [$this]))
+                NewInstance::of(\ReflectionObject::class, [$this]),
+                isNotSameAs(NewInstance::of(\ReflectionObject::class, [$this]))
         );
     }
 
@@ -114,8 +114,8 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     public function doesCreateIndependentStubs()
     {
         assert(
-                NewInstance::stub('bovigo\callmap\AnotherTestHelperClass'),
-                isNotSameAs(NewInstance::stub('bovigo\callmap\AnotherTestHelperClass'))
+                NewInstance::stub(AnotherTestHelperClass::class),
+                isNotSameAs(NewInstance::stub(AnotherTestHelperClass::class))
         );
     }
 
@@ -127,7 +127,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function mapNonExistingMethodThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->mapCalls(['doesNotExist' => true]);
     }
 
@@ -139,7 +139,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function mapExistingMethodWithTypoThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->mapCalls(['doSomethingy' => true]);
     }
 
@@ -151,7 +151,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function mapNonApplicableMethodThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->mapCalls(['doNotTouchThis' => true]);
     }
 
@@ -163,7 +163,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function checkCallAmountForNonExistingMethodThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->callsReceivedFor('doesNotExist');
     }
 
@@ -175,7 +175,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function checkCallAmountForExistingMethodWithTypoThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->callsReceivedFor('doSomethingy');
     }
 
@@ -187,7 +187,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function checkCallAmountForNonApplicableMethodThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->callsReceivedFor('doNotTouchThis');
     }
 
@@ -199,7 +199,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function retrieveReceivedArgumentsForNonExistingMethodThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->argumentsReceivedFor('doesNotExist');
     }
 
@@ -211,7 +211,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function retrieveReceivedArgumentsForExistingMethodWithTypoThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->argumentsReceivedFor('doSomethingy');
     }
 
@@ -223,7 +223,7 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function retrieveReceivedArgumentsForNonApplicableMethodThrowsInvalidArgumentException()
     {
-        NewInstance::of('bovigo\callmap\AnotherTestHelperClass')
+        NewInstance::of(AnotherTestHelperClass::class)
                 ->argumentsReceivedFor('doNotTouchThis');
     }
 }

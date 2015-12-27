@@ -26,7 +26,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->proxy = NewInstance::of('\Countable');
+        $this->proxy = NewInstance::of(\Countable::class);
     }
 
     /**

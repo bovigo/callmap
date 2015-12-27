@@ -43,7 +43,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->proxy = NewInstance::stub('bovigo\callmap\ClassWithConstructor');
+        $this->proxy = NewInstance::stub(ClassWithConstructor::class);
     }
     /**
      * @test

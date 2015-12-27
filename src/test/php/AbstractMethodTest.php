@@ -33,7 +33,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->proxy = NewInstance::of('bovigo\callmap\Instrument');
+        $this->proxy = NewInstance::of(Instrument::class);
     }
 
     /**
@@ -93,7 +93,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
 
         assert(
                 null === $argument ? $this->proxy->play() : $this->proxy->play($argument),
-                equals($expectedResult)  
+                equals($expectedResult)
         );
     }
 
