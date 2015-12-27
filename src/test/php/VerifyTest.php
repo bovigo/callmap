@@ -9,6 +9,7 @@
  */
 namespace bovigo\callmap;
 use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isTrue;
 /**
  * Helper for the test.
@@ -37,7 +38,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->proxy = NewInstance::of('bovigo\callmap\Verified');
+        $this->proxy = NewInstance::of(Verified::class);
     }
 
     /**
@@ -282,5 +283,15 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->aMethod(303);
         verify($this->proxy, 'aMethod')->received(808);
+    }
+
+    /**
+     * @test
+     * @since  2.0.0
+     */
+    public function verifyWithPredicate()
+    {
+        $this->proxy->aMethod(303);
+        verify($this->proxy, 'aMethod')->received(equals(303));
     }
 }

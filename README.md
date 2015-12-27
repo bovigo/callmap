@@ -25,12 +25,21 @@ To install it as a runtime dependency for your package use the following command
 
     composer require "bovigo/callmap=^1.1"
 
+
 Requirements
 ------------
 
-_bovigo/callmap_ requires at least PHP 5.4. For argument verification PHPUnit
-is required. Since release 1.1 argument verification with xp-framework/core is
-also supported.
+_bovigo/callmap_ requires at least PHP 5.6. For argument verification one of the
+following packages is required:
+
+* [bovigo/assert](https://github.com/mikey179/bovigo-assert) (since release 2.0.0)
+* [PHPUnit](https://phpunit.de/)
+* [xp-framework/core](https://github.com/xp-framework/core) (since release 1.1.0)
+
+The order specified here is also the one in which the verification logic will
+select the assertions to be used for argument verification. This means even if
+you run your tests with _PHPUnit_ but _bovigo/assert_ is present as well argument
+verification will be done with the latter.
 
 
 Usage
@@ -71,9 +80,6 @@ use function bovigo\callmap\onConsecutiveCalls;
 use function bovigo\callmap\verify;
 ```
 
-_For PHP versions older than 5.6.0, you can do `use bovigo\callmap` and call them
-with `callmap\throws()`, `callmap\onConsecutiveCalls()`, and `callmap\verify()`._
-
 
 ### Specify return values for method invocations ###
 
@@ -83,7 +89,7 @@ possibilities. The first one is to create a new instance where this instance is
 a proxy to the actual class:
 
 ```php
-$yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments']);
+$yourClass = NewInstance::of(YourClass::class, ['some', 'arguments']);
 ```
 
 This creates an instance where each method call is passed to the original class
@@ -95,7 +101,7 @@ constructor arguments can be left away.
 The other option is to create a complete stub:
 
 ```php
-$yourClass = NewInstance::stub('name\of\YourClass');
+$yourClass = NewInstance::stub(YourClass::class);
 ```
 
 Instances created that way don't forward method calls. Note: in case you use a
@@ -158,6 +164,7 @@ called.
     qualified class name of the class or of a parent class or any interface the
     class implements. Exception to this: if the return type is `\Traversable`
     and the class implements this interface return value will be `null`.
+
 
 ### Specify a series of return values ###
 
@@ -330,9 +337,9 @@ will simply extend `\Exception`.
 
 ### Verify passed arguments ###
 
-_Please note that for this feature at the current time PHPUnit must be present,
-as argument verification makes use of the `PHPUnit_Framework_Constraint` classes.
-Alternatively, xp-framework/core can be used._
+_Please note that for this feature a framework which provides assertions must be
+present. Please see the requirements section above for the list of currently
+supported assertion frameworks._
 
 In some cases it is useful to verify that an instance received the correct
 arguments. You can do this with `verify()` as well:
@@ -369,16 +376,6 @@ Please not that each method has its own invocation count (whereas in PHPUnit the
 invocation count is for the whole mock object). Also, invocation count starts at
 1 for the first invocation, not at 0.
 
-Both `reveived()` and `receivedOn()` also accept any instance of `PHPUnit_Framework_Constraint`:
-
-```php
-verify($yourClass, 'aMethod')->received($this->isInstanceOf('another\ExampleClass'));
-```
-
-In case a bare value is passed it is assumed that `PHPUnit_Framework_Constraint_IsEqual`
-is meant when PHPUnit is present. In case xp-framework/core is present,
-`\util\Objects::equal()` will be used instead.
-
 If the verification succeeds, it will simply return true. This allows you to use
 it in an assertion in case the test method doesn't have any other assertion and
 you want to have one:
@@ -387,6 +384,45 @@ you want to have one:
 $this->assertTrue(verify($yourClass, 'aMethod')->receivedNothing());
 ```
 
+In case the verification fails an exception will be thrown. Which exactly
+depends on the available assertion framework.
+
+
+#### Verification details for bovigo/assert
+
+Both `reveived()` and `receivedOn()` also accept any instance of
+`bovigo\assert\predicate\Predicate`:
+
+```php
+verify($yourClass, 'aMethod')->received(isInstanceOf('another\ExampleClass'));
+```
+
+In case a bare value is passed it is assumed that `bovigo\assert\predicate\equals()`
+is meant. Additionally, instances of `PHPUnit_Framework_Constraint` are accepted
+as well as _bovigo/assert_ knows how to handle those.
+
+In case the verification fails an `bovigo\assert\AssertionFailure` will be
+thrown. In case _PHPUnit_ is available as well this exception is also an instance
+of `PHPUnit_Framework_ExpectationFailedException`.
+
+
+#### Verification details for PHPUnit
+
+Both `reveived()` and `receivedOn()` also accept any instance of `PHPUnit_Framework_Constraint`:
+
+```php
+verify($yourClass, 'aMethod')->received($this->isInstanceOf('another\ExampleClass'));
+```
+
+In case a bare value is passed it is assumed that `PHPUnit_Framework_Constraint_IsEqual`.
+
 In case the verification fails an `PHPUnit_Framework_ExpectationFailedException`
-will be thrown by the used `PHPUnit_Framework_Constraint`. In case of xp-framework-core,
-the exception to be thrown will be `\unittest\AssertionFailedError`.
+will be thrown by the used `PHPUnit_Framework_Constraint`.
+
+
+#### Verification details for xp-framework/core
+
+In case xp-framework/core is present, `\util\Objects::equal()` will be used.
+
+In case the verification fails an `\unittest\AssertionFailedError` will be
+thrown.

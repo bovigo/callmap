@@ -272,9 +272,15 @@ class Verification
             $this->evaluate(
                     $constraint,
                     isset($received['arguments'][$index]) ? $received['arguments'][$index] : null,
-                    isset($received['names'][$index]) ? $received['names'][$index] : null,
-                    $index,
-                    $invocation
+                    sprintf(
+                            'Parameter %sat position %d for invocation #%d of %s'
+                            . ' does not match expected value',
+                            isset($received['names'][$index]) ? '$' . $received['names'][$index] . ' ' : '',
+                            $index,
+                            $invocation,
+                            methodName($this->callmap, $this->method),
+                            $this->method
+                    )
             );
         }
 
@@ -284,51 +290,39 @@ class Verification
     /**
      * evaluates given constraint given received argument
      *
-     * @param   mixed|\PHPUnit_Framework_Constraint  $constraint  constraint for argument
-     * @param   mixed                                $received    actually received argument
-     * @param   string                               $name        name of parameter
-     * @param   int                                  $index       position of parameter
-     * @param   int                                  $invocation  number of invocation
-     * @throws  \RuntimeException  in case neither PHPUnit not xp-framework/core is present
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint  $constraint  constraint for argument
+     * @param   mixed                                                                   $received    actually received argument
+     * @param   string                                                                  $description  description for invocation in case of error
+     * @return  bool
+     * @throws  \RuntimeException  in case neither bovigo/assert, PHPUnit not xp-framework/core is present
      */
-    private function evaluate($constraint, $received, $name, $index, $invocation)
+    private function evaluate($constraint, $received, $description)
     {
-        if ($constraint instanceof \PHPUnit_Framework_Constraint) {
-            return $constraint->evaluate(
+        if (function_exists('bovigo\assert\assert')) {
+            return \bovigo\assert\assert(
                     $received,
-                    sprintf(
-                            'Parameter %sat position %d for invocation #%d of %s'
-                            . ' does not match expected value',
-                            null !== $name ? '$' . $name . ' ' : '',
-                            $index,
-                            $invocation,
-                            methodName($this->callmap, $this->method),
-                            $this->method
-                    )
+                    $this->predicateFor($constraint),
+                    $description
             );
+        }
+
+        if ($constraint instanceof \PHPUnit_Framework_Constraint) {
+            return $constraint->evaluate($received, $description);
         }
 
         if (class_exists('\PHPUnit_Framework_Constraint_IsEqual')) {
             return $this->evaluate(
                     new \PHPUnit_Framework_Constraint_IsEqual($constraint),
                     $received,
-                    $name,
-                    $index,
-                    $invocation
+                    $description
             );
-        } elseif (class_exists('\unittest\TestCase')) {
+        }
+
+        if (class_exists('\unittest\TestCase')) {
             if (!\util\Objects::equal($received, $constraint)) {
                 throw new \unittest\AssertionFailedError(
                         new \unittest\ComparisonFailedMessage(
-                                sprintf(
-                                        'Parameter %sat position %d for invocation #%d of %s'
-                                        . ' does not match expected value',
-                                        null !== $name ? '$' . $name . ' ' : '',
-                                        $index,
-                                        $invocation,
-                                        methodName($this->callmap, $this->method),
-                                        $this->method
-                                ),
+                                $description,
                                 $constraint,
                                 $received
                         )
@@ -336,8 +330,27 @@ class Verification
             }
 
             return true;
-        } else {
-            throw new \RuntimeException('Neither PHPUnit nor xp-framework/core found, can not perform argument verification');
         }
+
+        throw new \RuntimeException('Neither bovigo/assert, PHPUnit nor xp-framework/core found, can not perform argument verification');
+    }
+
+    /**
+     * creates precicate for given constraint
+     *
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint  $constraint
+     * @return  \bovigo\assert\predicate\Predicate
+     */
+    private function predicateFor($constraint)
+    {
+        if ($constraint instanceof \PHPUnit_Framework_Constraint) {
+            return new \bovigo\assert\phpunit\ConstraintAdapter($constraint);
+        }
+
+        if ($constraint instanceof \bovigo\assert\predicate\Predicate) {
+            return $constraint;
+        }
+
+        return \bovigo\assert\predicate\equals($constraint);
     }
 }

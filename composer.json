@@ -10,7 +10,8 @@
         "bovigo/assert": " ^1.0"
     },
     "suggest": {
-        "phpunit/phpunit": "To use argument verification",
+        "bovigo/assert": "To use argument verification",
+        "phpunit/phpunit": "Alternative option for argument verification",
         "xp-framework/core": "Alternative option for argument verification"
     },
     "autoload": {
