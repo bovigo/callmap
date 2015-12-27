@@ -11,97 +11,98 @@ namespace bovigo\callmap;
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\assert\predicate\isNull;
-if (PHP_MAJOR_VERSION >= 7) {
+if (PHP_MAJOR_VERSION < 7) {
+    return;
+}
+/**
+ * Helper interface for the test below.
+ */
+interface Bar7
+{
     /**
-     * Helper interface for the test below.
+     * @return
      */
-    interface Bar7
+    public function foo();
+}
+/**
+ * Helper interface for the test below.
+ */
+interface OneMoreThing7
+{
+    public function wow(): OneMoreThing7;
+}
+/**
+ * Helper class for the test below.
+ */
+class Base7 implements OneMoreThing7
+{
+    /**
+     * @return self
+     */
+    public function baz()
     {
-        /**
-         * @return
-         */
-        public function foo();
+        // no actual return on purpose
     }
-    /**
-     * Helper interface for the test below.
-     */
-    interface OneMoreThing7
+
+    public function aha(): Base7
     {
-        public function wow(): OneMoreThing7;
+        // no actual return on purpose
     }
-    /**
-     * Helper class for the test below.
-     */
-    class Base7 implements OneMoreThing7
+
+    public function wow(): OneMoreThing7
     {
-        /**
-         * @return self
-         */
-        public function baz()
-        {
-            // no actual return on purpose
-        }
-
-        public function aha(): Base7
-        {
-            // no actual return on purpose
-        }
-
-        public function wow(): OneMoreThing7
-        {
-            // no actual return on purpose
-        }
+        // no actual return on purpose
     }
-    /**
-     * Helper class for the test below.
-     */
-    class Extended7 extends Base7 implements Bar7, \IteratorAggregate
+}
+/**
+ * Helper class for the test below.
+ */
+class Extended7 extends Base7 implements Bar7, \IteratorAggregate
+{
+    public function foo(): Bar7
     {
-        public function foo(): Bar7
-        {
-            // no actual return on purpose
-        }
+        // no actual return on purpose
+    }
 
-        /**
-         * @return $this
-         */
-        public function yo()
-        {
-
-        }
-
-        public function action(): \bovigo\callmap\Extended7
-        {
-            // no actual return on purpose
-        }
-
-        public function moreAction(): \bovigo\callmap\Extended7
-        {
-            // no actual return on purpose
-        }
-
-        public function minorAction(): \bovigo\callmap\Extended7
-        {
-            // no actual return on purpose
-        }
-
-        /**
-         * @return  \Traversable
-         */
-        public function getIterator()
-        {
-            // no actual return on purpose
-        }
-
-        /**
-         * @return  Other
-         */
-        public function other()
-        {
-            // no actual return on purpose
-        }
+    /**
+     * @return $this
+     */
+    public function yo()
+    {
 
     }
+
+    public function action(): \bovigo\callmap\Extended7
+    {
+        // no actual return on purpose
+    }
+
+    public function moreAction(): \bovigo\callmap\Extended7
+    {
+        // no actual return on purpose
+    }
+
+    public function minorAction(): \bovigo\callmap\Extended7
+    {
+        // no actual return on purpose
+    }
+
+    /**
+     * @return  \Traversable
+     */
+    public function getIterator()
+    {
+        // no actual return on purpose
+    }
+
+    /**
+     * @return  Other
+     */
+    public function other()
+    {
+        // no actual return on purpose
+    }
+
 }
 /**
  * Tests for automated return self.
