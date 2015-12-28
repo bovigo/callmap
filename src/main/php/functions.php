@@ -75,3 +75,13 @@ function methodName(Proxy $callmap, $method)
             get_class($callmap)
     ) . '::' . $method . '()';
 }
+
+/**
+ * blacklist our own classes from being displayed in PHPUnit error stacks
+ */
+if (class_exists('\PHPUnit_Util_Blacklist')) {
+    \PHPUnit_Util_Blacklist::$blacklistedClassNames = array_merge(
+            \PHPUnit_Util_Blacklist::$blacklistedClassNames,
+            [Verification::class => 1]
+    );
+}
