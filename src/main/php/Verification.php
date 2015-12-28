@@ -217,7 +217,7 @@ class Verification
      * will automatically use PHPUnit_Framework_Constraint_IsEqual.
      *
      * @api
-     * @param   mixed|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
      * @return  bool
      */
     public function received(...$expected)
@@ -232,8 +232,8 @@ class Verification
      * will automatically use PHPUnit_Framework_Constraint_IsEqual.
      *
      * @api
-     * @param   int                                    $invocation   nth invocation to check
-     * @param   mixed|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
+     * @param   int                                                                       $invocation   nth invocation to check
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
      * @return  bool
      */
     public function receivedOn($invocation, ...$expected)
@@ -247,8 +247,8 @@ class Verification
      * If a constraint is not an instance of PHPUnit_Framework_Constraint it
      * will automatically use PHPUnit_Framework_Constraint_IsEqual.
      *
-     * @param   int                                    $invocation  number of invocation to check
-     * @param   mixed|\PHPUnit_Framework_Constraint[]  $expected    constraints which describe expected parameters
+     * @param   int                                                                       $invocation  number of invocation to check
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint[]  $expected    constraints which describe expected parameters
      * @return  bool
      * @throws  \bovigo\callmap\ArgumentMismatch
      */
