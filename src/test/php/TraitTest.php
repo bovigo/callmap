@@ -9,7 +9,9 @@
  */
 namespace bovigo\callmap;
 use function bovigo\assert\assert;
+use function bovigo\assert\predicate\each;
 use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isOfType;
 /**
  * Helper trait for the test.
  */
@@ -110,6 +112,6 @@ class TraitTest extends \PHPUnit_Framework_TestCase
     public function listOfReceivedArgumentsContainsGivenArguments()
     {
         $this->proxy->other(['play' => 808]);
-        verify($this->proxy, 'other')->received($this->containsOnly('int'));
+        verify($this->proxy, 'other')->received(each(isOfType('int')));
     }
 }

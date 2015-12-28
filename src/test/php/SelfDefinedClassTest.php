@@ -10,6 +10,7 @@
 namespace bovigo\callmap;
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Helper class for the test.
  */
@@ -110,7 +111,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
         $arg2 = function() {};
         $this->proxy->action($arg1, $arg2);
         verify($this->proxy, 'action')->received(
-                $this->isInstanceOf(SelfDefined::class),
+                isInstanceOf(SelfDefined::class),
                 $arg2
         );
     }
