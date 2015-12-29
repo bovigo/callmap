@@ -4,22 +4,22 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4cafa3b5872f0a820e87d1963375f417",
-    "content-hash": "1e58c6567a27ef09ca3ad51e3a4470f9",
+    "hash": "9f8f163f0506fce1ac9ae3634e290ba7",
+    "content-hash": "70a936fa45fd7c0f3677f429792df062",
     "packages": [],
     "packages-dev": [
         {
             "name": "bovigo/assert",
-            "version": "dev-master",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-assert.git",
-                "reference": "30517d2ad4f2f116a0c8c1ab6ea556fba7a8f9d7"
+                "reference": "a954bf778e909a6b0a9d9d5b0628d42d25937cd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/30517d2ad4f2f116a0c8c1ab6ea556fba7a8f9d7",
-                "reference": "30517d2ad4f2f116a0c8c1ab6ea556fba7a8f9d7",
+                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/a954bf778e909a6b0a9d9d5b0628d42d25937cd7",
+                "reference": "a954bf778e909a6b0a9d9d5b0628d42d25937cd7",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -51,7 +51,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Provides assertions for unit tests.",
-            "time": "2015-12-28 12:19:52"
+            "time": "2015-12-29 12:53:38"
         },
         {
             "name": "doctrine/instantiator",
