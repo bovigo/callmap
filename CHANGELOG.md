@@ -2,7 +2,7 @@
 ------------------
 
   * raised minimum required PHP version to 5.6.0
-  * added support for argument verification with bovigo/assert
+  * added support for argument verification with [bovigo/assert](https://github.com/mikey179/bovigo-assert)
   * added support for PHP 7 return type hints
   * `bovigo\callmap\Verification` is now automatically blacklisted in PHPUnit and will not appear in PHPUnit error stacks any more
 
