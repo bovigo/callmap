@@ -19,11 +19,11 @@ _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package use the following
 command:
 
-    composer require --dev "bovigo/callmap": "^1.1"
+    composer require --dev "bovigo/callmap": "^2.0"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=^1.1"
+    composer require "bovigo/callmap=^2.0"
 
 
 Requirements
@@ -393,6 +393,7 @@ depends on the available assertion framework.
 
 
 #### Verification details for bovigo/assert
+_Available since release 2.0.0._
 
 Both `reveived()` and `receivedOn()` also accept any instance of
 `bovigo\assert\predicate\Predicate`:
@@ -425,6 +426,7 @@ will be thrown by the used `PHPUnit_Framework_Constraint`.
 
 
 #### Verification details for xp-framework/core
+_Available since release 1.1.0._
 
 In case xp-framework/core is present, `\util\Objects::equal()` will be used.
 

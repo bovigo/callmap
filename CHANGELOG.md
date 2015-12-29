@@ -1,4 +1,4 @@
-2.0.0 (201?-??-??)
+2.0.0 (2015-12-28)
 ------------------
 
   * raised minimum required PHP version to 5.6.0
