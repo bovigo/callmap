@@ -1,4 +1,10 @@
-2.0.0 (2015-12-28)
+2.0.1 (2015-12-30)
+------------------
+
+  * fixed bug that mapping a return value to `null` called original method instead of returning `null`
+
+
+2.0.0 (2015-12-29)
 ------------------
 
   * raised minimum required PHP version to 5.6.0

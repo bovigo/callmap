@@ -12,6 +12,7 @@ use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isNotSameAs;
+use function bovigo\assert\predicate\isNull;
 /**
  * Helper class for the test.
  */
@@ -20,6 +21,11 @@ class AnotherTestHelperClass
     public function doSomething() { }
 
     private function doNotTouchThis() { }
+
+    public function gimmeFive()
+    {
+        return 5;
+    }
 }
 /**
  * Another helper class.
@@ -248,5 +254,16 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
                 NewInstance::of(ReturnTypeHints::class),
                 isInstanceOf(ReturnTypeHints::class)
         );
+    }
+
+    /**
+     * @test
+     * @since  2.0.1
+     */
+    public function mapReturnValueToNullShouldNotCallOriginalMethod()
+    {
+        $instance = NewInstance::of(AnotherTestHelperClass::class)
+                ->mapCalls(['gimmeFive' => null]);
+        assert($instance->gimmeFive(), isNull());
     }
 }

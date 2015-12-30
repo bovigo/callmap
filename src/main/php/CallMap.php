@@ -39,7 +39,7 @@ class CallMap
      */
     public function hasResultFor($method, $invocationCount)
     {
-        if (!isset($this->callMap[$method])) {
+        if (!array_key_exists($method, $this->callMap)) {
             return false;
         }
 
