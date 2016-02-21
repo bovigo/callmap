@@ -158,12 +158,12 @@ trait CallMapProxy
         $invocations = $this->callsReceivedFor($method);
         throw new MissingInvocation(
                 sprintf(
-                    'Missing invocation #%d for %s, %s',
+                    'Missing invocation #%d for %s, was %s.',
                     $invocation,
                     methodName($this, $method),
                     ($invocations === 0 ?
-                            'never invoked' :
-                            ('only invoked ' . ($invocations === 1 ?
+                            'never called' :
+                            ('only called ' . ($invocations === 1 ?
                                 'once' : $invocations . ' times')
                             )
                     )

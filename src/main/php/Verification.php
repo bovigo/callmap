@@ -77,7 +77,7 @@ class Verification
             throw new CallAmountViolation(
                     sprintf(
                             '%s was expected to be called at least once,'
-                            . ' but actually never called.',
+                            . ' but was never called.',
                             methodName($this->callmap, $this->method)
                     )
             );
@@ -272,7 +272,7 @@ class Verification
                     isset($received['arguments'][$index]) ? $received['arguments'][$index] : null,
                     sprintf(
                             'Parameter %sat position %d for invocation #%d of %s'
-                            . ' does not match expected value',
+                            . ' does not match expected value.',
                             isset($received['names'][$index]) ? '$' . $received['names'][$index] . ' ' : '',
                             $index,
                             $invocation,

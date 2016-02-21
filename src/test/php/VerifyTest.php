@@ -197,7 +197,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
                 verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce();
         })
         ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called at least once, but actually never called.');
+        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called at least once, but was never called.');
     }
 
     /**
@@ -243,7 +243,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
                 verify($this->proxy, 'aMethod')->receivedNothing();
         })
         ->throws(MissingInvocation::class)
-        ->withMessage('Missing invocation #1 for bovigo\callmap\Verified::aMethod(), never invoked');
+        ->withMessage('Missing invocation #1 for bovigo\callmap\Verified::aMethod(), was never called.');
     }
 
     /**
@@ -256,7 +256,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
                 verify($this->proxy, 'aMethod')->receivedOn(2, 808);
         })
         ->throws(MissingInvocation::class)
-        ->withMessage('Missing invocation #2 for bovigo\callmap\Verified::aMethod(), only invoked once');
+        ->withMessage('Missing invocation #2 for bovigo\callmap\Verified::aMethod(), was only called once.');
     }
 
     /**
@@ -270,7 +270,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
                 verify($this->proxy, 'aMethod')->receivedOn(3, 808);
         })
         ->throws(MissingInvocation::class)
-        ->withMessage('Missing invocation #3 for bovigo\callmap\Verified::aMethod(), only invoked 2 times');
+        ->withMessage('Missing invocation #3 for bovigo\callmap\Verified::aMethod(), was only called 2 times.');
     }
 
     /**
@@ -311,7 +311,7 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
         })
         ->throws(\PHPUnit_Framework_ExpectationFailedException::class)
         ->withMessage('Failed asserting that 303 is equal to 808.
-Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aMethod() does not match expected value');
+Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aMethod() does not match expected value.');
     }
 
     /**
