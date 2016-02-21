@@ -8,6 +8,9 @@
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\contains;
 /**
  * Test for bovigo\callmap\throws()
  *
@@ -30,28 +33,33 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  ReflectionException
-     * @expectedExceptionMessage  some error
      */
     public function throwsExceptionPassedViaThrows()
     {
-        $e = new \ReflectionException('some error');
-        $this->proxy->mapCalls(['getName' => throws($e)]);
-        $this->proxy->getName();
+        expect(function() {
+            $e = new \ReflectionException('some error');
+            $this->proxy->mapCalls(['getName' => throws($e)]);
+            $this->proxy->getName();
+        })
+        ->throws(\ReflectionException::class)
+        ->message(contains('some error'));
+
     }
 
     /**
      * @test
-     * @expectedException  ReflectionException
-     * @expectedExceptionMessage  some error
      */
     public function throwsExceptionPassedViaInvocationResults()
     {
-        $e = new \ReflectionException('some error');
-        $this->proxy->mapCalls(
-                ['getName' => onConsecutiveCalls('foo', throws($e))]
-        );
-        $this->proxy->getName(); // foo
-        $this->proxy->getName(); // throws $e
+        expect(function() {
+                $e = new \ReflectionException('some error');
+                $this->proxy->mapCalls(
+                        ['getName' => onConsecutiveCalls('foo', throws($e))]
+                );
+                $this->proxy->getName(); // foo
+                $this->proxy->getName(); // throws $e
+        })
+        ->throws(\ReflectionException::class)
+        ->message(contains('some error'));
     }
 }
