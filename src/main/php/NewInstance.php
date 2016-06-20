@@ -309,13 +309,19 @@ class NewInstance
                 $param .= '&';
             }
 
+            if ($parameter->isVariadic()) {
+                $param .= '...';
+            }
+
             $param .= '$' . $parameter->getName();
-            if ($parameter->isOptional() && ($method->isInternal() || $parameter->allowsNull())) {
-                $param .= ' = null';
-            } elseif ($parameter->isOptional() && !$parameter->isArray()) {
-                $param .= ' = ' . $parameter->getDefaultValue();
-            } elseif ($parameter->isOptional()) {
-                $param .= ' = ' . var_export($parameter->getDefaultValue(), true);
+            if (!$parameter->isVariadic() && $parameter->isOptional()) {
+                if ($method->isInternal() || $parameter->allowsNull()) {
+                    $param .= ' = null';
+                } elseif (!$parameter->isArray()) {
+                    $param .= ' = ' . $parameter->getDefaultValue();
+                } else {
+                    $param .= ' = ' . var_export($parameter->getDefaultValue(), true);
+                }
             }
 
             $params[$parameter->getName()] = $param;
