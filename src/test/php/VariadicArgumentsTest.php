@@ -14,11 +14,6 @@ use function bovigo\assert\expect;
  */
 class Variadic1
 {
-    public function reference(&...$foo)
-    {
-        // intentionally empty
-    }
-
     public function something(...$foo)
     {
         // intentionally empty
@@ -53,6 +48,29 @@ class VariadicArgumentsTest extends \PHPUnit_Framework_TestCase
     public function canCreateProxyForTypeWithVariadicArguments()
     {
         expect(function() { NewInstance::of(Variadic1::class); })
+            ->doesNotThrow(\ReflectionException::class);
+    }
+
+    /**
+     * @test
+     */
+    public function canCreateProxyForTypeWithVariadicReference()
+    {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('HHVM does not support variadic parameters by reference');
+        }
+
+        eval(
+                'class VariadicReference
+                {
+                    public function reference(&...$foo)
+                    {
+                        // intentionally empty
+                    }
+                }'
+        );
+
+        expect(function() { NewInstance::of(VariadicReference::class); })
             ->doesNotThrow(\ReflectionException::class);
     }
 }
