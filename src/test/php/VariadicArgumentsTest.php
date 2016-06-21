@@ -23,16 +23,6 @@ class Variadic1
     {
         // intentionally empty
     }
-
-    public function other(self ...$bar)
-    {
-        // intentionally empty
-    }
-
-    public function otherThings($z, self ...$bar)
-    {
-        // intentionally empty
-    }
 }
 /**
  * Tests for bovigo\callmap\NewInstance regarding variadic arguments.
@@ -71,6 +61,34 @@ class VariadicArgumentsTest extends \PHPUnit_Framework_TestCase
         );
 
         expect(function() { NewInstance::of(VariadicReference::class); })
+            ->doesNotThrow(\ReflectionException::class);
+    }
+
+    /**
+     * @test
+     */
+    public function canCreateProxyForTypeWithVariadicTypehint()
+    {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('HHVM does not support variadic parameters with type hints');
+        }
+
+        eval(
+                'class VariadicTypeHint
+                {
+                    public function other(self ...$bar)
+                    {
+                        // intentionally empty
+                    }
+
+                    public function otherThings($z, self ...$bar)
+                    {
+                        // intentionally empty
+                    }
+                }'
+        );
+
+        expect(function() { NewInstance::of(VariadicTypeHint::class); })
             ->doesNotThrow(\ReflectionException::class);
     }
 }
