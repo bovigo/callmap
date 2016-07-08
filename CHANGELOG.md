@@ -8,6 +8,11 @@
   * `bovigo\callmap\NewInstance::of()` and `bovigo\callmap\NewInstance::stub()` now throw a `bovigo\callmap\ProxyCreationFailure` instead of `\ReflectionException` when creation of proxy fails
 
 
+### Other changes
+
+  * added support scalar type hints
+
+
 2.1.0 (2016-06-20)
 ------------------
 
