@@ -111,7 +111,7 @@ class NewInstance
      *
      * @param   \ReflectionClass  $class
      * @return  \ReflectionClass
-     * @throws  \ReflectionException
+     * @throws  ProxyCreationFailure
      */
     private static function forkCallMapClass(\ReflectionClass $class): \ReflectionClass
     {
@@ -119,10 +119,13 @@ class NewInstance
             $class = self::forkTrait($class);
         }
 
-        if (false === eval(self::createCallmapProxyCode($class))) {
-            throw new \ReflectionException(
+        try {
+            eval(self::createCallmapProxyCode($class));
+        } catch (\ParseError $pe) {
+            throw new ProxyCreationFailure(
                     'Failure while creating CallMap instance of '
-                    . $class->getName()
+                    . $class->getName() . ': ' . $pe->getMessage(),
+                    $pe
             );
         }
 
@@ -135,7 +138,7 @@ class NewInstance
      *
      * @param   \ReflectionClass  $class
      * @return  \ReflectionClass
-     * @throws  \ReflectionException
+     * @throws  ProxyCreationFailure
      */
     private static function forkTrait(\ReflectionClass $class): \ReflectionClass
     {
@@ -153,10 +156,13 @@ class NewInstance
             );
         }
 
-        if (false === eval($code)) {
-            throw new \ReflectionException(
+        try {
+            eval($code);
+        } catch (\ParseError $pe) {
+            throw new ProxyCreationFailure(
                     'Failure while creating forked trait instance of '
-                    . $class->getName()
+                    . $class->getName() . ': ' . $pe->getMessage(),
+                    $pe
             );
         }
 

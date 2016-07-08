@@ -5,6 +5,7 @@
 
   * raised minimum required PHP version to 7.0.0
   * introduced scalar type hints and strict type checking
+  * `bovigo\callmap\NewInstance::of()` and `bovigo\callmap\NewInstance::stub()` now throw a `bovigo\callmap\ProxyCreationFailure` instead of `\ReflectionException` when creation of proxy fails
 
 
 2.1.0 (2016-06-20)
