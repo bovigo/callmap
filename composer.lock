@@ -4,37 +4,37 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2141c5236474043f7e4ac43920c1a693",
-    "content-hash": "7c0996ecf5fea98f179b56623271db74",
+    "hash": "7c46a1c6d27e1674389c21f6c1d6a1f6",
+    "content-hash": "b5778ecac59d371e4bb2987910edbe0f",
     "packages": [],
     "packages-dev": [
         {
             "name": "bovigo/assert",
-            "version": "v1.6.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-assert.git",
-                "reference": "4400cb962f7219de0975feaa240ad896dc933a8e"
+                "reference": "3c8b4813bd4f2b88ee896e800c03fcdb55bf55be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/4400cb962f7219de0975feaa240ad896dc933a8e",
-                "reference": "4400cb962f7219de0975feaa240ad896dc933a8e",
+                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/3c8b4813bd4f2b88ee896e800c03fcdb55bf55be",
+                "reference": "3c8b4813bd4f2b88ee896e800c03fcdb55bf55be",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0",
+                "php": "^7.0",
                 "sebastian/comparator": "^1.2",
                 "sebastian/exporter": "^1.2"
             },
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "^5.2"
+                "phpunit/phpunit": "^5.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -51,7 +51,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Provides assertions for unit tests.",
-            "time": "2016-02-21 12:34:16"
+            "time": "2016-07-08 18:03:16"
         },
         {
             "name": "doctrine/instantiator",
@@ -1253,16 +1253,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "c5a7e7fc273c758b92b85dcb9c46149ccda89623"
+                "reference": "2884c26ce4c1d61aebf423a8b912950fe7c764de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/c5a7e7fc273c758b92b85dcb9c46149ccda89623",
-                "reference": "c5a7e7fc273c758b92b85dcb9c46149ccda89623",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/2884c26ce4c1d61aebf423a8b912950fe7c764de",
+                "reference": "2884c26ce4c1d61aebf423a8b912950fe7c764de",
                 "shasum": ""
             },
             "require": {
@@ -1298,7 +1298,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-06-14 11:18:07"
+            "time": "2016-06-29 05:41:56"
         },
         {
             "name": "webmozart/assert",
@@ -1356,7 +1356,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.0"
+        "php": "^7.0"
     },
     "platform-dev": []
 }

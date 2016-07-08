@@ -19,18 +19,19 @@ _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package use the following
 command:
 
-    composer require --dev "bovigo/callmap": "^2.1"
+    composer require --dev "bovigo/callmap": "^3.0"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=^2.1"
+    composer require "bovigo/callmap=^3.0"
 
 
 Requirements
 ------------
 
-_bovigo/callmap_ requires at least PHP 5.6. For argument verification one of the
-following packages is required:
+_bovigo/callmap_ requires at least PHP 7.0. For PHP 5.6 use _bovigo/callmap_ 2.x.
+
+For argument verification one of the following packages is required:
 
 * [bovigo/assert](https://github.com/mikey179/bovigo-assert) (since release 2.0.0)
 * [PHPUnit](https://phpunit.de/)
