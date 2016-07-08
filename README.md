@@ -29,7 +29,7 @@ To install it as a runtime dependency for your package use the following command
 Requirements
 ------------
 
-_bovigo/callmap_ requires at least PHP 7.0. For PHP 5.6 use _bovigo/callmap_ 2.x.
+_bovigo/callmap_ requires at least PHP 7.0. For PHP 5.6 use _bovigo/callmap_ 2.1.
 
 For argument verification one of the following packages is required:
 
@@ -53,14 +53,13 @@ example which features almost all of the possibilities:
 ```php
 // set up the instance to be used
 $yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
-        ->mapCalls(
-                ['aMethod'     => 313,
-                 'otherMethod' => function() { return 'yeah'; },
-                 'play'        => onConsecutiveCalls(303, 808, 909, throws(new \Exception('error')),
-                 'ups'         => throws(new \Exception('error')),
-                 'hey'         => 'strtoupper'
-                ]
-        );
+        ->mapCalls([
+                'aMethod'     => 313,
+                'otherMethod' => function() { return 'yeah'; },
+                'play'        => onConsecutiveCalls(303, 808, 909, throws(new \Exception('error')),
+                'ups'         => throws(new \Exception('error')),
+                'hey'         => 'strtoupper'
+        ]);
 
 // do some stuff, e.g. execute the logic to test
 ...
@@ -114,11 +113,10 @@ Ok, so we created an instance of the thing that we want to specify return values
 for, how to do that?
 
 ```php
-$yourClass->mapCalls(
-        ['aMethod'     => 303,
-         'otherMethod' => function() { return 'yeah'; }
-        ]
-);
+$yourClass->mapCalls([
+        'aMethod'     => 303,
+        'otherMethod' => function() { return 'yeah'; }
+]);
 ```
 
 We simply pass a callmap to the `mapCalls()` method. Now, if something calls
@@ -270,7 +268,7 @@ implements, it will return the instance instead of null.
 Exception to this: if the return type is `\Traversable` this doesn't apply, even
 if the class implements this interface.
 
-Please note that `@inheritDoc` is not supported at the moment.
+Please note that `@inheritDoc` is not supported.
 
 In case this leads to a false interpretation and the instance is returned when
 in fact it should not, you can always overrule that by explicitly stating a
