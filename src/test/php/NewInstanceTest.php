@@ -9,12 +9,14 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
-use function bovigo\assert\assert;
-use function bovigo\assert\expect;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isInstanceOf;
-use function bovigo\assert\predicate\isNotSameAs;
-use function bovigo\assert\predicate\isNull;
+use function bovigo\assert\{
+    assert,
+    expect,
+    predicate\equals,
+    predicate\isInstanceOf,
+    predicate\isNotSameAs,
+    predicate\isNull
+};
 /**
  * Helper class for the test.
  */

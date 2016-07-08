@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
-
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
 /**
