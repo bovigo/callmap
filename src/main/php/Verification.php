@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -33,7 +34,7 @@ class Verification
      * @param  string                 $method   actual method to verify
      * @internal  use bovigo\callmap\verify() instead
      */
-    public function __construct(Proxy $callmap, $method)
+    public function __construct(Proxy $callmap, string $method)
     {
         $this->callmap = $callmap;
         $this->method  = $method;
@@ -47,18 +48,16 @@ class Verification
      * @return  bool
      * @throws  \bovigo\callmap\CallAmountViolation
      */
-    public function wasCalledAtMost($times)
+    public function wasCalledAtMost(int $times): bool
     {
         if ($this->callmap->callsReceivedFor($this->method) > $times) {
-            throw new CallAmountViolation(
-                    sprintf(
-                            '%s was expected to be called at most %d time(s),'
-                            . ' but actually called %d time(s).',
-                            methodName($this->callmap, $this->method),
-                            $times,
-                            $this->callmap->callsReceivedFor($this->method)
-                    )
-            );
+            throw new CallAmountViolation(sprintf(
+                    '%s was expected to be called at most %d time(s),'
+                    . ' but actually called %d time(s).',
+                    methodName($this->callmap, $this->method),
+                    $times,
+                    $this->callmap->callsReceivedFor($this->method)
+            ));
         }
 
         return true;
@@ -71,16 +70,14 @@ class Verification
      * @return  bool
      * @throws  \bovigo\callmap\CallAmountViolation
      */
-    public function wasCalledAtLeastOnce()
+    public function wasCalledAtLeastOnce(): bool
     {
         if ($this->callmap->callsReceivedFor($this->method) < 1) {
-            throw new CallAmountViolation(
-                    sprintf(
-                            '%s was expected to be called at least once,'
-                            . ' but was never called.',
-                            methodName($this->callmap, $this->method)
-                    )
-            );
+            throw new CallAmountViolation(sprintf(
+                    '%s was expected to be called at least once,'
+                    . ' but was never called.',
+                    methodName($this->callmap, $this->method)
+            ));
         }
 
         return true;
@@ -94,18 +91,16 @@ class Verification
      * @return  bool
      * @throws  \bovigo\callmap\CallAmountViolation
      */
-    public function wasCalledAtLeast($times)
+    public function wasCalledAtLeast(int $times): bool
     {
         if ($this->callmap->callsReceivedFor($this->method) < $times) {
-            throw new CallAmountViolation(
-                    sprintf(
-                            '%s was expected to be called at least %d time(s),'
-                            . ' but actually called %d time(s).',
-                            methodName($this->callmap, $this->method),
-                            $times,
-                            $this->callmap->callsReceivedFor($this->method)
-                    )
-            );
+            throw new CallAmountViolation(sprintf(
+                    '%s was expected to be called at least %d time(s),'
+                    . ' but actually called %d time(s).',
+                    methodName($this->callmap, $this->method),
+                    $times,
+                    $this->callmap->callsReceivedFor($this->method)
+            ));
         }
 
         return true;
@@ -118,19 +113,17 @@ class Verification
      * @return  bool
      * @throws  \bovigo\callmap\CallAmountViolation
      */
-    public function wasCalledOnce()
+    public function wasCalledOnce(): bool
     {
         $callsReceived = $this->callmap->callsReceivedFor($this->method);
         if (1 !== $callsReceived) {
-            throw new CallAmountViolation(
-                    sprintf(
-                            '%s was expected to be called once, but actually %s.',
-                            methodName($this->callmap, $this->method),
-                            1 < $callsReceived ?
-                                'called ' . $callsReceived . ' time(s)' :
-                                'never called'
-                    )
-            );
+            throw new CallAmountViolation(sprintf(
+                    '%s was expected to be called once, but actually %s.',
+                    methodName($this->callmap, $this->method),
+                    1 < $callsReceived ?
+                        'called ' . $callsReceived . ' time(s)' :
+                        'never called'
+            ));
         }
 
         return true;
@@ -144,18 +137,16 @@ class Verification
      * @return  bool
      * @throws  \bovigo\callmap\CallAmountViolation
      */
-    public function wasCalled($times)
+    public function wasCalled(int $times): bool
     {
         if ($this->callmap->callsReceivedFor($this->method) != $times) {
-            throw new CallAmountViolation(
-                    sprintf(
-                            '%s was expected to be called %d time(s),'
-                            . ' but actually called %d time(s).',
-                            methodName($this->callmap, $this->method),
-                            $times,
-                            $this->callmap->callsReceivedFor($this->method)
-                    )
-            );
+            throw new CallAmountViolation(sprintf(
+                    '%s was expected to be called %d time(s),'
+                    . ' but actually called %d time(s).',
+                    methodName($this->callmap, $this->method),
+                    $times,
+                    $this->callmap->callsReceivedFor($this->method)
+            ));
         }
 
         return true;
@@ -168,17 +159,15 @@ class Verification
      * @return  bool
      * @throws  \bovigo\callmap\CallAmountViolation
      */
-    public function wasNeverCalled()
+    public function wasNeverCalled(): bool
     {
         if ($this->callmap->callsReceivedFor($this->method) > 0) {
-            throw new CallAmountViolation(
-                    sprintf(
-                            '%s was not expected to be called,'
-                            . ' but actually called %d time(s).',
-                            methodName($this->callmap, $this->method),
-                            $this->callmap->callsReceivedFor($this->method)
-                    )
-            );
+            throw new CallAmountViolation(sprintf(
+                    '%s was not expected to be called,'
+                    . ' but actually called %d time(s).',
+                    methodName($this->callmap, $this->method),
+                    $this->callmap->callsReceivedFor($this->method)
+            ));
         }
 
         return true;
@@ -192,22 +181,20 @@ class Verification
      * @return  bool
      * @throws  \bovigo\callmap\ArgumentMismatch
      */
-    public function receivedNothing($invocation = 1)
+    public function receivedNothing(int $invocation = 1): bool
     {
         $received = $this->callmap->argumentsReceivedFor($this->method, $invocation);
         if  (count($received['arguments']) === 0) {
             return true;
         }
 
-        throw new ArgumentMismatch(
-                sprintf(
-                    'Argument count for invocation #%d of %s is too'
-                    . ' high: received %d argument(s), expected no arguments.',
-                    $invocation,
-                    methodName($this->callmap, $this->method),
-                    count($received['arguments'])
-                )
-        );
+        throw new ArgumentMismatch(sprintf(
+                'Argument count for invocation #%d of %s is too'
+                . ' high: received %d argument(s), expected no arguments.',
+                $invocation,
+                methodName($this->callmap, $this->method),
+                count($received['arguments'])
+        ));
     }
 
     /**
@@ -220,7 +207,7 @@ class Verification
      * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
      * @return  bool
      */
-    public function received(...$expected)
+    public function received(...$expected): bool
     {
         return $this->verifyArgs(1, $expected);
     }
@@ -236,7 +223,7 @@ class Verification
      * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
      * @return  bool
      */
-    public function receivedOn($invocation, ...$expected)
+    public function receivedOn(int $invocation, ...$expected): bool
     {
         return $this->verifyArgs($invocation, $expected);
     }
@@ -252,7 +239,7 @@ class Verification
      * @return  bool
      * @throws  \bovigo\callmap\ArgumentMismatch
      */
-    private function verifyArgs($invocation, array $expected)
+    private function verifyArgs(int $invocation, array $expected): bool
     {
         $received = $this->callmap->argumentsReceivedFor($this->method, $invocation);
         if (count($received['arguments']) < count($expected)) {
@@ -294,7 +281,7 @@ class Verification
      * @return  bool
      * @throws  \RuntimeException  in case neither bovigo/assert, PHPUnit not xp-framework/core is present
      */
-    private function evaluate($constraint, $received, $description)
+    private function evaluate($constraint, $received, string $description): bool
     {
         if (function_exists('bovigo\assert\assert')) {
             return \bovigo\assert\assert(
@@ -339,7 +326,7 @@ class Verification
      * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint  $constraint
      * @return  \bovigo\assert\predicate\Predicate
      */
-    private function predicateFor($constraint)
+    private function predicateFor($constraint): \bovigo\assert\predicate\Predicate
     {
         if ($constraint instanceof \PHPUnit_Framework_Constraint) {
             return new \bovigo\assert\phpunit\ConstraintAdapter($constraint);

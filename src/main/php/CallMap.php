@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -37,7 +38,7 @@ class CallMap
      * @param   int     $invocationCount  denotes which nth invocation of the method this is
      * @return  bool
      */
-    public function hasResultFor($method, $invocationCount)
+    public function hasResultFor(string $method, int $invocationCount): bool
     {
         if (!array_key_exists($method, $this->callMap)) {
             return false;
@@ -59,7 +60,7 @@ class CallMap
      * @return  mixed
      * @throws  \Exception
      */
-    public function resultFor($method, $arguments, $invocationCount)
+    public function resultFor(string $method, array $arguments, int $invocationCount)
     {
         if (isset($this->callMap[$method])) {
             if ($this->callMap[$method] instanceof InvocationResults) {
@@ -80,4 +81,3 @@ class CallMap
         return null;
     }
 }
-

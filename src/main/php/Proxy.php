@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -19,7 +20,7 @@ interface Proxy
      * @return  $this
      * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
-    public function mapCalls(array $callMap);
+    public function mapCalls(array $callMap): self;
 
     /**
      * returns amount of calls received for given method
@@ -29,7 +30,7 @@ interface Proxy
      * @return  int
      * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
      */
-    public function callsReceivedFor($method);
+    public function callsReceivedFor(string $method): int;
 
     /**
      * returns the arguments received for a specific call
@@ -41,5 +42,5 @@ interface Proxy
      * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
      * @throws  \bovigo\callmap\MissingInvocation  in case no such invocation was received
      */
-    public function argumentsReceivedFor($method, $invocation = 0);
+    public function argumentsReceivedFor(string $method, int $invocation = 0): array;
 }

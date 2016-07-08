@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -22,7 +23,7 @@ trait SomeTrait
         return $something;
     }
 
-    abstract public function other(array $optional = [], $roland = 303);
+    abstract public function other(array $optional = [], int $roland = 303);
 }
 /**
  * Applies tests to a self defined class.

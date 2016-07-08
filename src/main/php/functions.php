@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -14,7 +15,7 @@ namespace bovigo\callmap;
  * @return  \bovigo\callmap\InvocationThrow
  * @since   0.2.0
  */
-function throws(\Exception $e)
+function throws(\Exception $e): InvocationThrow
 {
     return new InvocationThrow($e);
 }
@@ -24,10 +25,10 @@ function throws(\Exception $e)
  *
  * @api
  * @param   callable  $callable
- * @return  callable
+ * @return  \Closure
  * @since   0.6.0
  */
-function wrap(callable $callable)
+function wrap(callable $callable): \Closure
 {
     return function() use ($callable) { return $callable; };
 }
@@ -40,7 +41,7 @@ function wrap(callable $callable)
  * @return  \bovigo\callmap\InvocationResults
  * @since   0.2.0
  */
-function onConsecutiveCalls(...$values)
+function onConsecutiveCalls(...$values): InvocationResults
 {
     return new InvocationResults($values);
 }
@@ -54,7 +55,7 @@ function onConsecutiveCalls(...$values)
  * @return  \bovigo\callmap\Verify
  * @since   0.5.0
  */
-function verify(Proxy $callmap, $method)
+function verify(Proxy $callmap, string $method): Verification
 {
     return new Verification($callmap, $method);
 }
@@ -67,7 +68,7 @@ function verify(Proxy $callmap, $method)
  * @param   string                 $method   actual method to return
  * @return  string
  */
-function methodName(Proxy $callmap, $method)
+function methodName(Proxy $callmap, string $method): string
 {
     return str_replace(
             ['CallMapProxy', 'CallMapFork'],

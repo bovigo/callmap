@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -30,7 +31,7 @@ class NewInstance
      * @param   mixed[]        $constructorArgs  optional  list of arguments for the constructor
      * @return  \bovigo\callmap\Proxy
      */
-    public static function of($target, array $constructorArgs = [])
+    public static function of($target, array $constructorArgs = []): Proxy
     {
         return self::callMapClass($target)
                 ->newInstanceArgs($constructorArgs);
@@ -47,7 +48,7 @@ class NewInstance
      * @param   string|object  $target  interface or class to create a new instance of
      * @return  \bovigo\callmap\Proxy
      */
-    public static function stub($target)
+    public static function stub($target): Proxy
     {
         return self::callMapClass($target)
                 ->newInstanceWithoutConstructor()
@@ -62,7 +63,7 @@ class NewInstance
      * @return  string
      * @since   0.2.0
      */
-    public static function classname($target)
+    public static function classname($target): string
     {
         return self::callMapClass($target)->getName();
     }
@@ -73,7 +74,7 @@ class NewInstance
      * @param   string|object  $target
      * @return  \ReflectionClass
      */
-    private static function callMapClass($target)
+    private static function callMapClass($target): \ReflectionClass
     {
         $class = self::reflect($target);
         if (!isset(self::$classes[$class->getName()])) {
@@ -90,7 +91,7 @@ class NewInstance
      * @return  \ReflectionClass
      * @throws  \InvalidArgumentException
      */
-    private static function reflect($class)
+    private static function reflect($class): \ReflectionClass
     {
         if (is_string($class) && (class_exists($class) || interface_exists($class) || trait_exists($class))) {
             return new \ReflectionClass($class);
@@ -112,7 +113,7 @@ class NewInstance
      * @return  \ReflectionClass
      * @throws  \ReflectionException
      */
-    private static function forkCallMapClass(\ReflectionClass $class)
+    private static function forkCallMapClass(\ReflectionClass $class): \ReflectionClass
     {
         if ($class->isTrait()) {
             $class = self::forkTrait($class);
@@ -136,7 +137,7 @@ class NewInstance
      * @return  \ReflectionClass
      * @throws  \ReflectionException
      */
-    private static function forkTrait(\ReflectionClass $class)
+    private static function forkTrait(\ReflectionClass $class): \ReflectionClass
     {
         $code = sprintf(
                 "abstract class %sCallMapFork {\n"
@@ -168,10 +169,13 @@ class NewInstance
      * @param   \ReflectionClass  $class
      * @return  string
      */
-    private static function createCallmapProxyCode(\ReflectionClass $class)
+    private static function createCallmapProxyCode(\ReflectionClass $class): string
     {
         if ($class->isFinal()) {
-            throw new \InvalidArgumentException('Can not create mapping proxy for final class ' . $class->getName());
+            throw new \InvalidArgumentException(
+                    'Can not create mapping proxy for final class '
+                    . $class->getName()
+            );
         }
 
         $code = self::createClassDefinition($class)
@@ -194,15 +198,15 @@ class NewInstance
      * @param   \ReflectionClass $class
      * @return  string
      */
-    private static function createClassDefinition(\ReflectionClass $class)
+    private static function createClassDefinition(\ReflectionClass $class): string
     {
         return sprintf(
-                "class %sCallMapProxy %s \\%s %s\bovigo\callmap\Proxy{\n"
+                "class %sCallMapProxy %s \\%s %s\bovigo\callmap\Proxy {\n"
                 . "    use \bovigo\callmap\CallMapProxy;\n",
                 $class->getShortName(),
-                $class->isInterface() ? 'implements' : 'extends',
+                $class->isInterface() ? 'implements ' : 'extends ',
                 $class->getName(),
-                $class->isInterface() ? ',' : ' implements'
+                $class->isInterface() ? ',' : ' implements '
         );
     }
 
@@ -212,7 +216,7 @@ class NewInstance
      * @param  \ReflectionClass  $class
      * @return  string
      */
-    private static function createMethods(\ReflectionClass $class)
+    private static function createMethods(\ReflectionClass $class): string
     {
         $code    = '';
         $methods = [];
@@ -227,7 +231,7 @@ class NewInstance
                     ($method->isPublic() ? 'public' : 'protected'),
                     $method->getName(),
                     $param['string'],
-                    self::determinePhp7ReturnType($method),
+                    self::determineReturnType($method),
                     $method->getName(),
                     self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
@@ -245,14 +249,14 @@ class NewInstance
     }
 
     /**
-     * determines return type when running on PHP 7
+     * determines return type
      *
      * @param   \ReflectionMethod  $method
      * @return  string
      */
-    private static function determinePhp7ReturnType(\ReflectionMethod $method)
+    private static function determineReturnType(\ReflectionMethod $method): string
     {
-        if (!method_exists($method, 'getReturnType') || !$method->hasReturnType()) {
+        if (!$method->hasReturnType()) {
             return '';
         }
 
@@ -270,7 +274,7 @@ class NewInstance
      * @param   \ReflectionClass  $class
      * @return  \ReflectionMethod[]
      */
-    private static function methodsOf(\ReflectionClass $class)
+    private static function methodsOf(\ReflectionClass $class): \Traversable
     {
         return new \CallbackFilterIterator(
                 new \ArrayIterator($class->getMethods()),
@@ -289,9 +293,9 @@ class NewInstance
      * returns correct representation of parameters for given method
      *
      * @param   \ReflectionMethod  $method
-     * @return  string
+     * @return  array
      */
-    private static function params(\ReflectionMethod $method)
+    private static function params(\ReflectionMethod $method): array
     {
         $params = [];
         foreach ($method->getParameters() as $parameter) {
@@ -303,6 +307,8 @@ class NewInstance
                 $param .= '\\' . $parameter->getClass()->getName() . ' ';
             } elseif ($parameter->isCallable()) {
                 $param .= 'callable ';
+            } elseif ($parameter->hasType()) {
+                $param .= $parameter->getType() . ' ';
             }
 
             if ($parameter->isPassedByReference()) {
@@ -337,7 +343,7 @@ class NewInstance
      * @param   \ReflectionMethod $method
      * @return  bool
      */
-    private static function shouldReturnSelf(\ReflectionClass $class, \ReflectionMethod $method)
+    private static function shouldReturnSelf(\ReflectionClass $class, \ReflectionMethod $method): bool
     {
         $returnType = self::detectReturnType($method);
         if (in_array($returnType, ['$this', 'self', $class->getName(), $class->getShortName()])) {
@@ -373,13 +379,16 @@ class NewInstance
      */
     private static function detectReturnType(\ReflectionMethod $method)
     {
-        if (method_exists($method, 'getReturnType')) {
-            if ($method->hasReturnType()) {
-                return (string) $method->getReturnType();
-            }
+        if ($method->hasReturnType()) {
+            return (string) $method->getReturnType();
         }
 
-        $returnPart = strstr($method->getDocComment(), '@return');
+        $docComment = $method->getDocComment();
+        if (false === $docComment) {
+            return null;
+        }
+
+        $returnPart = strstr($docComment, '@return');
         if (false === $returnPart) {
             return null;
         }

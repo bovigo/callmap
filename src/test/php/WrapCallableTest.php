@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -39,4 +40,3 @@ class WrapCallableTest extends \PHPUnit_Framework_TestCase
         assert($proxy->getName(), isSameAs($callable));
     }
 }
-

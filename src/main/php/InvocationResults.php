@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -36,7 +37,7 @@ class InvocationResults
      * @param   int  $number
      * @return  bool
      */
-    public function hasResultForInvocation($number)
+    public function hasResultForInvocation(int $number): bool
     {
         return isset($this->results[$number]);
     }
@@ -48,7 +49,7 @@ class InvocationResults
      * @return  mixed
      * @throws  \Exception
      */
-    public function resultForInvocation($number)
+    public function resultForInvocation(int $number)
     {
         if (isset($this->results[$number])) {
             return $this->results[$number];

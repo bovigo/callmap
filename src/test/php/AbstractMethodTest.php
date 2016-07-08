@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -16,7 +17,7 @@ use function bovigo\assert\predicate\isNull;
  */
 abstract class Instrument
 {
-    abstract public function play($roland = 303);
+    abstract public function play(int $roland = 303);
 }
 /**
  * Applies tests to a self defined class.
@@ -65,7 +66,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function arguments()
+    public function arguments(): array
     {
         return [[null, 'blubber'], [808, 'ba-dummz!'], [909, 'foo']];
     }

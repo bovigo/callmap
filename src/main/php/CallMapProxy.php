@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -35,7 +36,7 @@ trait CallMapProxy
      *
      * @return  $this
      */
-    public function preventParentCalls()
+    public function preventParentCalls(): Proxy
     {
         $this->parentCallsAllowed = false;
         return $this;
@@ -48,7 +49,7 @@ trait CallMapProxy
      * @return  $this
      * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
-    public function mapCalls(array $callMap)
+    public function mapCalls(array $callMap): Proxy
     {
         foreach (array_keys($callMap) as $method) {
             if (!isset($this->_allowedMethods[$method])) {
@@ -71,7 +72,7 @@ trait CallMapProxy
      * @return  mixed
      * @throws  \Exception
      */
-    protected function handleMethodCall($method, $arguments, $shouldReturnSelf)
+    protected function handleMethodCall(string $method, array $arguments, bool $shouldReturnSelf)
     {
         $invocation = $this->recordCall($method, $arguments);
         if (null !== $this->callMap && $this->callMap->hasResultFor($method, $invocation)) {
@@ -100,7 +101,7 @@ trait CallMapProxy
      * @param   mixed[]   $arguments   list of passed arguments
      * @return  int  amount of calls for given method
      */
-    private function recordCall($method, $arguments)
+    private function recordCall(string $method, array $arguments): int
     {
         if (!isset($this->callHistory[$method])) {
             $this->callHistory[$method] = [];
@@ -117,7 +118,7 @@ trait CallMapProxy
      * @return  int
      * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
      */
-    public function callsReceivedFor($method)
+    public function callsReceivedFor(string $method): int
     {
         if (!isset($this->_allowedMethods[$method])) {
             throw new \InvalidArgumentException(
@@ -141,7 +142,7 @@ trait CallMapProxy
      * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
      * @throws  \bovigo\callmap\MissingInvocation  in case no such invocation was received
      */
-    public function argumentsReceivedFor($method, $invocation = 1)
+    public function argumentsReceivedFor(string $method, int $invocation = 1): array
     {
         if (!isset($this->_allowedMethods[$method])) {
             throw new \InvalidArgumentException(
@@ -156,19 +157,17 @@ trait CallMapProxy
         }
 
         $invocations = $this->callsReceivedFor($method);
-        throw new MissingInvocation(
-                sprintf(
-                    'Missing invocation #%d for %s, was %s.',
-                    $invocation,
-                    methodName($this, $method),
-                    ($invocations === 0 ?
-                            'never called' :
-                            ('only called ' . ($invocations === 1 ?
-                                'once' : $invocations . ' times')
-                            )
-                    )
+        throw new MissingInvocation(sprintf(
+                'Missing invocation #%d for %s, was %s.',
+                $invocation,
+                methodName($this, $method),
+                ($invocations === 0 ?
+                        'never called' :
+                        ('only called ' . ($invocations === 1 ?
+                            'once' : $invocations . ' times')
+                        )
                 )
-        );
+        ));
     }
 
     /**
@@ -177,7 +176,7 @@ trait CallMapProxy
      * @param  string  $invalidMethod
      * @param  string  $message
      */
-    private function callmapInvalidMethod($invalidMethod, $message)
+    private function callmapInvalidMethod(string $invalidMethod, string $message): string
     {
         return sprintf(
                 'Trying to %s method %s, but it %s',

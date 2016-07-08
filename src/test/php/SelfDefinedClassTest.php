@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of bovigo\callmap.
  *
@@ -16,7 +17,7 @@ use function bovigo\assert\predicate\isInstanceOf;
  */
 class SelfDefined
 {
-    public function action(self $self, callable $something, array $optional = [], $roland = 303)
+    public function action(self $self, callable $something, array $optional = [], $roland = 303): string
     {
         return 'selfdefined';
     }
