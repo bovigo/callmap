@@ -37,6 +37,18 @@ final class ThisIsNotPossible
 
 }
 /**
+ * One more helper, this time with a PHP 7 return type hint.
+ *
+ * @since  2.0.0
+ */
+class ReturnTypeHints
+{
+    public function something(): array
+    {
+        return [];
+    }
+}
+/**
  * All remaining tests for bovigo\callmap\NewInstance.
  */
 class NewInstanceTest extends \PHPUnit_Framework_TestCase
@@ -268,19 +280,9 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @since  2.0.0
-     * @requires  PHP 7.0.0
      */
     public function canCreateInstanceFromClassWithPhp7ReturnTypeHintOnMethod()
     {
-        eval('namespace bovigo\callmap;
-            class ReturnTypeHints
-            {
-                public function something(): array
-                {
-                    return [];
-                }
-            }'
-        );
         assert(
                 NewInstance::of(ReturnTypeHints::class),
                 isInstanceOf(ReturnTypeHints::class)
