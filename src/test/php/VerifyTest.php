@@ -334,6 +334,17 @@ Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aM
      * @test
      * @since  3.0.0
      */
+    public function verifyWithPhpUnitConstraint()
+    {
+        $this->proxy->aMethod(303);
+        verify($this->proxy, 'aMethod')
+                ->received(new \PHPUnit_Framework_Constraint_IsEqual(303));
+    }
+
+    /**
+     * @test
+     * @since  3.0.0
+     */
     public function canVerifyArgumentsForNonMappedMethod()
     {
         $this->proxy->mapCalls(['aMethod' => 'hello']);
