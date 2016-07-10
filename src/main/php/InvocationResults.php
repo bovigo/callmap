@@ -47,14 +47,9 @@ class InvocationResults
      *
      * @param   int  $number
      * @return  mixed
-     * @throws  \Exception
      */
     public function resultForInvocation(int $number)
     {
-        if (isset($this->results[$number])) {
-            return $this->results[$number];
-        }
-
-        return null;
+        return $this->results[$number] ?? null;
     }
 }
