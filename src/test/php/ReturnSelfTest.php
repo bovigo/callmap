@@ -124,6 +124,16 @@ class Extended extends Base implements Bar, \IteratorAggregate
 
 }
 /**
+ * @since  3.0.0
+ */
+interface Fump
+{
+    /**
+     *
+     */
+    public function noReturn();
+}
+/**
  * Tests for automated return self.
  *
  * @since  0.3.0
@@ -238,5 +248,14 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
     public function doesNotReturnSelfWhenReturnTypeHintEmpty()
     {
         assert(NewInstance::of(Bar::class)->foo(), isNull());
+    }
+
+    /**
+     * @test
+     * @since  3.0.0
+     */
+    public function doesNotReturnSelfWhenNoReturnTypeHintInDocComment()
+    {
+        assert(NewInstance::of(Fump::class)->noReturn(), isNull());
     }
 }
