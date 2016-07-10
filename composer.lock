@@ -10,16 +10,16 @@
     "packages-dev": [
         {
             "name": "bovigo/assert",
-            "version": "dev-master",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-assert.git",
-                "reference": "3c8b4813bd4f2b88ee896e800c03fcdb55bf55be"
+                "reference": "5187f3f880fbe8c4a937c0d362682431429f999f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/3c8b4813bd4f2b88ee896e800c03fcdb55bf55be",
-                "reference": "3c8b4813bd4f2b88ee896e800c03fcdb55bf55be",
+                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/5187f3f880fbe8c4a937c0d362682431429f999f",
+                "reference": "5187f3f880fbe8c4a937c0d362682431429f999f",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Provides assertions for unit tests.",
-            "time": "2016-07-08 18:03:16"
+            "time": "2016-07-10 10:31:41"
         },
         {
             "name": "doctrine/instantiator",
