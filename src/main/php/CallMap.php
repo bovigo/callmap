@@ -71,7 +71,9 @@ class CallMap
 
             if (is_callable($result)) {
                 return call_user_func_array($result, $arguments);
-            } elseif ($result instanceof InvocationThrow) {
+            }
+
+            if ($result instanceof InvocationThrow) {
                 throw $result->exception();
             }
 
