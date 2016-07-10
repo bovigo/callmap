@@ -120,7 +120,7 @@ class NewInstance
         }
 
         try {
-            eval(self::createCallmapProxyCode($class));
+            compile(self::createCallmapProxyCode($class));
         } catch (\ParseError $pe) {
             throw new ProxyCreationFailure(
                     'Failure while creating CallMap instance of '
@@ -157,7 +157,7 @@ class NewInstance
         }
 
         try {
-            eval($code);
+            compile($code);
         } catch (\ParseError $pe) {
             throw new ProxyCreationFailure(
                     'Failure while creating forked trait instance of '
