@@ -1,3 +1,9 @@
+3.0.1 (2016-07-11)
+------------------
+
+  * switch recommendation from xp-framework/core to xp-framework/unittest
+
+
 3.0.0 (2016-07-10)
 ------------------
 
