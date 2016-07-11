@@ -291,30 +291,12 @@ class Verification
             );
         }
 
-        if ($constraint instanceof \PHPUnit_Framework_Constraint) {
-            return $constraint->evaluate($received, $description);
-        }
-
         if (class_exists('\PHPUnit_Framework_Constraint_IsEqual')) {
-            return $this->evaluate(
-                    new \PHPUnit_Framework_Constraint_IsEqual($constraint),
-                    $received,
-                    $description
-            );
+            return $this->evaluateWithPhpUnit($constraint, $received, $description);
         }
 
         if (class_exists('\unittest\TestCase')) {
-            if (!\util\Objects::equal($received, $constraint)) {
-                throw new \unittest\AssertionFailedError(
-                        new \unittest\ComparisonFailedMessage(
-                                $description,
-                                $constraint,
-                                $received
-                        )
-                );
-            }
-
-            return true;
+            return $this->evaluateWithXpFrameworkCore($constraint, $received, $description);
         }
 
         throw new \RuntimeException('Neither bovigo/assert, PHPUnit nor xp-framework/core found, can not perform argument verification');
@@ -337,5 +319,50 @@ class Verification
         }
 
         return \bovigo\assert\predicate\equals($constraint);
+    }
+
+    /**
+     * evaluates given constraint using PHPUnit
+     *
+     * If given constraint is not a instance of \PHPUnit_Framework_Constraint it
+     * will be wrapped with \PHPUnit_Framework_Constraint_IsEqual.
+     *
+     * @param   mixed|\PHPUnit_Framework_Constraint  $constraint  constraint for argument
+     * @param   mixed                                $received    actually received argument
+     * @param   string                               $description  description for invocation in case of error
+     * @return  bool
+     */
+    protected function evaluateWithPhpUnit($constraint, $received, string $description): bool
+    {
+        if ($constraint instanceof \PHPUnit_Framework_Constraint) {
+            return $constraint->evaluate($received, $description);
+        }
+
+        return (new \PHPUnit_Framework_Constraint_IsEqual($constraint))
+                ->evaluate($received, $description);
+    }
+
+    /**
+     * evaluates given constraint using xp-framework/core unittest
+     *
+     * @param   mixed   $constraint  constraint for argument
+     * @param   mixed   $received    actually received argument
+     * @param   string  $description  description for invocation in case of error
+     * @return  bool
+     * @throws  \unittest\AssertionFailedError
+     */
+    protected function evaluateWithXpFrameworkCore($constraint, $received, string $description): bool
+    {
+        if (!\util\Objects::equal($received, $constraint)) {
+            throw new \unittest\AssertionFailedError(
+                    new \unittest\ComparisonFailedMessage(
+                            $description,
+                            $constraint,
+                            $received
+                    )
+            );
+        }
+
+        return true;
     }
 }

@@ -35,7 +35,7 @@ For argument verification one of the following packages is required:
 
 * [bovigo/assert](https://github.com/mikey179/bovigo-assert) (since release 2.0.0)
 * [PHPUnit](https://phpunit.de/)
-* [xp-framework/core](https://github.com/xp-framework/core) (since release 1.1.0)
+* [xp-framework/unittest](https://github.com/xp-framework/unittest) (since release 1.1.0)
 
 The order specified here is also the one in which the verification logic will
 select the assertions to be used for argument verification. This means even if
@@ -424,10 +424,10 @@ In case the verification fails an `PHPUnit_Framework_ExpectationFailedException`
 will be thrown by the used `PHPUnit_Framework_Constraint`.
 
 
-#### Verification details for xp-framework/core
+#### Verification details for xp-framework/unittest
 _Available since release 1.1.0._
 
-In case xp-framework/core is present, `\util\Objects::equal()` will be used.
+In case xp-framework/unittest is present, `\util\Objects::equal()` will be used.
 
 In case the verification fails an `\unittest\AssertionFailedError` will be
 thrown.

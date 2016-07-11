@@ -1,0 +1,71 @@
+<?php
+declare(strict_types=1);
+/**
+ * This file is part of bovigo\callmap.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  bovigo_callmap
+ */
+namespace bovigo\callmap;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\contains;
+/**
+ * Helper for the test.
+ */
+ class XpFrameworkCoreVerification extends Verification
+ {
+     public function evaluateWithXpFrameworkCore($constraint, $received, string $description): bool
+     {
+         return parent::evaluateWithXpFrameworkCore($constraint, $received, $description);
+     }
+ }
+ /**
+  * Test for bovigo\callmap\verify() using xp-framework/core unittest.
+  *
+  * @since  3.0.0
+  */
+class VerificationWithXpFrameworkCoreTest extends \PHPUnit_Framework_TestCase
+{
+    private $xpFrameworkCoreVerification;
+
+    public function setUp()
+    {
+        $this->xpFrameworkCoreVerification = new XpFrameworkCoreVerification(
+                NewInstance::stub($this),
+                'setUp'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function returnsTrueWhenBothValueAreEqual()
+    {
+        assertTrue(
+                $this->xpFrameworkCoreVerification->evaluateWithXpFrameworkCore(
+                        'foo',
+                        'foo',
+                        ''
+                )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function throwsAssertionFailedErrorWhenWhenBothValueAreNotEqual()
+    {
+        expect(function() {
+                $this->xpFrameworkCoreVerification->evaluateWithXpFrameworkCore(
+                        'foo',
+                        'bar',
+                        'some description'
+                );
+        })
+                ->throws(\unittest\AssertionFailedError::class)
+                ->message(contains('some description'));
+    }
+}
