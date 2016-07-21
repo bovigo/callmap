@@ -1,3 +1,9 @@
+3.0.2 (2016-07-21)
+------------------
+
+  * fixed bug that return type hint `self` was not used correctly and lead to a fatal error when creating callmap instances of interfaces or classes using such a return type hint
+
+
 3.0.1 (2016-07-11)
 ------------------
 

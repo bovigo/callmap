@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\assert\predicate\isNull;
 /**
@@ -132,6 +133,22 @@ interface Fump
      *
      */
     public function noReturn();
+}
+/**
+ * @since  3.0.2
+ */
+interface WithSelfReturnTypeHint
+{
+    public function wow(): self;
+}
+/**
+ * @since  3.0.2
+ */
+class Really implements WithSelfReturnTypeHint
+{
+    public function wow(): WithSelfReturnTypeHint { return $this; }
+
+    public function hui(): self { return $this; }
 }
 /**
  * Tests for automated return self.
@@ -257,5 +274,44 @@ class ReturnSelfTest extends \PHPUnit_Framework_TestCase
     public function doesNotReturnSelfWhenNoReturnTypeHintInDocComment()
     {
         assert(NewInstance::of(Fump::class)->noReturn(), isNull());
+    }
+
+    /**
+     * @test
+     * @since  3.0.2
+     * @group  self_type_hint
+     */
+    public function canWorkWithSelfReturnTypeHintForInterfaceDirectly()
+    {
+        assert(
+                NewInstance::of(WithSelfReturnTypeHint::class)->wow(),
+                isInstanceOf(WithSelfReturnTypeHint::class)
+        );
+    }
+
+    /**
+     * @test
+     * @since  3.0.2
+     * @group  self_type_hint
+     */
+    public function canWorkWithSelfReturnTypeHintForImplementingClass()
+    {
+        assert(
+                NewInstance::stub(Really::class)->wow(),
+                isInstanceOf(WithSelfReturnTypeHint::class)
+        );
+    }
+
+    /**
+     * @test
+     * @since  3.0.2
+     * @group  self_type_hint
+     */
+    public function canWorkWithSelfReturnTypeHintForClassDirectly()
+    {
+        assert(
+                NewInstance::stub(Really::class)->hui(),
+                isInstanceOf(Really::class)
+        );
     }
 }

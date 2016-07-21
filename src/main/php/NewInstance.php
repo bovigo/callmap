@@ -271,6 +271,10 @@ class NewInstance
             return ': ' . $returnType;
         }
 
+        if ('self' == $returnType) {
+            return ': \\' . $method->getDeclaringClass()->getName();
+        }
+
         return ': \\' . $returnType;
     }
 
