@@ -1,3 +1,9 @@
+3.0.3 (2016-07-21)
+------------------
+
+  * fixed bug that optional string arguments with default values where generated wrong in callmap proxy
+
+
 3.0.2 (2016-07-21)
 ------------------
 

@@ -333,8 +333,6 @@ class NewInstance
             if (!$parameter->isVariadic() && $parameter->isOptional()) {
                 if ($method->isInternal() || $parameter->allowsNull()) {
                     $param .= ' = null';
-                } elseif (!$parameter->isArray()) {
-                    $param .= ' = ' . $parameter->getDefaultValue();
                 } else {
                     $param .= ' = ' . var_export($parameter->getDefaultValue(), true);
                 }
