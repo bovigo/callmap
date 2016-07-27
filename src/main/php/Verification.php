@@ -263,8 +263,7 @@ class Verification
                             isset($received['names'][$index]) ? '$' . $received['names'][$index] . ' ' : '',
                             $index,
                             $invocation,
-                            methodName($this->callmap, $this->method),
-                            $this->method
+                            methodName($this->callmap, $this->method)
                     )
             );
         }
