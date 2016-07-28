@@ -40,6 +40,11 @@ class Invocations implements \Countable
         $this->paramNames = $paramNames;
     }
 
+    /**
+     * returns name of method or function these invocations are from
+     *
+     * @return  string
+     */
     public function name(): string
     {
         return $this->name;

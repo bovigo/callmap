@@ -11,11 +11,11 @@ namespace bovigo\callmap {
      * creates an invocation result which throws the given exception
      *
      * @api
-     * @param   \Exception  $e
+     * @param   \Throwable  $e
      * @return  \bovigo\callmap\InvocationThrow
      * @since   0.2.0
      */
-    function throws(\Exception $e): InvocationThrow
+    function throws(\Throwable $e): InvocationThrow
     {
         return new InvocationThrow($e);
     }
@@ -47,30 +47,93 @@ namespace bovigo\callmap {
     }
 
     /**
-     * returns possibilities to verify method invocations on the callmap
+     * returns possibilities to verify method or function invocations
+     *
+     * Parameter $method can be left away when the proxy to be verified is a
+     * function proxy. For a class proxy the parameter is required.
      *
      * @api
-     * @param   \bovigo\callmap\Proxy  $callmap  callmap to verify
-     * @param   string                 $method   actual method to verify
+     * @param   \bovigo\callmap\Proxy  $proxy   callmap to verify
+     * @param   string                 $method  optional  actual method to verify
      * @return  \bovigo\callmap\Verify
      * @since   0.5.0
      */
-    function verify(Proxy $callmap, string $method): Verification
+    function verify(Proxy $proxy, string $method = ''): Verification
     {
-        return new Verification($callmap->invocations($method));
+        return new Verification($proxy->invocations($method));
     }
 
     /**
-     * blacklist our own classes from being displayed in PHPUnit error stacks
+     * determines return type
+     *
+     * @internal
+     * @param   \ReflectionFunctionAbstract  $function
+     * @return  string
      */
-    if (class_exists('\PHPUnit_Util_Blacklist')) {
-        \PHPUnit_Util_Blacklist::$blacklistedClassNames = array_merge(
-                \PHPUnit_Util_Blacklist::$blacklistedClassNames,
-                [Verification::class => 1]
-        );
+    function determineReturnTypeOf(\ReflectionFunctionAbstract $function): string
+    {
+        if (!$function->hasReturnType()) {
+            return '';
+        }
+
+        $returnType = $function->getReturnType();
+        if ($returnType->isBuiltin()) {
+            return ': ' . $returnType;
+        }
+
+        if ('self' == $returnType) {
+            return ': \\' . $function->getDeclaringClass()->getName();
+        }
+
+        return ': \\' . $returnType;
     }
-}
-namespace {
+
+    /**
+     * returns correct representation of parameters for given method
+     *
+     * @internal
+     * @param   \ReflectionFunctionAbstract  $function
+     * @return  array
+     */
+    function paramsOf(\ReflectionFunctionAbstract $function): array
+    {
+        $params = [];
+        foreach ($function->getParameters() as $parameter) {
+            /* @var $parameter \ReflectionParameter */
+            $param = '';
+            if ($parameter->isArray()) {
+                $param .= 'array ';
+            } elseif ($parameter->getClass() !== null) {
+                $param .= '\\' . $parameter->getClass()->getName() . ' ';
+            } elseif ($parameter->isCallable()) {
+                $param .= 'callable ';
+            } elseif ($parameter->hasType()) {
+                $param .= $parameter->getType() . ' ';
+            }
+
+            if ($parameter->isPassedByReference()) {
+                $param .= '&';
+            }
+
+            if ($parameter->isVariadic()) {
+                $param .= '...';
+            }
+
+            $param .= '$' . $parameter->getName();
+            if (!$parameter->isVariadic() && $parameter->isOptional()) {
+                if ($function->isInternal() || $parameter->allowsNull()) {
+                    $param .= ' = null';
+                } else {
+                    $param .= ' = ' . var_export($parameter->getDefaultValue(), true);
+                }
+            }
+
+            $params[$parameter->getName()] = $param;
+        }
+
+        return ['names' => array_keys($params), 'string' => join(', ', $params)];
+    }
+
     /**
      * internal helper function to be able to mock eval in tests
      *
@@ -82,5 +145,15 @@ namespace {
     function compile(string $code)
     {
         return eval($code);
+    }
+
+    /**
+     * blacklist our own classes from being displayed in PHPUnit error stacks
+     */
+    if (class_exists('\PHPUnit_Util_Blacklist')) {
+        \PHPUnit_Util_Blacklist::$blacklistedClassNames = array_merge(
+                \PHPUnit_Util_Blacklist::$blacklistedClassNames,
+                [Verification::class => 1]
+        );
     }
 }

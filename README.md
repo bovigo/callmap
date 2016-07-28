@@ -1,8 +1,8 @@
 bovigo/callmap
 ==============
 
-Allows to stub and mock method calls by applying a callmap. Compatible with any
-[unit test framework](http://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#PHP).
+Allows to stub and mock method and function calls by applying a callmap.
+Compatible with any [unit test framework](http://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#PHP).
 
 Package status
 --------------
@@ -52,7 +52,7 @@ example which features almost all of the possibilities:
 
 ```php
 // set up the instance to be used
-$yourClass = NewInstance::of('name\of\YourClass', ['some', 'arguments'])
+$yourClass = NewInstance::of(YourClass::class, ['some', 'arguments'])
         ->mapCalls([
                 'aMethod'     => 313,
                 'otherMethod' => function() { return 'yeah'; },
@@ -75,6 +75,7 @@ Note: for the sake of brevity below it is assumed the used classes and functions
 are imported into the current namespace via
 ```php
 use bovigo\callmap\NewInstance;
+use bovigo\callmap\NewCallable;
 use function bovigo\callmap\throws;
 use function bovigo\callmap\onConsecutiveCalls;
 use function bovigo\callmap\verify;
@@ -431,3 +432,113 @@ In case xp-framework/unittest is present, `\util\Objects::equal()` will be used.
 
 In case the verification fails an `\unittest\AssertionFailedError` will be
 thrown.
+
+
+### Mocking injected functions
+
+_Available since release 3.1.0._
+
+Sometimes it is necessary to mock a function. This can be cases like when PHP's
+native `fsockopen()` function is used. One way would be to redefine this
+function in the namespace where it is called, and let this redefinition decide
+what to do.
+
+```php
+class Socket
+{
+    public function connect(string $host, int $port, float $timeout)
+    {
+        $errno  = 0;
+        $errstr = '';
+        $resource = fsockopen($host, $port, $errno, $errstr, $timeout);
+        if (false === $resource) {
+            throw new ConnectionFailure(
+                    'Connect to ' . $host . ':'. $port
+                    . ' within ' . $timeout . ' seconds failed: '
+                    . $errstr . ' (' . $errno . ').'
+            );
+        }
+
+        // continue working with $resource
+    }
+
+    // other methods here
+}
+```
+
+However, this approach is not as optimal, as most likely it is required to not
+just mock the function, but to also evaluate whether it was called and maybe
+if it was called with the correct arguments.
+
+_bovigo/callmap_  suggests to use function injection for this. Instead of
+hardcoding the usage of the `fsockopen()` function or even to introduce a new
+interface just for the sake of abstracting this function, why not inject the
+function as a callable?
+
+```php
+class Socket
+{
+    private $fsockopen = 'fsockopen';
+
+    public function openWith(callable $fsockopen)
+    {
+        $this->fsockopen = $fsockopen;
+    }
+
+    public function connect(string $host, int $port, float $timeout)
+    {
+        $errno  = 0;
+        $errstr = '';
+        $fsockopen = $this->fsockopen;
+        $resource = $fsockopen($host, $port, $errno, $errstr, $timeout);
+        if (false === $resource) {
+            throw new ConnectionFailure(
+                    'Connect to ' . $host . ':'. $port
+                    . ' within ' . $timeout . ' seconds failed: '
+                    . $errstr . ' (' . $errno . ').'
+            );
+        }
+
+        // continue working with $resource
+    }
+
+    // other methods here
+}
+```
+
+Now a mocked callable can be generated with _bovigo/callmap_:
+
+```php
+class SocketTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedException  ConnectionFailure
+     */
+    public function testSocketFailure()
+    {
+        $socket = new Socket(NewCallable::of('fsockopen')->mapCall(false));
+        $socket->open('example.org', 80, 1.0);
+    }
+}
+```
+
+As with a callmap for a method, several different invocation results can be set:
+
+```php
+NewCallable::of('strlen')->mapCall(onConsecutiveCalls(5, 9, 10));
+NewCallable::of('strlen')->mapCall(throws(new \Exception('failure!')));
+```
+
+It is also possible to verify function invocations, as can be done with method
+invocations:
+
+```php
+$strlen = NewCallable::of('strlen');
+// do something with $strlen
+verify(strlen)->wasCalledOnce();
+verify(strlen)->received('Hello world');
+```
+
+Everything that applies to method verification can be applied to function
+verification, see above. The only difference is that the second parameter for
+`verify()` can be left away, as there is no method that must be named.

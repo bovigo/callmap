@@ -29,9 +29,9 @@ class NewInstance
      * @api
      * @param   string|object  $target           interface or class to create a new instance of
      * @param   mixed[]        $constructorArgs  optional  list of arguments for the constructor
-     * @return  \bovigo\callmap\Proxy
+     * @return  \bovigo\callmap\ClassProxy
      */
-    public static function of($target, array $constructorArgs = []): Proxy
+    public static function of($target, array $constructorArgs = []): ClassProxy
     {
         return self::callMapClass($target)
                 ->newInstanceArgs($constructorArgs);
@@ -46,9 +46,9 @@ class NewInstance
      *
      * @api
      * @param   string|object  $target  interface or class to create a new instance of
-     * @return  \bovigo\callmap\Proxy
+     * @return  \bovigo\callmap\ClassProxy
      */
-    public static function stub($target): Proxy
+    public static function stub($target): ClassProxy
     {
         return self::callMapClass($target)
                 ->newInstanceWithoutConstructor()
@@ -107,6 +107,14 @@ class NewInstance
     }
 
     /**
+     * reference to compile function
+     *
+     * @type  callable
+     * @internal
+     */
+    public static $compile = __NAMESPACE__ . '\compile';
+
+    /**
      * creates a new class from the given class which uses the CallMap trait
      *
      * @param   \ReflectionClass  $class
@@ -120,7 +128,8 @@ class NewInstance
         }
 
         try {
-            compile(self::createCallmapProxyCode($class));
+            $compile = self::$compile;
+            $compile(self::createCallmapProxyCode($class));
         } catch (\ParseError $pe) {
             throw new ProxyCreationFailure(
                     'Failure while creating CallMap instance of '
@@ -157,7 +166,8 @@ class NewInstance
         }
 
         try {
-            compile($code);
+            $compile = self::$compile;
+            $compile($code);
         } catch (\ParseError $pe) {
             throw new ProxyCreationFailure(
                     'Failure while creating forked trait instance of '
@@ -207,8 +217,8 @@ class NewInstance
     private static function createClassDefinition(\ReflectionClass $class): string
     {
         return sprintf(
-                "class %sCallMapProxy %s \\%s %s\bovigo\callmap\Proxy {\n"
-                . "    use \bovigo\callmap\CallMapProxy;\n",
+                "class %sCallMapProxy %s \\%s %s\bovigo\callmap\ClassProxy {\n"
+                . "    use \bovigo\callmap\ClassProxyMethodHandler;\n",
                 $class->getShortName(),
                 $class->isInterface() ? 'implements ' : 'extends ',
                 $class->getName(),
@@ -228,7 +238,7 @@ class NewInstance
         $methods = [];
         $params  = [];
         foreach (self::methodsOf($class) as $method) {
-            $param = self::params($method);
+            $param = paramsOf($method);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
                     "    %s function %s(%s)%s {\n"
@@ -237,7 +247,7 @@ class NewInstance
                     ($method->isPublic() ? 'public' : 'protected'),
                     $method->getName(),
                     $param['string'],
-                    self::determineReturnType($method),
+                    determineReturnTypeOf($method),
                     $method->getName(),
                     self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
@@ -252,30 +262,6 @@ class NewInstance
                 "\n    private \$_methodParams = %s;\n",
                 var_export($params, true)
         );
-    }
-
-    /**
-     * determines return type
-     *
-     * @param   \ReflectionMethod  $method
-     * @return  string
-     */
-    private static function determineReturnType(\ReflectionMethod $method): string
-    {
-        if (!$method->hasReturnType()) {
-            return '';
-        }
-
-        $returnType = $method->getReturnType();
-        if ($returnType->isBuiltin()) {
-            return ': ' . $returnType;
-        }
-
-        if ('self' == $returnType) {
-            return ': \\' . $method->getDeclaringClass()->getName();
-        }
-
-        return ': \\' . $returnType;
     }
 
     /**
@@ -297,51 +283,6 @@ class NewInstance
                             && !$method->isDestructor();
                 }
         );
-    }
-
-    /**
-     * returns correct representation of parameters for given method
-     *
-     * @param   \ReflectionMethod  $method
-     * @return  array
-     */
-    private static function params(\ReflectionMethod $method): array
-    {
-        $params = [];
-        foreach ($method->getParameters() as $parameter) {
-            /* @var $parameter \ReflectionParameter */
-            $param = '';
-            if ($parameter->isArray()) {
-                $param .= 'array ';
-            } elseif ($parameter->getClass() !== null) {
-                $param .= '\\' . $parameter->getClass()->getName() . ' ';
-            } elseif ($parameter->isCallable()) {
-                $param .= 'callable ';
-            } elseif ($parameter->hasType()) {
-                $param .= $parameter->getType() . ' ';
-            }
-
-            if ($parameter->isPassedByReference()) {
-                $param .= '&';
-            }
-
-            if ($parameter->isVariadic()) {
-                $param .= '...';
-            }
-
-            $param .= '$' . $parameter->getName();
-            if (!$parameter->isVariadic() && $parameter->isOptional()) {
-                if ($method->isInternal() || $parameter->allowsNull()) {
-                    $param .= ' = null';
-                } else {
-                    $param .= ' = ' . var_export($parameter->getDefaultValue(), true);
-                }
-            }
-
-            $params[$parameter->getName()] = $param;
-        }
-
-        return ['names' => array_keys($params), 'string' => join(', ', $params)];
     }
 
     /**

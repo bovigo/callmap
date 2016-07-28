@@ -21,19 +21,6 @@ trait FailingTrait
     }
 }
 /**
- * overwrite global compile function to be able to simulate parse errors
- *
- * @since  3.0.0
- */
-function compile(string $code)
-{
-    if (NewInstanceParseErrorTest::$failCompile) {
-        throw new \ParseError('failed to evaluate');
-    }
-
-    return \compile($code);
-}
-/**
  * Tests for bovigo\callmap\NewInstance regarding parse errors in eval().
  *
  * @since  3.0.0
@@ -41,19 +28,15 @@ function compile(string $code)
  */
 class NewInstanceParseErrorTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @type  bool
-     */
-    public static $failCompile = false;
-
     public function setUp()
     {
-        self::$failCompile = true;
+        NewInstance::$compile = NewCallable::of(__NAMESPACE__ . '\compile')
+                ->mapCall(throws(new \ParseError('failed to evaluate')));
     }
 
     public function tearDown()
     {
-        self::$failCompile = false;
+        NewInstance::$compile = __NAMESPACE__ . '\compile';
     }
 
     /**

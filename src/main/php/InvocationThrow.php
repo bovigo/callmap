@@ -17,16 +17,16 @@ class InvocationThrow
 {
     /**
      * exception to be thrown on invocation of the method it has been assigned to
-     * @type  \Exception
+     * @type  \Throwable
      */
     private $e;
 
     /**
      * constructor
      *
-     * @param  \Exception  $e  exception to be thrown
+     * @param  \Throwable  $e  exception to be thrown
      */
-    public function __construct(\Exception $e)
+    public function __construct(\Throwable $e)
     {
         $this->e = $e;
     }
@@ -34,9 +34,9 @@ class InvocationThrow
     /**
      * returns the exception to be thrown
      *
-     * @return  \Exception
+     * @return  \Throwable
      */
-    public function exception(): \Exception
+    public function exception(): \Throwable
     {
         return $this->e;
     }

@@ -28,14 +28,15 @@ class Verified
     }
 }
 /**
- * Test for bovigo\callmap\verify()
+ * Test for bovigo\callmap\verify() with class proxy.
  *
  * @since  0.5.0
+ * @group  verify
  */
-class VerifyTest extends \PHPUnit_Framework_TestCase
+class VerifyClassProxyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @type  \bovigo\callmap\Proxy
+     * @type  \bovigo\callmap\ClassProxy
      */
     private $proxy;
 
@@ -45,6 +46,17 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->proxy = NewInstance::of(Verified::class);
+    }
+
+    /**
+     * @test
+     * @since  3.1.0
+     */
+    public function verifyWithoutMethodNameThrowsInvalidArgumentException()
+    {
+        expect(function() { verify($this->proxy); })
+                ->throws(\InvalidArgumentException::class)
+                ->withMessage('Please provide a method name to retrieve invocations for.');
     }
 
     /**

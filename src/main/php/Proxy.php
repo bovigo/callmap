@@ -8,20 +8,10 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 /**
- * A callmap proxy can stub method calls and record all method calls.
+ * A proxy records all method/function calls.
  */
 interface Proxy
 {
-    /**
-     * sets the call map to use
-     *
-     * @api
-     * @param   array  $callMap
-     * @return  $this
-     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
-     */
-    public function mapCalls(array $callMap): self;
-
     /**
      * returns recorded invocations for given method
      *
