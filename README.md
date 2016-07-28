@@ -522,6 +522,16 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 }
 ```
 
+As with `NewInstance::of()` the callable generated with `NewCallable::of()` will
+call the original function when not return value is specified via the `mapCall()`
+method. In case the mocked function must not be called the callable can be
+generated with `NewCallable::stub()` instead:
+
+```php
+$strlen = NewCallable::stub('strlen');
+var_dump($strlen('hello')); // NULL, as no return value defined and original function not called
+```
+
 As with a callmap for a method, several different invocation results can be set:
 
 ```php
