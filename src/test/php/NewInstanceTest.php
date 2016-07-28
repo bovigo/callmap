@@ -187,96 +187,64 @@ class NewInstanceTest extends \PHPUnit_Framework_TestCase
      */
     public function mapNonApplicableMethodThrowsInvalidArgumentException()
     {
-        expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->mapCalls(['doNotTouchThis' => true]);
+        $proxy = NewInstance::of(AnotherTestHelperClass::class);
+        expect(function() use ($proxy) {
+                $proxy->mapCalls(['doNotTouchThis' => true]);
         })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to map method bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(), but it is not applicable for mapping.');
+                ->throws(\InvalidArgumentException::class)
+                ->withMessage(
+                        'Trying to map method '
+                        . 'bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(),'
+                        . ' but it is not applicable for mapping.'
+                );
     }
 
     /**
      * @test
      * @since  0.5.0
      */
-    public function checkCallAmountForNonExistingMethodThrowsInvalidArgumentException()
+    public function retrieveInvocationsForNonExistingMethodThrowsInvalidArgumentException()
     {
-        expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->callsReceivedFor('doesNotExist');
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to retrieve call amount for method bovigo\callmap\AnotherTestHelperClass::doesNotExist(), but it does not exist. Probably a typo?');
+        $proxy = NewInstance::of(AnotherTestHelperClass::class);
+        expect(function() use ($proxy) { $proxy->invocations('doesNotExist'); })
+                ->throws(\InvalidArgumentException::class)
+                ->withMessage(
+                        'Trying to retrieve invocations for method '
+                        . 'bovigo\callmap\AnotherTestHelperClass::doesNotExist(),'
+                        . ' but it does not exist. Probably a typo?'
+                );
     }
 
     /**
      * @test
      * @since  0.5.0
      */
-    public function checkCallAmountForExistingMethodWithTypoThrowsInvalidArgumentException()
+    public function retrieveInvocationsForExistingMethodWithTypoThrowsInvalidArgumentException()
     {
-        expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->callsReceivedFor('doSomethingy');
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to retrieve call amount for method bovigo\callmap\AnotherTestHelperClass::doSomethingy(), but it does not exist. Probably a typo?');
+        $proxy = NewInstance::of(AnotherTestHelperClass::class);
+        expect(function() use ($proxy) { $proxy->invocations('doSomethingy'); })
+                ->throws(\InvalidArgumentException::class)
+                ->withMessage(
+                        'Trying to retrieve invocations for method '
+                        . 'bovigo\callmap\AnotherTestHelperClass::doSomethingy(),'
+                        . ' but it does not exist. Probably a typo?'
+                );
     }
 
     /**
      * @test
      * @since  0.5.0
      */
-    public function checkCallAmountForNonApplicableMethodThrowsInvalidArgumentException()
+    public function retrieveInvocationsForNonApplicableMethodThrowsInvalidArgumentException()
     {
-        expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->callsReceivedFor('doNotTouchThis');
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to retrieve call amount for method bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(), but it is not applicable for mapping.');
-    }
-
-    /**
-     * @test
-     * @since  0.5.0
-     */
-    public function retrieveReceivedArgumentsForNonExistingMethodThrowsInvalidArgumentException()
-    {
-        expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->argumentsReceivedFor('doesNotExist');
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to retrieve received arguments for method bovigo\callmap\AnotherTestHelperClass::doesNotExist(), but it does not exist. Probably a typo?');
-    }
-
-    /**
-     * @test
-     * @since  0.5.0
-     */
-    public function retrieveReceivedArgumentsForExistingMethodWithTypoThrowsInvalidArgumentException()
-    {
-        expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->argumentsReceivedFor('doSomethingy');
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to retrieve received arguments for method bovigo\callmap\AnotherTestHelperClass::doSomethingy(), but it does not exist. Probably a typo?');
-    }
-
-    /**
-     * @test
-     * @since  0.5.0
-     */
-    public function retrieveReceivedArgumentsForNonApplicableMethodThrowsInvalidArgumentException()
-    {
-        expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->argumentsReceivedFor('doNotTouchThis');
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to retrieve received arguments for method bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(), but it is not applicable for mapping.');
+        $proxy = NewInstance::of(AnotherTestHelperClass::class);
+        expect(function() use ($proxy) { $proxy->invocations('doNotTouchThis'); })
+                ->throws(\InvalidArgumentException::class)
+                ->withMessage(
+                        'Trying to retrieve invocations for method '
+                        . 'bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(),'
+                        . ' but it is not applicable for mapping.'
+                );
     }
 
     /**

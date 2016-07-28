@@ -60,12 +60,15 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function wasNeverCalledThrowsCallAmountViolationWhenMethodWasCalled()
     {
+        $this->proxy->aMethod();
         expect(function() {
-            $this->proxy->aMethod();
             verify($this->proxy, 'aMethod')->wasNeverCalled();
         })
-        ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was not expected to be called, but actually called 1 time(s).');
+                ->throws(CallAmountViolation::class)
+                ->withMessage(
+                        'bovigo\callmap\Verified::aMethod() was not expected to'
+                        . ' be called, but actually called 1 time(s).'
+                );
     }
 
     /**
@@ -83,12 +86,15 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function wasCalledThrowsCallAmountViolationWhenCalledTooSeldom()
     {
+        $this->proxy->aMethod();
         expect(function() {
-                $this->proxy->aMethod();
                 verify($this->proxy, 'aMethod')->wasCalled(2);
         })
-        ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called 2 time(s), but actually called 1 time(s).');
+                ->throws(CallAmountViolation::class)
+                ->withMessage(
+                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        . ' called 2 time(s), but actually called 1 time(s).'
+                );
     }
 
     /**
@@ -96,14 +102,17 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function wasCalledThrowsCallAmountViolationWhenCalledTooOften()
     {
+        $this->proxy->aMethod();
+        $this->proxy->aMethod();
+        $this->proxy->aMethod();
         expect(function() {
-                $this->proxy->aMethod();
-                $this->proxy->aMethod();
-                $this->proxy->aMethod();
                 verify($this->proxy, 'aMethod')->wasCalled(2);
         })
-        ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called 2 time(s), but actually called 3 time(s).');
+                ->throws(CallAmountViolation::class)
+                ->withMessage(
+                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        . ' called 2 time(s), but actually called 3 time(s).'
+                );
     }
 
     /**
@@ -123,8 +132,11 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
         expect(function() {
                 verify($this->proxy, 'aMethod')->wasCalledOnce();
         })
-        ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called once, but actually never called.');
+                ->throws(CallAmountViolation::class)
+                ->withMessage(
+                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        . ' called once, but actually never called.'
+                );
     }
 
     /**
@@ -132,13 +144,16 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function wasCalledOnceThrowsCallAmountViolationWhenCalledMoreThanOnce()
     {
+        $this->proxy->aMethod();
+        $this->proxy->aMethod();
         expect(function() {
-                $this->proxy->aMethod();
-                $this->proxy->aMethod();
                 verify($this->proxy, 'aMethod')->wasCalledOnce();
         })
-        ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called once, but actually called 2 time(s).');
+                ->throws(CallAmountViolation::class)
+                ->withMessage(
+                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        . ' called once, but actually called 2 time(s).'
+                );
     }
 
     /**
@@ -167,12 +182,15 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function wasCalledAtLeastThrowsCallAmountViolationWhenCalledLessThanMinimumAmount()
     {
+        $this->proxy->aMethod();
         expect(function() {
-                $this->proxy->aMethod();
                 verify($this->proxy, 'aMethod')->wasCalledAtLeast(2);
         })
-        ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called at least 2 time(s), but actually called 1 time(s).');
+                ->throws(CallAmountViolation::class)
+                ->withMessage(
+                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        . ' called at least 2 time(s), but actually called 1 time(s).'
+                );
     }
 
     /**
@@ -202,8 +220,11 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
         expect(function() {
                 verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce();
         })
-        ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called at least once, but was never called.');
+                ->throws(CallAmountViolation::class)
+                ->withMessage(
+                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        . ' called at least once, but was never called.'
+                );
     }
 
     /**
@@ -230,14 +251,17 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function wasCalledAtMostOnceThrowsCallAmountViolationWhenCalledMoreThanMaximumAmount()
     {
+        $this->proxy->aMethod();
+        $this->proxy->aMethod();
+        $this->proxy->aMethod();
         expect(function() {
-                $this->proxy->aMethod();
-                $this->proxy->aMethod();
-                $this->proxy->aMethod();
                 verify($this->proxy, 'aMethod')->wasCalledAtMost(2);
         })
-        ->throws(CallAmountViolation::class)
-        ->withMessage('bovigo\callmap\Verified::aMethod() was expected to be called at most 2 time(s), but actually called 3 time(s).');
+                ->throws(CallAmountViolation::class)
+                ->withMessage(
+                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        . ' called at most 2 time(s), but actually called 3 time(s).'
+                );
     }
 
     /**
@@ -248,8 +272,11 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
         expect(function() {
                 verify($this->proxy, 'aMethod')->receivedNothing();
         })
-        ->throws(MissingInvocation::class)
-        ->withMessage('Missing invocation #1 for bovigo\callmap\Verified::aMethod(), was never called.');
+                ->throws(MissingInvocation::class)
+                ->withMessage(
+                        'Missing invocation #1 for bovigo\callmap\Verified::aMethod(),'
+                        . ' was never called.'
+                );
     }
 
     /**
@@ -257,12 +284,14 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation6()
     {
+        $this->proxy->aMethod(808);
         expect(function() {
-                $this->proxy->aMethod(808);
                 verify($this->proxy, 'aMethod')->receivedOn(2, 808);
         })
-        ->throws(MissingInvocation::class)
-        ->withMessage('Missing invocation #2 for bovigo\callmap\Verified::aMethod(), was only called once.');
+                ->throws(MissingInvocation::class)
+                ->withMessage(
+                        'Missing invocation #2 for bovigo\callmap\Verified::aMethod(),'
+                        . ' was only called once.');
     }
 
     /**
@@ -270,13 +299,16 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation()
     {
+        $this->proxy->aMethod(808);
+        $this->proxy->aMethod(808);
         expect(function() {
-                $this->proxy->aMethod(808);
-                $this->proxy->aMethod(808);
                 verify($this->proxy, 'aMethod')->receivedOn(3, 808);
         })
-        ->throws(MissingInvocation::class)
-        ->withMessage('Missing invocation #3 for bovigo\callmap\Verified::aMethod(), was only called 2 times.');
+                ->throws(MissingInvocation::class)
+                ->withMessage(
+                        'Missing invocation #3 for bovigo\callmap\Verified::aMethod(),'
+                        . ' was only called 2 times.'
+                );
     }
 
     /**
@@ -284,12 +316,15 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function verifyReceivedNothingThrowsArgumentMismatchWhenArgumentsReceived()
     {
+        $this->proxy->aMethod(808);
         expect(function() {
-                $this->proxy->aMethod(808);
                 verify($this->proxy, 'aMethod')->receivedNothing();
         })
-        ->throws(ArgumentMismatch::class)
-        ->withMessage('Argument count for invocation #1 of bovigo\callmap\Verified::aMethod() is too high: received 1 argument(s), expected no arguments.');
+                ->throws(ArgumentMismatch::class)
+                ->withMessage(
+                        'Argument count for invocation #1 of bovigo\callmap\Verified::aMethod()'
+                        . ' is too high: received 1 argument(s), expected no arguments.'
+                );
     }
 
     /**
@@ -297,12 +332,15 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function verifyReceivedThrowsArgumentMismatchWhenLessArgumentsReceivedThanExpected()
     {
+        $this->proxy->aMethod();
         expect(function() {
-                $this->proxy->aMethod();
                 verify($this->proxy, 'aMethod')->received(808);
         })
-        ->throws(ArgumentMismatch::class)
-        ->withMessage('Argument count for invocation #1 of bovigo\callmap\Verified::aMethod() is too low: received 0 argument(s), expected 1 argument(s).');
+                ->throws(ArgumentMismatch::class)
+                ->withMessage(
+                        'Argument count for invocation #1 of bovigo\callmap\Verified::aMethod()'
+                        . ' is too low: received 0 argument(s), expected 1 argument(s).'
+                );
     }
 
     /**
@@ -311,13 +349,16 @@ class VerifyTest extends \PHPUnit_Framework_TestCase
      */
     public function verifyReceivedPassesExceptionThrownByConstraint()
     {
+        $this->proxy->aMethod(303);
         expect(function() {
-                $this->proxy->aMethod(303);
                 verify($this->proxy, 'aMethod')->received(808);
         })
-        ->throws(\PHPUnit_Framework_ExpectationFailedException::class)
-        ->withMessage('Failed asserting that 303 is equal to 808.
-Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aMethod() does not match expected value.');
+                ->throws(\PHPUnit_Framework_ExpectationFailedException::class)
+                ->withMessage(
+                    'Failed asserting that 303 is equal to 808.
+Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aMethod()'
+                    . ' does not match expected value.'
+                );
     }
 
     /**

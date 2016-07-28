@@ -12,16 +12,6 @@ namespace bovigo\callmap;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
-/**
- * Helper for the test.
- */
- class XpFrameworkCoreVerification extends Verification
- {
-     public function evaluateWithXpFrameworkCore($constraint, $received, string $description): bool
-     {
-         return parent::evaluateWithXpFrameworkCore($constraint, $received, $description);
-     }
- }
  /**
   * Test for bovigo\callmap\verify() using xp-framework/core unittest.
   *
@@ -33,10 +23,13 @@ class VerificationWithXpFrameworkCoreTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->xpFrameworkCoreVerification = new XpFrameworkCoreVerification(
-                NewInstance::stub($this),
-                'setUp'
-        );
+        $this->xpFrameworkCoreVerification = new class(new Invocations('', [])) extends Verification
+        {
+            public function evaluateWithXpFrameworkCore($constraint, $received, string $description): bool
+            {
+                return parent::evaluateWithXpFrameworkCore($constraint, $received, $description);
+            }
+        };
     }
 
     /**

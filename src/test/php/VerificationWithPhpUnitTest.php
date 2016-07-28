@@ -10,16 +10,6 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 use function bovigo\assert\assertTrue;
-/**
- * Helper for the test.
- */
- class PhpUnitVerification extends Verification
- {
-     public function evaluateWithPhpUnit($constraint, $received, string $description): bool
-     {
-         return parent::evaluateWithPhpUnit($constraint, $received, $description);
-     }
- }
  /**
   * Test for bovigo\callmap\verify() using PHPUnit constraints.
   *
@@ -31,10 +21,13 @@ class VerificationWithPhpUnitTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->phpUnitVerification = new PhpUnitVerification(
-                NewInstance::stub($this),
-                'setUp'
-        );
+        $this->phpUnitVerification = new class(new Invocations('', [])) extends Verification
+        {
+            public function evaluateWithPhpUnit($constraint, $received, string $description): bool
+            {
+                return parent::evaluateWithPhpUnit($constraint, $received, $description);
+            }
+        };
     }
 
     /**

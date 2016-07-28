@@ -21,9 +21,11 @@ trait CallMapProxy
      */
     private $callMap;
     /**
+     * map of invocations for methods
+     *
      * @type  array
      */
-    private $callHistory = [];
+    private $invocations = [];
     /**
      * switch whether passing calls to parent class is allowed
      *
@@ -99,75 +101,60 @@ trait CallMapProxy
      *
      * @param   string    $method      name of called method
      * @param   mixed[]   $arguments   list of passed arguments
-     * @return  int  amount of calls for given method
+     * @return  int  amount of invocations for given method
      */
     private function recordCall(string $method, array $arguments): int
     {
-        if (!isset($this->callHistory[$method])) {
-            $this->callHistory[$method] = [];
-        }
-
-        $this->callHistory[$method][] = $arguments;
-        return count($this->callHistory[$method]);
-    }
-
-    /**
-     * returns amount of calls received for given method
-     *
-     * @param   string  $method  name of method to check
-     * @return  int
-     * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
-     */
-    public function callsReceivedFor(string $method): int
-    {
-        if (!isset($this->_allowedMethods[$method])) {
-            throw new \InvalidArgumentException(
-                    $this->callmapInvalidMethod($method, 'retrieve call amount for')
+        if (!isset($this->invocations[$method])) {
+            $this->invocations[$method] = new Invocations(
+                    $this->completeNameOf($method),
+                    $this->_methodParams[$method]
             );
         }
 
-        if (isset($this->callHistory[$method])) {
-            return count($this->callHistory[$method]);
-        }
-
-        return 0;
+        return $this->invocations[$method]->recordCall($arguments);
     }
 
     /**
-     * returns the arguments received for a specific call
+     * returns recorded invocations for given method
      *
-     * @param   string  $method      name of method to check
-     * @param   int     $invocation  nth invocation to check, defaults to 1 aka first invocation
-     * @return  mixed[]
+     * @param   string  $method
+     * @return  Invocations
      * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
-     * @throws  \bovigo\callmap\MissingInvocation  in case no such invocation was received
+     * @since   3.1.0
      */
-    public function argumentsReceivedFor(string $method, int $invocation = 1): array
+    public function invocations(string $method): Invocations
     {
         if (!isset($this->_allowedMethods[$method])) {
             throw new \InvalidArgumentException(
-                    $this->callmapInvalidMethod($method, 'retrieve received arguments for')
+                    $this->callmapInvalidMethod($method, 'retrieve invocations for')
             );
         }
 
-        if (isset($this->callHistory[$method]) && isset($this->callHistory[$method][$invocation - 1])) {
-            return ['arguments' => $this->callHistory[$method][$invocation - 1],
-                    'names'     => $this->_methodParams[$method]
-            ];
+        if (!isset($this->invocations[$method])) {
+            $this->invocations[$method] = new Invocations(
+                    $this->completeNameOf($method),
+                    $this->_methodParams[$method]
+            );
         }
 
-        $invocations = $this->callsReceivedFor($method);
-        throw new MissingInvocation(sprintf(
-                'Missing invocation #%d for %s, was %s.',
-                $invocation,
-                methodName($this, $method),
-                ($invocations === 0 ?
-                        'never called' :
-                        ('only called ' . ($invocations === 1 ?
-                            'once' : $invocations . ' times')
-                        )
-                )
-        ));
+        return $this->invocations[$method];
+    }
+
+    /**
+     * returns complete name of the proxied class/interface/trait method
+     *
+     * @param   \bovigo\callmap\Proxy  $callmap  callmap to return method name for
+     * @param   string                 $method   actual method to return
+     * @return  string
+     */
+    private function completeNameOf(string $method): string
+    {
+        return str_replace(
+                ['CallMapProxy', 'CallMapFork'],
+                '',
+                get_class($this)
+        ) . '::' . $method . '()';
     }
 
     /**
@@ -181,7 +168,7 @@ trait CallMapProxy
         return sprintf(
                 'Trying to %s method %s, but it %s',
                 $message,
-                methodName($this, $invalidMethod),
+                $this->completeNameOf($invalidMethod),
                 (method_exists($this, $invalidMethod) ?
                     'is not applicable for mapping.' :
                     'does not exist. Probably a typo?'

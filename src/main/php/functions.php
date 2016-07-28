@@ -57,24 +57,7 @@ namespace bovigo\callmap {
      */
     function verify(Proxy $callmap, string $method): Verification
     {
-        return new Verification($callmap, $method);
-    }
-
-    /**
-     * returns name of the proxied class/interface/trait
-     *
-     * @internal
-     * @param   \bovigo\callmap\Proxy  $callmap  callmap to return method name for
-     * @param   string                 $method   actual method to return
-     * @return  string
-     */
-    function methodName(Proxy $callmap, string $method): string
-    {
-        return str_replace(
-                ['CallMapProxy', 'CallMapFork'],
-                '',
-                get_class($callmap)
-        ) . '::' . $method . '()';
+        return new Verification($callmap->invocations($method));
     }
 
     /**

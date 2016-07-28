@@ -23,24 +23,13 @@ interface Proxy
     public function mapCalls(array $callMap): self;
 
     /**
-     * returns amount of calls received for given method
+     * returns recorded invocations for given method
      *
-     * @internal  use verify()->was*() instead
-     * @param   string  $method  name of method to check
-     * @return  int
+     * @internal  use verify($proxy, $method)->*() instead
+     * @param   string  $method
+     * @return  Invocations
      * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
+     * @since   3.1.0
      */
-    public function callsReceivedFor(string $method): int;
-
-    /**
-     * returns the arguments received for a specific call
-     *
-     * @internal  use verify()->received*() instead
-     * @param   string  $method      name of method to check
-     * @param   int     $invocation  nth invocation to check
-     * @return  mixed[]
-     * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
-     * @throws  \bovigo\callmap\MissingInvocation  in case no such invocation was received
-     */
-    public function argumentsReceivedFor(string $method, int $invocation = 0): array;
+    public function invocations(string $method): Invocations;
 }

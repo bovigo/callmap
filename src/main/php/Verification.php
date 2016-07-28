@@ -8,36 +8,26 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 /**
- * Provides methods to verify that a method was called an exact amount of times.
+ * Provides methods to verify that a method or function was called an exact amount of times.
  *
  * @since  0.5.0
  */
 class Verification
 {
     /**
-     * callmap to verify method call amount of
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @type  Invocations
      */
-    private $callmap;
-    /**
-     * actual method to verify
-     *
-     * @type  string
-     */
-    private $method;
+    private $invocations;
 
     /**
      * constructor
      *
-     * @param  \bovigo\callmap\Proxy  $callmap  callmap to verify method call amount of
-     * @param  string                 $method   actual method to verify
+     * @param  \bovigo\callmap\Invocations  $invocations
      * @internal  use bovigo\callmap\verify() instead
      */
-    public function __construct(Proxy $callmap, string $method)
+    public function __construct(Invocations $invocations)
     {
-        $this->callmap = $callmap;
-        $this->method  = $method;
+        $this->invocations = $invocations;
     }
 
     /**
@@ -50,13 +40,13 @@ class Verification
      */
     public function wasCalledAtMost(int $times): bool
     {
-        if ($this->callmap->callsReceivedFor($this->method) > $times) {
+        if (count($this->invocations) > $times) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called at most %d time(s),'
                     . ' but actually called %d time(s).',
-                    methodName($this->callmap, $this->method),
+                    $this->invocations->name(),
                     $times,
-                    $this->callmap->callsReceivedFor($this->method)
+                    count($this->invocations)
             ));
         }
 
@@ -72,11 +62,11 @@ class Verification
      */
     public function wasCalledAtLeastOnce(): bool
     {
-        if ($this->callmap->callsReceivedFor($this->method) < 1) {
+        if (count($this->invocations) < 1) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called at least once,'
                     . ' but was never called.',
-                    methodName($this->callmap, $this->method)
+                    $this->invocations->name()
             ));
         }
 
@@ -93,13 +83,13 @@ class Verification
      */
     public function wasCalledAtLeast(int $times): bool
     {
-        if ($this->callmap->callsReceivedFor($this->method) < $times) {
+        if (count($this->invocations) < $times) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called at least %d time(s),'
                     . ' but actually called %d time(s).',
-                    methodName($this->callmap, $this->method),
+                    $this->invocations->name(),
                     $times,
-                    $this->callmap->callsReceivedFor($this->method)
+                    count($this->invocations)
             ));
         }
 
@@ -115,14 +105,15 @@ class Verification
      */
     public function wasCalledOnce(): bool
     {
-        $callsReceived = $this->callmap->callsReceivedFor($this->method);
+        $callsReceived = count($this->invocations);
         if (1 !== $callsReceived) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called once, but actually %s.',
-                    methodName($this->callmap, $this->method),
+                    $this->invocations->name(),
                     1 < $callsReceived ?
                         'called ' . $callsReceived . ' time(s)' :
                         'never called'
+
             ));
         }
 
@@ -139,13 +130,13 @@ class Verification
      */
     public function wasCalled(int $times): bool
     {
-        if ($this->callmap->callsReceivedFor($this->method) != $times) {
+        if (count($this->invocations) != $times) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called %d time(s),'
                     . ' but actually called %d time(s).',
-                    methodName($this->callmap, $this->method),
+                    $this->invocations->name(),
                     $times,
-                    $this->callmap->callsReceivedFor($this->method)
+                    count($this->invocations)
             ));
         }
 
@@ -161,12 +152,12 @@ class Verification
      */
     public function wasNeverCalled(): bool
     {
-        if ($this->callmap->callsReceivedFor($this->method) > 0) {
+        if (count($this->invocations)> 0) {
             throw new CallAmountViolation(sprintf(
                     '%s was not expected to be called,'
                     . ' but actually called %d time(s).',
-                    methodName($this->callmap, $this->method),
-                    $this->callmap->callsReceivedFor($this->method)
+                    $this->invocations->name(),
+                    count($this->invocations)
             ));
         }
 
@@ -183,8 +174,8 @@ class Verification
      */
     public function receivedNothing(int $invocation = 1): bool
     {
-        $received = $this->callmap->argumentsReceivedFor($this->method, $invocation);
-        if  (count($received['arguments']) === 0) {
+        $received = $this->invocations->argumentsOf($invocation);
+        if  (count($received) === 0) {
             return true;
         }
 
@@ -192,8 +183,8 @@ class Verification
                 'Argument count for invocation #%d of %s is too'
                 . ' high: received %d argument(s), expected no arguments.',
                 $invocation,
-                methodName($this->callmap, $this->method),
-                count($received['arguments'])
+                $this->invocations->name(),
+                count($received)
         ));
     }
 
@@ -241,14 +232,14 @@ class Verification
      */
     private function verifyArgs(int $invocation, array $expected): bool
     {
-        $received = $this->callmap->argumentsReceivedFor($this->method, $invocation);
-        if (count($received['arguments']) < count($expected)) {
+        $received = $this->invocations->argumentsOf($invocation);
+        if (count($received) < count($expected)) {
             throw new ArgumentMismatch(sprintf(
                     'Argument count for invocation #%d of %s is too'
                     . ' low: received %d argument(s), expected %d argument(s).',
                     $invocation,
-                    methodName($this->callmap, $this->method),
-                    count($received['arguments']),
+                    $this->invocations->name(),
+                    count($received),
                     count($expected)
             ));
         }
@@ -256,14 +247,14 @@ class Verification
         foreach ($expected as $index => $constraint) {
             $this->evaluate(
                     $constraint,
-                    isset($received['arguments'][$index]) ? $received['arguments'][$index] : null,
+                    $received[$index] ?? null,
                     sprintf(
                             'Parameter %sat position %d for invocation #%d of %s'
                             . ' does not match expected value.',
-                            isset($received['names'][$index]) ? '$' . $received['names'][$index] . ' ' : '',
+                            $this->invocations->argumentName($index, ' '),
                             $index,
                             $invocation,
-                            methodName($this->callmap, $this->method)
+                            $this->invocations->name()
                     )
             );
         }
