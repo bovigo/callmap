@@ -2,7 +2,7 @@
 ------------------
 
   * introduced possibility to mock functions as callable
-  * `bovigo\callmap\throws()` now accepts all instances of `\Throwable`, not just `\Eception`
+  * `bovigo\callmap\throws()` now accepts all instances of `\Throwable`, not just `\Exception`
 
 
 3.0.3 (2016-07-21)
