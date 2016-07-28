@@ -550,8 +550,8 @@ invocations:
 ```php
 $strlen = NewCallable::of('strlen');
 // do something with $strlen
-verify(strlen)->wasCalledOnce();
-verify(strlen)->received('Hello world');
+verify($strlen)->wasCalledOnce();
+verify($strlen)->received('Hello world');
 ```
 
 Everything that applies to method verification can be applied to function
