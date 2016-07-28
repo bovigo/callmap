@@ -516,7 +516,8 @@ class SocketTest extends \PHPUnit_Framework_TestCase
      */
     public function testSocketFailure()
     {
-        $socket = new Socket(NewCallable::of('fsockopen')->mapCall(false));
+        $socket = new Socket();
+        $socket->openWith(NewCallable::of('fsockopen')->mapCall(false));
         $socket->connect('example.org', 80, 1.0);
     }
 }
