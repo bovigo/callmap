@@ -244,15 +244,15 @@ class Verification
             ));
         }
 
-        foreach ($expected as $index => $constraint) {
+        foreach ($expected as $atPosition => $constraint) {
             $this->evaluate(
                     $constraint,
-                    $received[$index] ?? null,
+                    $received[$atPosition] ?? null,
                     sprintf(
                             'Parameter %sat position %d for invocation #%d of %s'
                             . ' does not match expected value.',
-                            $this->invocations->argumentName($index, ' '),
-                            $index,
+                            $this->invocations->argumentName($atPosition, ' '),
+                            $atPosition,
                             $invocation,
                             $this->invocations->name()
                     )
