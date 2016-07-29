@@ -105,10 +105,7 @@ The other option is to create a complete stub:
 $yourClass = NewInstance::stub(YourClass::class);
 ```
 
-Instances created that way don't forward method calls. Note: in case you use a
-PHP version older than 5.6.0, this won't work with PHP's internal classes, and
-you will get an `ReflectionException` instead. See [PHP manual](http://php.net/manual/en/reflectionclass.newinstancewithoutconstructor.php)
-for details.
+Instances created that way don't forward method calls.
 
 Ok, so we created an instance of the thing that we want to specify return values
 for, how to do that?
@@ -209,7 +206,13 @@ in the callmap which throws the exception, but there's a more handy way availabl
 $yourClass->mapCalls(['aMethod' => throws(new \Exception('error'))]);
 ```
 
-Now each call to this method will throw this exception.
+Now each call to this method will throw this exception. Since release 3.1.0 it
+is also possible to throw an `\Error` (basically, any `\Throwable` for that
+matter):
+
+```php
+$yourClass->mapCalls(['aMethod' => throws(new \Error('error'))]);
+```
 
 Of course this can be combined with a series of return values:
 
@@ -257,14 +260,14 @@ echo $yourClass->aMethod('foo'); // prints FOO
 Actually, you don't. _bovigo/callmap_ is smart enough to detect when it should
 return the object instance instead of null when no call mapping for a method was
 provided. To achieve that, _bovigo/callmap_ tries to detect the return type of a
-method from either from the return type hint (since release 2.0.0, requires
-PHP 7), or its doc comment. If the return type specified in code (PHP 7) is the
-class or interface itself it will return the instance instead of null.
+method from either from the return type hint or the method's doc comment. If the
+return type specified is the class or interface itself it will return the
+instance instead of null.
 
-If no return type is defined (PHP 7) and the return type specified in the doc
-comment is one of `$this`, `self`, the short class name or the fully qualified
-class name of the class or of a parent class or any interface the class
-implements, it will return the instance instead of null.
+If no return type is defined and the return type specified in the doc comment is
+one of `$this`, `self`, the short class name or the fully qualified class name
+of the class or of a parent class or any interface the class implements, it will
+return the instance instead of null.
 
 Exception to this: if the return type is `\Traversable` this doesn't apply, even
 if the class implements this interface.
@@ -556,5 +559,6 @@ verify($strlen)->received('Hello world');
 ```
 
 Everything that applies to method verification can be applied to function
-verification, see above. The only difference is that the second parameter for
-`verify()` can be left away, as there is no method that must be named.
+verification, [see above](#verify-method-invocations). The only difference is
+that the second parameter for `verify()` can be left away, as there is no method
+that must be named.
