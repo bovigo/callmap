@@ -62,24 +62,24 @@ class CallMap
      */
     public function resultFor(string $method, array $arguments, int $invocationCount)
     {
-        if (isset($this->callMap[$method])) {
-            if ($this->callMap[$method] instanceof InvocationResults) {
-                $result = $this->callMap[$method]->resultForInvocation($invocationCount - 1);
-            } else {
-                $result = $this->callMap[$method];
-            }
-
-            if (is_callable($result)) {
-                return call_user_func_array($result, $arguments);
-            }
-
-            if ($result instanceof InvocationThrow) {
-                throw $result->exception();
-            }
-
-            return $result;
+        if (!isset($this->callMap[$method])) {
+            return null;
         }
 
-        return null;
+        if ($this->callMap[$method] instanceof InvocationResults) {
+            $result = $this->callMap[$method]->resultForInvocation($invocationCount - 1);
+        } else {
+            $result = $this->callMap[$method];
+        }
+
+        if (is_callable($result)) {
+            return $result(...$arguments);
+        }
+
+        if ($result instanceof InvocationThrow) {
+            throw $result->exception();
+        }
+
+        return $result;
     }
 }
