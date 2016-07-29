@@ -85,7 +85,7 @@ trait ClassProxyMethodHandler
             // is_callable() returns true even for abstract methods
             $refMethod = new \ReflectionMethod(get_parent_class(), $method);
             if (!$refMethod->isAbstract()) {
-                return call_user_func_array(['parent', $method], $arguments);
+                return $refMethod->invokeArgs($this, $arguments);
             }
         }
 
