@@ -56,7 +56,7 @@ trait ClassProxyMethodHandler
         foreach (array_keys($callMap) as $method) {
             if (!isset($this->_allowedMethods[$method])) {
                 throw new \InvalidArgumentException(
-                        $this->callmapInvalidMethod($method, 'map')
+                        $this->canNot('map', $method)
                 );
             }
         }
@@ -133,7 +133,7 @@ trait ClassProxyMethodHandler
 
         if (!isset($this->_allowedMethods[$method])) {
             throw new \InvalidArgumentException(
-                    $this->callmapInvalidMethod($method, 'retrieve invocations for')
+                    $this->canNot('retrieve invocations for', $method)
             );
         }
 
@@ -163,12 +163,12 @@ trait ClassProxyMethodHandler
     }
 
     /**
-     * creates complete error message when called with invalid method
+     * creates complete error message that invalid method can not be used
      *
-     * @param  string  $invalidMethod
      * @param  string  $message
+     * @param  string  $invalidMethod
      */
-    private function callmapInvalidMethod(string $invalidMethod, string $message): string
+    private function canNot(string $message, string $invalidMethod): string
     {
         return sprintf(
                 'Trying to %s method %s, but it %s',
