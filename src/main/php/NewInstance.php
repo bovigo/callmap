@@ -295,6 +295,10 @@ class NewInstance
     private static function shouldReturnSelf(\ReflectionClass $class, \ReflectionMethod $method): bool
     {
         $returnType = self::detectReturnType($method);
+        if (null === $returnType) {
+            return false;
+        }
+
         if (in_array($returnType, ['$this', 'self', $class->getName(), $class->getShortName()])) {
             return true;
         }
@@ -319,12 +323,12 @@ class NewInstance
     /**
      * detects return type of method
      *
-     * On PHP 7 it will make use of reflection to detect the return type. In
-     * case this does not yield a result or that we run on PHP 5.6 the doc
-     * comment will be parsed for the return annotation.
+     * It will make use of reflection to detect the return type. In case this
+     * does not yield a result the doc comment will be parsed for the return
+     * annotation.
      *
      * @param   \ReflectionMethod  $method
-     * @return  string
+     * @return  string|null
      */
     private static function detectReturnType(\ReflectionMethod $method)
     {
