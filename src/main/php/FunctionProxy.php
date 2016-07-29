@@ -34,7 +34,7 @@ abstract class FunctionProxy implements Proxy
      *
      * @param  string  $functionName  name of proxied function
      */
-    public function __construct($functionName)
+    public function __construct(string $functionName)
     {
         $this->invocations = new Invocations($functionName, $this->paramNames);
     }
