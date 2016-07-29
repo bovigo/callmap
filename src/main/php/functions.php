@@ -21,7 +21,7 @@ namespace bovigo\callmap {
     }
 
     /**
-     * wraps given callable into another callable so that the given callable is returned and not executed
+     * wraps given callable into a closure so that the given callable is returned and not executed
      *
      * @api
      * @param   callable  $callable
@@ -55,7 +55,7 @@ namespace bovigo\callmap {
      * @api
      * @param   \bovigo\callmap\Proxy  $proxy   callmap to verify
      * @param   string                 $method  optional  actual method to verify
-     * @return  \bovigo\callmap\Verify
+     * @return  \bovigo\callmap\Verification
      * @since   0.5.0
      */
     function verify(Proxy $proxy, string $method = ''): Verification
@@ -136,6 +136,10 @@ namespace bovigo\callmap {
 
     /**
      * internal helper function to be able to mock eval in tests
+     *
+     * Since eval() is a language construct and not a function but we want to
+     * mock it when testing dynamic code creation we wrap it into our own
+     * function.
      *
      * @param   string  $code
      * @return  bool
