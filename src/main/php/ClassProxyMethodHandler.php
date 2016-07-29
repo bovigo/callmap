@@ -76,7 +76,7 @@ trait ClassProxyMethodHandler
      */
     protected function handleMethodCall(string $method, array $arguments, bool $shouldReturnSelf)
     {
-        $invocation = $this->recordCall($method, $arguments);
+        $invocation = $this->invocations($method)->recordCall($arguments);
         if (null !== $this->callMap && $this->callMap->hasResultFor($method, $invocation)) {
             return $this->callMap->resultFor($method, $arguments, $invocation);
         }
@@ -94,25 +94,6 @@ trait ClassProxyMethodHandler
         }
 
         return null;
-    }
-
-    /**
-     * records method call for given method
-     *
-     * @param   string    $method      name of called method
-     * @param   mixed[]   $arguments   list of passed arguments
-     * @return  int  amount of invocations for given method
-     */
-    private function recordCall(string $method, array $arguments): int
-    {
-        if (!isset($this->invocations[$method])) {
-            $this->invocations[$method] = new Invocations(
-                    $this->completeNameOf($method),
-                    $this->_methodParams[$method]
-            );
-        }
-
-        return $this->invocations[$method]->recordCall($arguments);
     }
 
     /**
