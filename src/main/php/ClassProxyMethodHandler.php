@@ -150,8 +150,7 @@ trait ClassProxyMethodHandler
     /**
      * returns complete name of the proxied class/interface/trait method
      *
-     * @param   \bovigo\callmap\Proxy  $callmap  callmap to return method name for
-     * @param   string                 $method   actual method to return
+     * @param   string  $method  actual method to return name for
      * @return  string
      */
     private function completeNameOf(string $method): string
