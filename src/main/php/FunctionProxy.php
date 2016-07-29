@@ -65,7 +65,8 @@ abstract class FunctionProxy implements Proxy
         }
 
         if ($this->parentCallsAllowed) {
-            return call_user_func_array($this->invocations->name(), $arguments);
+            $originalFunction = $this->invocations->name();
+            return $originalFunction(...$arguments);
         }
 
         return null;
