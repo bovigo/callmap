@@ -56,7 +56,6 @@ abstract class FunctionProxy implements Proxy
      *
      * @param   mixed[]   $arguments  list of given arguments for methods
      * @return  mixed
-     * @throws  \Exception
      */
     protected function handleFunctionCall(array $arguments)
     {
