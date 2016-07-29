@@ -1,3 +1,11 @@
+3.1.1 (2016-07-29)
+------------------
+
+  * removed usage of `call_user_func_array()`, instead call functions and methods directly
+  * added shortcut to prevent iterating over implemented interfaces and parent classes when no return type for a method can be detected
+  * minor doc comment fixes
+
+
 3.1.0 (2016-07-28)
 ------------------
 
