@@ -76,10 +76,6 @@ class CallMap
             return $result(...$arguments);
         }
 
-        if ($result instanceof InvocationThrow) {
-            throw $result->exception();
-        }
-
         return $result;
     }
 }

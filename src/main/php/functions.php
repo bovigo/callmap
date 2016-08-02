@@ -8,16 +8,16 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap {
     /**
-     * creates an invocation result which throws the given exception
+     * creates a closure which throws the given exception when invoked
      *
      * @api
      * @param   \Throwable  $e
-     * @return  \bovigo\callmap\InvocationThrow
+     * @return  \Closure
      * @since   0.2.0
      */
-    function throws(\Throwable $e): InvocationThrow
+    function throws(\Throwable $e): \Closure
     {
-        return new InvocationThrow($e);
+        return function() use ($e) { throw $e; };
     }
 
     /**
