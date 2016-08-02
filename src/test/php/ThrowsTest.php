@@ -36,13 +36,13 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
      */
     public function throwsExceptionPassedViaThrows()
     {
+        $e = new \ReflectionException('some error');
+        $this->proxy->mapCalls(['getName' => throws($e)]);
         expect(function() {
-            $e = new \ReflectionException('some error');
-            $this->proxy->mapCalls(['getName' => throws($e)]);
             $this->proxy->getName();
         })
-        ->throws(\ReflectionException::class)
-        ->message(contains('some error'));
+                ->throws(\ReflectionException::class)
+                ->message(contains('some error'));
 
     }
 
@@ -51,15 +51,15 @@ class ThrowsTest extends \PHPUnit_Framework_TestCase
      */
     public function throwsExceptionPassedViaInvocationResults()
     {
+        $e = new \ReflectionException('some error');
+        $this->proxy->mapCalls(
+                ['getName' => onConsecutiveCalls('foo', throws($e))]
+        );
+        $this->proxy->getName(); // foo
         expect(function() {
-                $e = new \ReflectionException('some error');
-                $this->proxy->mapCalls(
-                        ['getName' => onConsecutiveCalls('foo', throws($e))]
-                );
-                $this->proxy->getName(); // foo
                 $this->proxy->getName(); // throws $e
         })
-        ->throws(\ReflectionException::class)
-        ->message(contains('some error'));
+                ->throws(\ReflectionException::class)
+                ->message(contains('some error'));
     }
 }
