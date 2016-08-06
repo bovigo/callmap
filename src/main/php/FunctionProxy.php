@@ -43,9 +43,9 @@ abstract class FunctionProxy implements Proxy
      * sets the call map to use
      *
      * @api
-     * @since   3.2.0
      * @param   mixed  $returnValue
      * @return  $this
+     * @since   3.2.0
      */
     public function returns($returnValue): self
     {
@@ -63,6 +63,20 @@ abstract class FunctionProxy implements Proxy
     public function mapCall($returnValue): self
     {
         return $this->returns($returnValue);
+    }
+
+    /**
+     * shortcut for returns(throws($e))
+     *
+     * @api
+     * @param   \Throwable  $e
+     * @return  $this
+     * @since   3.2.0
+     */
+    public function throws(\Throwable $e): self
+    {
+        $this->callMap = new CallMap(['function' => throws($e)]);
+        return $this;
     }
 
     /**

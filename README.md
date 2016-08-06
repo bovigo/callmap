@@ -548,6 +548,12 @@ NewCallable::of('strlen')->returns(onConsecutiveCalls(5, 9, 10));
 NewCallable::of('strlen')->returns(throws(new \Exception('failure!')));
 ```
 
+For the latter, since release 3.2.0 a shortcut is available:
+
+```php
+NewCallable::of('strlen')->throws(new \Exception('failure!'));
+```
+
 It is also possible to verify function invocations, as can be done with method
 invocations:
 

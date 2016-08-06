@@ -156,7 +156,7 @@ class NewCallableTest extends \PHPUnit_Framework_TestCase
     public function canMapWithThrows($functionName)
     {
         $function = NewCallable::of($functionName)
-                ->mapCall(throws(new \RuntimeException('failure')));
+                ->throws(new \RuntimeException('failure'));
         expect(function() use ($function) { $function('world'); })
                 ->throws(\RuntimeException::class)
                 ->withMessage('failure');

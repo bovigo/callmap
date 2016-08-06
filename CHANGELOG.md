@@ -7,6 +7,11 @@
   * added `bovigo\callmap\FunctionProxy::returns()`, `bovigo\callmap\FunctionProxy::mapCall()` is now an alias for this and should be considered deprecated
 
 
+### Other changes
+
+    * added `bovigo\callmap\FunctionProxy::throws()`
+
+
 3.1.1 (2016-07-29)
 ------------------
 

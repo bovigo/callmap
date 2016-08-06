@@ -31,7 +31,7 @@ class NewInstanceParseErrorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         NewInstance::$compile = NewCallable::of(__NAMESPACE__ . '\compile')
-                ->mapCall(throws(new \ParseError('failed to evaluate')));
+                ->throws(new \ParseError('failed to evaluate'));
     }
 
     public function tearDown()
