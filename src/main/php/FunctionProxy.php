@@ -42,13 +42,27 @@ abstract class FunctionProxy implements Proxy
     /**
      * sets the call map to use
      *
+     * @api
+     * @since   3.2.0
+     * @param   mixed  $returnValue
+     * @return  $this
+     */
+    public function returns($returnValue): self
+    {
+        $this->callMap = new CallMap(['function' => $returnValue]);
+        return $this;
+    }
+
+    /**
+     * sets the call map to use
+     *
+     * @deprecated  since 3.2.0, use returns() instead, will likely be removed with 4.0.0
      * @param   mixed  $returnValue
      * @return  $this
      */
     public function mapCall($returnValue): self
     {
-        $this->callMap = new CallMap(['function' => $returnValue]);
-        return $this;
+        return $this->returns($returnValue);
     }
 
     /**

@@ -1,3 +1,12 @@
+3.2.0 (2016-08-06)
+------------------
+
+### HEADS UP
+
+  * added `bovigo\callmap\ClassProxy::returns()`, `bovigo\callmap\ClassProxy::mapCalls()` is now an alias for this and should be considered deprecated
+  * added `bovigo\callmap\FunctionProxy::returns()`, `bovigo\callmap\FunctionProxy::mapCall()` is now an alias for this and should be considered deprecated
+
+
 3.1.1 (2016-07-29)
 ------------------
 

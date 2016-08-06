@@ -19,11 +19,11 @@ _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package use the following
 command:
 
-    composer require --dev "bovigo/callmap": "^3.0"
+    composer require --dev "bovigo/callmap": "^3.2"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=^3.0"
+    composer require "bovigo/callmap=^3.2"
 
 
 Requirements
@@ -53,7 +53,7 @@ example which features almost all of the possibilities:
 ```php
 // set up the instance to be used
 $yourClass = NewInstance::of(YourClass::class, ['some', 'arguments'])
-        ->mapCalls([
+        ->returns([
                 'aMethod'     => 313,
                 'otherMethod' => function() { return 'yeah'; },
                 'play'        => onConsecutiveCalls(303, 808, 909, throws(new \Exception('error')),
@@ -111,24 +111,24 @@ Ok, so we created an instance of the thing that we want to specify return values
 for, how to do that?
 
 ```php
-$yourClass->mapCalls([
+$yourClass->returns([
         'aMethod'     => 303,
         'otherMethod' => function() { return 'yeah'; }
 ]);
 ```
 
-We simply pass a callmap to the `mapCalls()` method. Now, if something calls
+We simply pass a callmap to the `returns()` method. Now, if something calls
 `$yourClass->aMethod()`, the return value will always be `303`. In the case of
 `$yourClass->otherMethod()`, the callable will be evaluated and its return value
 will be returned.
 
-Please be aware that the array provided with the `mapCalls()` method should
+Please be aware that the array provided with the `returns()` method should
 contain all methods that should be stubbed. If you call this method a second
 time the complete callmap will be replaced:
 
 ```php
-$yourClass->mapCalls(['aMethod' => 303]);
-$yourClass->mapCalls(['otherMethod' => function() { return 'yeah'; }]);
+$yourClass->returns(['aMethod' => 303]);
+$yourClass->returns(['otherMethod' => function() { return 'yeah'; }]);
 ```
 
 As a result of this, `$yourClass->aMethod()` is not set any more to return `303`.
@@ -171,7 +171,7 @@ Sometimes a method gets called more than once and you need to specify different
 return values for each call.
 
 ```php
-$yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, 808, 909)]);
+$yourClass->returns(['aMethod' => onConsecutiveCalls(303, 808, 909)]);
 ```
 
 This will return a different value on each invocation of `$yourClass->aMethod()`
@@ -186,7 +186,7 @@ Because callables are executed when the method is invoked it is required to wrap
 them into another callable. To ease this, the `wrap()` function is provided:
 
 ```php
-$yourClass->mapCalls(['aMethod' => wrap(function() {  })]);
+$yourClass->returns(['aMethod' => wrap(function() {  })]);
 
 $this->assertTrue(is_callable($yourClass->aMethod()); // true
 ```
@@ -203,7 +203,7 @@ an exception on invocation. Of course you could do that by providing a callable
 in the callmap which throws the exception, but there's a more handy way available:
 
 ```php
-$yourClass->mapCalls(['aMethod' => throws(new \Exception('error'))]);
+$yourClass->returns(['aMethod' => throws(new \Exception('error'))]);
 ```
 
 Now each call to this method will throw this exception. Since release 3.1.0 it
@@ -211,13 +211,13 @@ is also possible to throw an `\Error` (basically, any `\Throwable` for that
 matter):
 
 ```php
-$yourClass->mapCalls(['aMethod' => throws(new \Error('error'))]);
+$yourClass->returns(['aMethod' => throws(new \Error('error'))]);
 ```
 
 Of course this can be combined with a series of return values:
 
 ```php
-$yourClass->mapCalls(['aMethod' => onConsecutiveCalls(303, throws(new \Exception('error')))]);
+$yourClass->returns(['aMethod' => onConsecutiveCalls(303, throws(new \Exception('error')))]);
 ```
 
 Here, the first invocation of `$yourClass->aMethod()` will return `303`, whereas
@@ -234,7 +234,7 @@ value. If you specify a callable this callable will receive all arguments passed
 to the method:
 
 ```php
-$yourClass->mapCalls(['aMethod' => function($arg1, $arg2) { return $arg2;}]);
+$yourClass->returns(['aMethod' => function($arg1, $arg2) { return $arg2;}]);
 
 echo $yourClass->aMethod(303, 'foo'); // prints foo
 ```
@@ -249,7 +249,7 @@ passed arguments will be forwarded to the callable.
 You can:
 
 ```php
-$yourClass->mapCalls(['aMethod' => 'strtoupper']);
+$yourClass->returns(['aMethod' => 'strtoupper']);
 
 echo $yourClass->aMethod('foo'); // prints FOO
 ```
@@ -293,7 +293,7 @@ final.
 ### What happens if a method specified in the callmap doesn't exist? ###
 
 In case the callmap contains a method which doesn't exist or is not applicable
-for mapping (see above) `mapCalls()` will throw an `\InvalidArgumentException`.
+for mapping (see above) `returns()` will throw an `\InvalidArgumentException`.
 This also prevents typos and wondering why something doesn't work as expected.
 
 
@@ -520,14 +520,14 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     public function testSocketFailure()
     {
         $socket = new Socket();
-        $socket->openWith(NewCallable::of('fsockopen')->mapCall(false));
+        $socket->openWith(NewCallable::of('fsockopen')->returns(false));
         $socket->connect('example.org', 80, 1.0);
     }
 }
 ```
 
 As with `NewInstance::of()` the callable generated with `NewCallable::of()` will
-call the original function when no return value is specified via the `mapCall()`
+call the original function when no return value is specified via the `returns()`
 method. In case the mocked function must not be called the callable can be
 generated with `NewCallable::stub()` instead:
 
@@ -544,8 +544,8 @@ var_dump($strlen('hello'));
 As with a callmap for a method, several different invocation results can be set:
 
 ```php
-NewCallable::of('strlen')->mapCall(onConsecutiveCalls(5, 9, 10));
-NewCallable::of('strlen')->mapCall(throws(new \Exception('failure!')));
+NewCallable::of('strlen')->returns(onConsecutiveCalls(5, 9, 10));
+NewCallable::of('strlen')->returns(throws(new \Exception('failure!')));
 ```
 
 It is also possible to verify function invocations, as can be done with method
