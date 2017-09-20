@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d45c7421a3a72b36e4c2fa51f748487",
+    "content-hash": "8bcc65332199cc60ce0cd94b62063f55",
     "packages": [],
     "packages-dev": [
         {
@@ -1364,123 +1364,6 @@
                 "validate"
             ],
             "time": "2016-11-23T20:04:58+00:00"
-        },
-        {
-            "name": "xp-framework/core",
-            "version": "v8.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/xp-framework/core.git",
-                "reference": "6ee294ef8b2dbf91405d91efacbef0314c3d559b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/core/zipball/6ee294ef8b2dbf91405d91efacbef0314c3d559b",
-                "reference": "6ee294ef8b2dbf91405d91efacbef0314c3d559b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "suggest": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/main/php/__xp.php",
-                    "src/main/resources/autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "The XP framework is an all-purpose, object oriented PHP framework.",
-            "homepage": "http://xp-framework.net/",
-            "keywords": [
-                "framework",
-                "xp"
-            ],
-            "time": "2017-05-27T23:13:29+00:00"
-        },
-        {
-            "name": "xp-framework/io-collections",
-            "version": "v7.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/xp-framework/io-collections.git",
-                "reference": "dd02226cfccbd4eea1d521c8a9bee2fcebc39151"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/io-collections/zipball/dd02226cfccbd4eea1d521c8a9bee2fcebc39151",
-                "reference": "dd02226cfccbd4eea1d521c8a9bee2fcebc39151",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0",
-                "xp-framework/core": "^8.0 | ^7.0 | ^6.5"
-            },
-            "require-dev": {
-                "xp-framework/unittest": "^7.0 | ^6.5"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/main/php/autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "I/O Collections for the XP Framework",
-            "homepage": "http://xp-framework.net/",
-            "keywords": [
-                "module",
-                "xp"
-            ],
-            "time": "2016-08-28T21:33:18+00:00"
-        },
-        {
-            "name": "xp-framework/unittest",
-            "version": "v9.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/xp-framework/unittest.git",
-                "reference": "9ad4ec9b2d2a765305a39ae30e33baebd8cf87ef"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/unittest/zipball/9ad4ec9b2d2a765305a39ae30e33baebd8cf87ef",
-                "reference": "9ad4ec9b2d2a765305a39ae30e33baebd8cf87ef",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0",
-                "xp-framework/core": "^9.0 | ^8.0 | ^7.0 | ^6.10"
-            },
-            "bin": [
-                "bin/xp.xp-framework.unittest.test"
-            ],
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/main/php/autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Unittests for the XP Framework",
-            "homepage": "http://xp-framework.net/",
-            "keywords": [
-                "module",
-                "xp"
-            ],
-            "time": "2017-06-27T18:21:26+00:00"
         }
     ],
     "aliases": [],

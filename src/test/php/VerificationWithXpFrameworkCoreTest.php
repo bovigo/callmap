@@ -23,6 +23,7 @@ class VerificationWithXpFrameworkCoreTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $this->markTestIncomplete('XP Integration testing disabled as long as it doesn\'t support PHP 7.2');
         $this->xpFrameworkCoreVerification = new class(new Invocations('', [])) extends Verification
         {
             public function evaluateWithXpFrameworkCore($constraint, $received, string $description): bool
