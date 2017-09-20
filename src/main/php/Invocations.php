@@ -82,7 +82,7 @@ class Invocations implements \Countable
      * @param   string  $suffix            optional  string to append after argument name
      * @return  string|null
      */
-    public function argumentName(int $argumentPosition, string $suffix = '')
+    public function argumentName(int $argumentPosition, string $suffix = ''): ?string
     {
         if  (isset($this->paramNames[$argumentPosition])) {
             return '$' . $this->paramNames[$argumentPosition] . $suffix;

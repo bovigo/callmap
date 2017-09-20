@@ -330,7 +330,7 @@ class NewInstance
      * @param   \ReflectionMethod  $method
      * @return  string|null
      */
-    private static function detectReturnType(\ReflectionMethod $method)
+    private static function detectReturnType(\ReflectionMethod $method): ?string
     {
         if ($method->hasReturnType()) {
             return (string) $method->getReturnType();
