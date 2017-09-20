@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
@@ -155,7 +157,7 @@ class Really implements WithSelfReturnTypeHint
  *
  * @since  0.3.0
  */
-class ReturnSelfTest extends \PHPUnit_Framework_TestCase
+class ReturnSelfTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy

@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\expect;
 /**
  * Tests for bovigo\callmap\NewCallable regarding parse errors in eval().
@@ -16,7 +18,7 @@ use function bovigo\assert\expect;
  * @since  3.1.0
  * @group  eval
  */
-class NewCallableParseErrorTest extends \PHPUnit_Framework_TestCase
+class NewCallableParseErrorTest extends TestCase
 {
     public function setUp()
     {

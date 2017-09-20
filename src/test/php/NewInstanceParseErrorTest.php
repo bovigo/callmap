@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\expect;
 /**
  * Helper trait for the test.
@@ -26,7 +28,7 @@ trait FailingTrait
  * @since  3.0.0
  * @group  eval
  */
-class NewInstanceParseErrorTest extends \PHPUnit_Framework_TestCase
+class NewInstanceParseErrorTest extends TestCase
 {
     public function setUp()
     {

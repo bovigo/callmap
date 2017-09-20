@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
@@ -35,7 +37,7 @@ class SelfDefined
 /**
  * Applies tests to a self defined class.
  */
-class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
+class SelfDefinedClassTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy
@@ -87,6 +89,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
@@ -95,6 +98,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod()
     {
@@ -105,6 +109,7 @@ class SelfDefinedClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {

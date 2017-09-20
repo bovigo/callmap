@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
@@ -25,7 +27,7 @@ function say(string $whom)
  * @since  3.1.0
  * @group  verify
  */
-class VerifyFunctionProxyTest extends \PHPUnit_Framework_TestCase
+class VerifyFunctionProxyTest extends TestCase
 {
     public function functionNames(): array
     {
@@ -383,7 +385,7 @@ class VerifyFunctionProxyTest extends \PHPUnit_Framework_TestCase
         expect(function() use ($function) {
                 verify($function)->received(808);
         })
-                ->throws(\PHPUnit_Framework_ExpectationFailedException::class)
+                ->throws(\PHPUnit\Framework\ExpectationFailedException::class)
                 ->withMessage(
                     'Failed asserting that \'world\' is equal to 808.
 Parameter ' . $parameterName . 'at position 0 for invocation #1 of ' . $functionName
@@ -411,7 +413,7 @@ Parameter ' . $parameterName . 'at position 0 for invocation #1 of ' . $function
         $function = NewCallable::of($functionName);
         $function('world');
         verify($function)->received(
-                new \PHPUnit_Framework_Constraint_IsEqual('world')
+                new \PHPUnit\Framework\Constraint\IsEqual('world')
         );
     }
 }

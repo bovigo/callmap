@@ -152,7 +152,7 @@ class Verification
      */
     public function wasNeverCalled(): bool
     {
-        if (count($this->invocations)> 0) {
+        if (count($this->invocations) > 0) {
             throw new CallAmountViolation(sprintf(
                     '%s was not expected to be called,'
                     . ' but actually called %d time(s).',
@@ -191,11 +191,11 @@ class Verification
     /**
      * verifies that the received arguments match expected arguments for the first invocation
      *
-     * If a constraint is not an instance of PHPUnit_Framework_Constraint it
-     * will automatically use PHPUnit_Framework_Constraint_IsEqual.
+     * If a constraint is not an instance of PHPUnit\Framework\Constraint\Constraint it
+     * will automatically use PHPUnit\Framework\Constraint\IsEqual.
      *
      * @api
-     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit\Framework\Constraint\Constraint[]  ...$expected  constraints which describe expected parameters
      * @return  bool
      */
     public function received(...$expected): bool
@@ -206,12 +206,12 @@ class Verification
     /**
      * verifies that the received arguments match expected arguments for the given invocation
      *
-     * If a constraint is not an instance of PHPUnit_Framework_Constraint it
-     * will automatically use PHPUnit_Framework_Constraint_IsEqual.
+     * If a constraint is not an instance of PHPUnit\Framework\Constraint\Constraint it
+     * will automatically use PHPUnit\Framework\Constraint\IsEqual.
      *
      * @api
      * @param   int                                                                       $invocation   nth invocation to check
-     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint[]  ...$expected  constraints which describe expected parameters
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit\Framework\Constraint\Constraint[]  ...$expected  constraints which describe expected parameters
      * @return  bool
      */
     public function receivedOn(int $invocation, ...$expected): bool
@@ -222,11 +222,11 @@ class Verification
     /**
      * verifies arguments of given invocation with the expected constraints
      *
-     * If a constraint is not an instance of PHPUnit_Framework_Constraint it
-     * will automatically use PHPUnit_Framework_Constraint_IsEqual.
+     * If a constraint is not an instance of PHPUnit\Framework\Constraint\Constraint it
+     * will automatically use PHPUnit\Framework\Constraint\IsEqual.
      *
      * @param   int                                                                       $invocation  number of invocation to check
-     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint[]  $expected    constraints which describe expected parameters
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit\Framework\Constraint\Constraint[]  $expected    constraints which describe expected parameters
      * @return  bool
      * @throws  \bovigo\callmap\ArgumentMismatch
      */
@@ -265,7 +265,7 @@ class Verification
     /**
      * evaluates given constraint given received argument
      *
-     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint  $constraint  constraint for argument
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit\Framework\Constraint\Constraint  $constraint  constraint for argument
      * @param   mixed                                                                   $received    actually received argument
      * @param   string                                                                  $description  description for invocation in case of error
      * @return  bool
@@ -281,7 +281,7 @@ class Verification
             );
         }
 
-        if (class_exists('\PHPUnit_Framework_Constraint_IsEqual')) {
+        if (class_exists('\PHPUnit\Framework\Constraint\IsEqual')) {
             return $this->evaluateWithPhpUnit($constraint, $received, $description);
         }
 
@@ -295,12 +295,12 @@ class Verification
     /**
      * creates precicate for given constraint
      *
-     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit_Framework_Constraint  $constraint
+     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit\Framework\Constraint\Constraint  $constraint
      * @return  \bovigo\assert\predicate\Predicate
      */
     private function predicateFor($constraint): \bovigo\assert\predicate\Predicate
     {
-        if ($constraint instanceof \PHPUnit_Framework_Constraint) {
+        if ($constraint instanceof \PHPUnit\Framework\Constraint\Constraint) {
             return new \bovigo\assert\phpunit\ConstraintAdapter($constraint);
         }
 
@@ -314,21 +314,21 @@ class Verification
     /**
      * evaluates given constraint using PHPUnit
      *
-     * If given constraint is not a instance of \PHPUnit_Framework_Constraint it
-     * will be wrapped with \PHPUnit_Framework_Constraint_IsEqual.
+     * If given constraint is not a instance of \PHPUnit\Framework\Constraint\Constraint it
+     * will be wrapped with \PHPUnit\Framework\Constraint\IsEqual.
      *
-     * @param   mixed|\PHPUnit_Framework_Constraint  $constraint  constraint for argument
+     * @param   mixed|\PHPUnit\Framework\Constraint\Constraint  $constraint  constraint for argument
      * @param   mixed                                $received    actually received argument
      * @param   string                               $description  description for invocation in case of error
      * @return  bool
      */
     protected function evaluateWithPhpUnit($constraint, $received, string $description): bool
     {
-        if ($constraint instanceof \PHPUnit_Framework_Constraint) {
+        if ($constraint instanceof \PHPUnit\Framework\Constraint\Constraint) {
             return $constraint->evaluate($received, $description);
         }
 
-        return (new \PHPUnit_Framework_Constraint_IsEqual($constraint))
+        return (new \PHPUnit\Framework\Constraint\IsEqual($constraint))
                 ->evaluate($received, $description);
     }
 

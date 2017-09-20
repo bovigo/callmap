@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\isSameAs;
 /**
@@ -16,7 +18,7 @@ use function bovigo\assert\predicate\isSameAs;
  *
  * @since  0.6.0
  */
-class WrapCallableTest extends \PHPUnit_Framework_TestCase
+class WrapCallableTest extends TestCase
 {
     /**
      * @test

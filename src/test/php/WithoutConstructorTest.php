@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
@@ -32,7 +34,7 @@ class ClassWithConstructor
 /**
  * Applies tests to a stub of a class.
  */
-class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
+class WithoutConstructorTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy
@@ -74,6 +76,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
@@ -82,6 +85,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod()
     {
@@ -92,6 +96,7 @@ class WithoutConstructorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {

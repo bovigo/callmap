@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\{
     assert,
     expect,
@@ -53,7 +55,7 @@ class ReturnTypeHints
 /**
  * All remaining tests for bovigo\callmap\NewInstance.
  */
-class NewInstanceTest extends \PHPUnit_Framework_TestCase
+class NewInstanceTest extends TestCase
 {
     /**
      * @test

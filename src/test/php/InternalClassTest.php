@@ -9,12 +9,14 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
 /**
  * Applies tests to a PHP internal class.
  */
-class InternalClassTest extends \PHPUnit_Framework_TestCase
+class InternalClassTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy
@@ -67,6 +69,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
@@ -75,6 +78,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod()
     {
@@ -87,6 +91,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function canVerifyReceivedArguments()
     {
@@ -96,6 +101,7 @@ class InternalClassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function canVerifyReceivedArgumentsOfSpecificInvocation()
     {

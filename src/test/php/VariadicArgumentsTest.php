@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\expect;
 /**
  * Helper class for the test.
@@ -31,7 +33,7 @@ class Variadic1
  * @group  variadic
  * @group  issue_9
  */
-class VariadicArgumentsTest extends \PHPUnit_Framework_TestCase
+class VariadicArgumentsTest extends TestCase
 {
     /**
      * @test

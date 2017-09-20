@@ -19,17 +19,17 @@ _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package use the following
 command:
 
-    composer require --dev "bovigo/callmap": "^3.2"
+    composer require --dev "bovigo/callmap": "^4.0"
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=^3.2"
+    composer require "bovigo/callmap=^4.0"
 
 
 Requirements
 ------------
 
-_bovigo/callmap_ requires at least PHP 7.0. For PHP 5.6 use _bovigo/callmap_ 2.1.
+_bovigo/callmap_ requires at least PHP 7.1. For PHP 7.0 use _bovigo/callmap_ 3.2.
 
 For argument verification one of the following packages is required:
 
@@ -338,7 +338,7 @@ above) all of those methods throw an `\InvalidArgumentException`. This also
 prevents typos and wondering why something doesn't work as expected.
 
 By the way, if PHPUnit is available, `CallAmountViolation` will extend
-`PHPUnit_Framework_ExpectationFailedException`. In case it isn't available it
+`PHPUnit\Framework\ExpectationFailedException`. In case it isn't available it
 will simply extend `\Exception`.
 
 
@@ -406,26 +406,26 @@ verify($yourClass, 'aMethod')->received(isInstanceOf('another\ExampleClass'));
 ```
 
 In case a bare value is passed it is assumed that `bovigo\assert\predicate\equals()`
-is meant. Additionally, instances of `PHPUnit_Framework_Constraint` are accepted
-as well as _bovigo/assert_ knows how to handle those.
+is meant. Additionally, instances of `PHPUnit\Framework\Constraint\Constraint`
+are accepted as well as _bovigo/assert_ knows how to handle those.
 
 In case the verification fails an `bovigo\assert\AssertionFailure` will be
 thrown. In case _PHPUnit_ is available as well this exception is also an instance
-of `PHPUnit_Framework_ExpectationFailedException`.
+of `PHPUnit\Framework\ExpectationFailedException`.
 
 
 #### Verification details for PHPUnit
 
-Both `reveived()` and `receivedOn()` also accept any instance of `PHPUnit_Framework_Constraint`:
+Both `reveived()` and `receivedOn()` also accept any instance of `PHPUnit\Framework\Constraint\Constraint`:
 
 ```php
 verify($yourClass, 'aMethod')->received($this->isInstanceOf('another\ExampleClass'));
 ```
 
-In case a bare value is passed it is assumed that `PHPUnit_Framework_Constraint_IsEqual`.
+In case a bare value is passed it is assumed that `PHPUnit\Framework\Constraint\IsEqual`.
 
-In case the verification fails an `PHPUnit_Framework_ExpectationFailedException`
-will be thrown by the used `PHPUnit_Framework_Constraint`.
+In case the verification fails an `PPHPUnit\Framework\ExpectationFailedException`
+will be thrown by the used `PHPUnit\Framework\Constraint\Constraint`.
 
 
 #### Verification details for xp-framework/unittest
@@ -512,7 +512,7 @@ class Socket
 Now a mocked callable can be generated with _bovigo/callmap_:
 
 ```php
-class SocketTest extends \PHPUnit_Framework_TestCase
+class SocketTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException  ConnectionFailure

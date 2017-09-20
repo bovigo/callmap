@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
@@ -22,7 +24,7 @@ abstract class Instrument
 /**
  * Applies tests to a self defined class.
  */
-class AbstractMethodTest extends \PHPUnit_Framework_TestCase
+class AbstractMethodTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy
@@ -100,6 +102,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
@@ -108,6 +111,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod()
     {
@@ -118,6 +122,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed()
     {
@@ -127,6 +132,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function canVerifyReceivedArguments()
     {
@@ -136,6 +142,7 @@ class AbstractMethodTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function canVerifyReceivedArgumentsOfSpecificInvocation()
     {

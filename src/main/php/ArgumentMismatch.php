@@ -6,13 +6,13 @@
  * file that was distributed with this source code.
  */
 namespace bovigo\callmap;
-if (class_exists('PHPUnit_Framework_ExpectationFailedException')) {
+if (class_exists('PHPUnit\Framework\ExpectationFailedException')) {
     /**
      * Thrown when amount of received arguments is lower than expected amount.
      *
      * @since  0.5.0
      */
-    class ArgumentMismatch extends \PHPUnit_Framework_ExpectationFailedException
+    class ArgumentMismatch extends \PHPUnit\Framework\ExpectationFailedException
     {
         // intentionally empty
     }
@@ -25,4 +25,3 @@ if (class_exists('PHPUnit_Framework_ExpectationFailedException')) {
         // intentionally empty
     }
 }
-

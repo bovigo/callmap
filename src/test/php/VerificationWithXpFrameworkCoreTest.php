@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
@@ -17,7 +19,7 @@ use function bovigo\assert\predicate\contains;
   *
   * @since  3.0.0
   */
-class VerificationWithXpFrameworkCoreTest extends \PHPUnit_Framework_TestCase
+class VerificationWithXpFrameworkCoreTest extends TestCase
 {
     private $xpFrameworkCoreVerification;
 

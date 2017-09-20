@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
 /**
@@ -16,7 +18,7 @@ use function bovigo\assert\predicate\contains;
  *
  * @since  0.2.0
  */
-class ThrowsTest extends \PHPUnit_Framework_TestCase
+class ThrowsTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy

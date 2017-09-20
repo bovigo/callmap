@@ -9,13 +9,15 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
 /**
  * Applies tests to a PHP internal interface.
  */
-class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
+class InternalInterfaceTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy
@@ -58,6 +60,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
@@ -66,6 +69,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod()
     {
@@ -76,6 +80,7 @@ class InternalInterfaceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function canVerifyThatMethodDidNotReveiveArguments()
     {

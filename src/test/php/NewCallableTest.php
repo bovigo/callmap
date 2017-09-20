@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\{
     assert,
     assertNull,
@@ -36,7 +38,7 @@ function greet(string $whom)
  *
  * @since  3.1.0
  */
-class NewCallableTest extends \PHPUnit_Framework_TestCase
+class NewCallableTest extends TestCase
 {
     /**
      * @test

@@ -6,13 +6,13 @@
  * file that was distributed with this source code.
  */
 namespace bovigo\callmap;
-if (class_exists('PHPUnit_Framework_ExpectationFailedException')) {
+if (class_exists('PHPUnit\Framework\ExpectationFailedException')) {
     /**
      * Thrown when it is attempted to verify parameters of an invocation that never happened.
      *
      * @since  0.5.0
      */
-    class MissingInvocation extends \PHPUnit_Framework_ExpectationFailedException
+    class MissingInvocation extends \PHPUnit\Framework\ExpectationFailedException
     {
         // intentionally empty
     }
@@ -25,4 +25,3 @@ if (class_exists('PHPUnit_Framework_ExpectationFailedException')) {
         // intentionally empty
     }
 }
-

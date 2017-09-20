@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
@@ -25,7 +27,7 @@ class OneMoreSelfDefined
 /**
  * Tests for call mapping with a list of return values.
  */
-class InvocationResultsTest extends \PHPUnit_Framework_TestCase
+class InvocationResultsTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy
@@ -62,7 +64,7 @@ class InvocationResultsTest extends \PHPUnit_Framework_TestCase
         $this->proxy->mapCalls(
                 ['getName' => onConsecutiveCalls(function() { return 'foo'; })]
         );
-        $this->proxy->getName(); // foo
+        assert($this->proxy->getName(), equals('foo'));
     }
 
     /**

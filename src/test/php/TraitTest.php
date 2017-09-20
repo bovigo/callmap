@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\each;
 use function bovigo\assert\predicate\equals;
@@ -30,7 +32,7 @@ trait SomeTrait
  *
  * @group  issue_1
  */
-class TraitTest extends \PHPUnit_Framework_TestCase
+class TraitTest extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy
@@ -73,6 +75,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled()
     {
@@ -81,6 +84,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod()
     {
@@ -91,6 +95,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {
@@ -100,6 +105,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed()
     {
@@ -109,6 +115,7 @@ class TraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function listOfReceivedArgumentsContainsGivenArguments()
     {

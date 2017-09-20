@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
@@ -33,7 +35,7 @@ class Verified
  * @since  0.5.0
  * @group  verify
  */
-class VerifyClassProxyTest extends \PHPUnit_Framework_TestCase
+class VerifyClassProxyTest extends TestCase
 {
     /**
      * @type  \bovigo\callmap\ClassProxy
@@ -365,7 +367,7 @@ class VerifyClassProxyTest extends \PHPUnit_Framework_TestCase
         expect(function() {
                 verify($this->proxy, 'aMethod')->received(808);
         })
-                ->throws(\PHPUnit_Framework_ExpectationFailedException::class)
+                ->throws(\PHPUnit\Framework\ExpectationFailedException::class)
                 ->withMessage(
                     'Failed asserting that 303 is equal to 808.
 Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aMethod()'
@@ -391,7 +393,7 @@ Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aM
     {
         $this->proxy->aMethod(303);
         verify($this->proxy, 'aMethod')
-                ->received(new \PHPUnit_Framework_Constraint_IsEqual(303));
+                ->received(new \PHPUnit\Framework\Constraint\IsEqual(303));
     }
 
     /**

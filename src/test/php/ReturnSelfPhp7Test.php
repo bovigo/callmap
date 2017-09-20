@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use PHPUnit\Framework\TestCase;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\assert\predicate\isNull;
@@ -95,7 +97,7 @@ class Extended7 extends Base7 implements Bar7, \IteratorAggregate
  *
  * @since  2.0.0
  */
-class ReturnSelfPhp7Test extends \PHPUnit_Framework_TestCase
+class ReturnSelfPhp7Test extends TestCase
 {
     /**
      * @type  bovigo\callmap\Proxy
