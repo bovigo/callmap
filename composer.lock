@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bad86a17d89cf39f160eee13c7d3b99",
+    "content-hash": "6d45c7421a3a72b36e4c2fa51f748487",
     "packages": [],
     "packages-dev": [
         {
@@ -1445,22 +1445,21 @@
         },
         {
             "name": "xp-framework/unittest",
-            "version": "v7.2.0",
+            "version": "v9.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xp-framework/unittest.git",
-                "reference": "e666f31190f69ad5eaaa92ff5f6843341c243774"
+                "reference": "9ad4ec9b2d2a765305a39ae30e33baebd8cf87ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/unittest/zipball/e666f31190f69ad5eaaa92ff5f6843341c243774",
-                "reference": "e666f31190f69ad5eaaa92ff5f6843341c243774",
+                "url": "https://api.github.com/repos/xp-framework/unittest/zipball/9ad4ec9b2d2a765305a39ae30e33baebd8cf87ef",
+                "reference": "9ad4ec9b2d2a765305a39ae30e33baebd8cf87ef",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0",
-                "xp-framework/core": "^8.0 | ^7.0 | ^6.10",
-                "xp-framework/io-collections": "^7.0 | ^6.5"
+                "php": ">=5.6.0",
+                "xp-framework/core": "^9.0 | ^8.0 | ^7.0 | ^6.10"
             },
             "bin": [
                 "bin/xp.xp-framework.unittest.test"
@@ -1481,7 +1480,7 @@
                 "module",
                 "xp"
             ],
-            "time": "2017-05-20T17:49:23+00:00"
+            "time": "2017-06-27T18:21:26+00:00"
         }
     ],
     "aliases": [],
