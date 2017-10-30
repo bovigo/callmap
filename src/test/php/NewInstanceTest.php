@@ -12,7 +12,7 @@ namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
-    assert,
+    assertThat,
     expect,
     predicate\equals,
     predicate\isInstanceOf,
@@ -125,7 +125,7 @@ class NewInstanceTest extends TestCase
      */
     public function doesNotGenerateClassTwice()
     {
-        assert(
+        assertThat(
                 NewInstance::classname(\ReflectionObject::class),
                 equals(NewInstance::classname(\ReflectionObject::class))
         );
@@ -137,7 +137,7 @@ class NewInstanceTest extends TestCase
      */
     public function doesCreateIndependentInstances()
     {
-        assert(
+        assertThat(
                 NewInstance::of(\ReflectionObject::class, [$this]),
                 isNotSameAs(NewInstance::of(\ReflectionObject::class, [$this]))
         );
@@ -149,7 +149,7 @@ class NewInstanceTest extends TestCase
      */
     public function doesCreateIndependentStubs()
     {
-        assert(
+        assertThat(
                 NewInstance::stub(AnotherTestHelperClass::class),
                 isNotSameAs(NewInstance::stub(AnotherTestHelperClass::class))
         );
@@ -255,7 +255,7 @@ class NewInstanceTest extends TestCase
      */
     public function canCreateInstanceFromClassWithPhp7ReturnTypeHintOnMethod()
     {
-        assert(
+        assertThat(
                 NewInstance::of(ReturnTypeHints::class),
                 isInstanceOf(ReturnTypeHints::class)
         );
@@ -269,6 +269,6 @@ class NewInstanceTest extends TestCase
     {
         $instance = NewInstance::of(AnotherTestHelperClass::class)
                 ->mapCalls(['gimmeFive' => null]);
-        assert($instance->gimmeFive(), isNull());
+        assertThat($instance->gimmeFive(), isNull());
     }
 }

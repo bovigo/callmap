@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\each;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isOfType;
@@ -52,7 +52,7 @@ class TraitTest extends TestCase
      */
     public function callsOriginalMethodIfNoMappingProvided()
     {
-        assert($this->proxy->action(313), equals(313));
+        assertThat($this->proxy->action(313), equals(313));
     }
 
     /**
@@ -61,7 +61,7 @@ class TraitTest extends TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => 'foo']);
-        assert($this->proxy->action(313), equals('foo'));
+        assertThat($this->proxy->action(313), equals('foo'));
     }
 
     /**
@@ -70,7 +70,7 @@ class TraitTest extends TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => function() { return 'foo'; }]);
-        assert($this->proxy->action(313), equals('foo'));
+        assertThat($this->proxy->action(313), equals('foo'));
     }
 
     /**

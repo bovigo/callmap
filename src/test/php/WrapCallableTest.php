@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for bovigo\callmap\callable()
@@ -28,7 +28,7 @@ class WrapCallableTest extends TestCase
         $callable = function() {};
         $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
                 ->mapCalls(['getName' => wrap($callable)]);
-        assert($proxy->getName(), isSameAs($callable));
+        assertThat($proxy->getName(), isSameAs($callable));
     }
 
     /**
@@ -39,6 +39,6 @@ class WrapCallableTest extends TestCase
         $callable = function() {};
         $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
                 ->mapCalls(['getName' => onConsecutiveCalls(wrap($callable))]);
-        assert($proxy->getName(), isSameAs($callable));
+        assertThat($proxy->getName(), isSameAs($callable));
     }
 }

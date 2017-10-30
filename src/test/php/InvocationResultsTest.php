@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
 /**
@@ -51,7 +51,7 @@ class InvocationResultsTest extends TestCase
             ['getName' => onConsecutiveCalls('foo', 'bar', 'baz')]
         );
         foreach (['foo', 'bar', 'baz'] as $expected) {
-            assert($this->proxy->getName(), equals($expected));
+            assertThat($this->proxy->getName(), equals($expected));
         }
     }
 
@@ -64,7 +64,7 @@ class InvocationResultsTest extends TestCase
         $this->proxy->mapCalls(
                 ['getName' => onConsecutiveCalls(function() { return 'foo'; })]
         );
-        assert($this->proxy->getName(), equals('foo'));
+        assertThat($this->proxy->getName(), equals('foo'));
     }
 
     /**
@@ -74,7 +74,7 @@ class InvocationResultsTest extends TestCase
     {
         $this->proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
         $this->proxy->getName(); // foo
-        assert($this->proxy->getName(), equals(__CLASS__));
+        assertThat($this->proxy->getName(), equals(__CLASS__));
     }
 
     /**
@@ -86,7 +86,7 @@ class InvocationResultsTest extends TestCase
         $proxy = NewInstance::stub(OneMoreSelfDefined::class);
         $proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
         $proxy->getName(); // foo
-        assert($proxy->getName(), isNull());
+        assertThat($proxy->getName(), isNull());
     }
 
     /**
@@ -98,6 +98,6 @@ class InvocationResultsTest extends TestCase
         $proxy = NewInstance::stub(\Countable::class);
         $proxy->mapCalls(['count' => onConsecutiveCalls(303)]);
         $proxy->count(); // 303
-        assert($proxy->count(), isNull());
+        assertThat($proxy->count(), isNull());
     }
 }

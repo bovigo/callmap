@@ -12,8 +12,8 @@ namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
-    assert,
     assertNull,
+    assertThat,
     expect,
     predicate\equals,
     predicate\isInstanceOf,
@@ -54,7 +54,7 @@ class NewCallableTest extends TestCase
      */
     public function doesNotGenerateClassTwice()
     {
-        assert(
+        assertThat(
                 NewCallable::classname('substr'),
                 equals(NewCallable::classname('substr'))
         );
@@ -65,7 +65,7 @@ class NewCallableTest extends TestCase
      */
     public function doesCreateIndependentInstances()
     {
-        assert(
+        assertThat(
                 NewCallable::of('substr'),
                 isNotSameAs(NewCallable::of('substr'))
         );
@@ -76,7 +76,7 @@ class NewCallableTest extends TestCase
      */
     public function doesCreateIndependentStubs()
     {
-        assert(
+        assertThat(
                 NewCallable::stub('substr'),
                 isNotSameAs(NewCallable::stub('substr'))
         );
@@ -87,7 +87,7 @@ class NewCallableTest extends TestCase
      */
     public function canCreateInstanceFromFunctionWithPhp7ReturnTypeHint()
     {
-        assert(
+        assertThat(
                 NewCallable::of('bovigo\callmap\doSomething'),
                 isInstanceOf(FunctionProxy::class)
         );
@@ -105,7 +105,7 @@ class NewCallableTest extends TestCase
     public function callsOriginalFunctionWhenNotMapped($functionName, $expected)
     {
         $function = NewCallable::of($functionName);
-        assert($function('world'), equals($expected));
+        assertThat($function('world'), equals($expected));
     }
 
     /**
@@ -135,7 +135,7 @@ class NewCallableTest extends TestCase
     public function mapReturnValueReturnsMappedValueOnInvocation($functionName)
     {
         $function = NewCallable::of($functionName)->mapCall('great stuff');
-        assert($function('world'), equals('great stuff'));
+        assertThat($function('world'), equals('great stuff'));
     }
 
     /**
@@ -146,9 +146,9 @@ class NewCallableTest extends TestCase
     {
         $function = NewCallable::of($functionName)
                 ->mapCall(onConsecutiveCalls('great', 'stuff'));
-        assert($function('world'), equals('great'));
-        assert($function('world'), equals('stuff'));
-        assert($function('world'), equals($expected));
+        assertThat($function('world'), equals('great'));
+        assertThat($function('world'), equals('stuff'));
+        assertThat($function('world'), equals($expected));
     }
 
     /**

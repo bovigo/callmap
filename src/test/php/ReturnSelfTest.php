@@ -11,7 +11,8 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\assert\predicate\isNull;
@@ -177,7 +178,7 @@ class ReturnSelfTest extends TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsThis()
     {
-        assert($this->proxy, isSameAs($this->proxy->yo()));
+        assertThat($this->proxy, isSameAs($this->proxy->yo()));
     }
 
     /**
@@ -185,7 +186,7 @@ class ReturnSelfTest extends TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassName()
     {
-        assert($this->proxy, isSameAs($this->proxy->action()));
+        assertThat($this->proxy, isSameAs($this->proxy->action()));
     }
 
     /**
@@ -193,7 +194,7 @@ class ReturnSelfTest extends TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassNameWithoutLeadingBackslash()
     {
-        assert($this->proxy, isSameAs($this->proxy->moreAction()));
+        assertThat($this->proxy, isSameAs($this->proxy->moreAction()));
     }
 
     /**
@@ -201,7 +202,7 @@ class ReturnSelfTest extends TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsNonFullyQualifiedClassName()
     {
-        assert($this->proxy, isSameAs($this->proxy->minorAction()));
+        assertThat($this->proxy, isSameAs($this->proxy->minorAction()));
     }
 
     /**
@@ -209,7 +210,7 @@ class ReturnSelfTest extends TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsImplementedInterface()
     {
-        assert($this->proxy, isSameAs($this->proxy->foo()));
+        assertThat($this->proxy, isSameAs($this->proxy->foo()));
     }
 
     /**
@@ -217,7 +218,7 @@ class ReturnSelfTest extends TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsInterfaceImplementedByParentClass()
     {
-        assert($this->proxy, isSameAs($this->proxy->wow()));
+        assertThat($this->proxy, isSameAs($this->proxy->wow()));
     }
 
     /**
@@ -225,7 +226,7 @@ class ReturnSelfTest extends TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsParentClass()
     {
-        assert($this->proxy, isSameAs($this->proxy->aha()));
+        assertThat($this->proxy, isSameAs($this->proxy->aha()));
     }
 
     /**
@@ -233,7 +234,7 @@ class ReturnSelfTest extends TestCase
      */
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsSelf()
     {
-        assert($this->proxy, isSameAs($this->proxy->baz()));
+        assertThat($this->proxy, isSameAs($this->proxy->baz()));
     }
 
     /**
@@ -241,7 +242,7 @@ class ReturnSelfTest extends TestCase
      */
     public function doesNotReturnSelfWhenReturnTypeHintIsTraversableEvenWhenInTypeHierarchy()
     {
-        assert($this->proxy->getIterator(), isNull());
+        assertThat($this->proxy->getIterator(), isNull());
     }
 
     /**
@@ -249,7 +250,7 @@ class ReturnSelfTest extends TestCase
      */
     public function doesNotReturnSelfWhenReturnTypeHintIsNotInTypeHierarchy()
     {
-        assert($this->proxy->other(), isNull());
+        assertThat($this->proxy->other(), isNull());
     }
 
     /**
@@ -258,7 +259,7 @@ class ReturnSelfTest extends TestCase
     public function returnsSelfForInterfacesWhenCreatedWithInstanceOfAndAccordingReturnType()
     {
         $proxy = NewInstance::of(OneMoreThing::class);
-        assert($proxy, isSameAs($proxy->wow()));
+        assertThat($proxy, isSameAs($proxy->wow()));
     }
 
     /**
@@ -266,7 +267,7 @@ class ReturnSelfTest extends TestCase
      */
     public function doesNotReturnSelfWhenReturnTypeHintEmpty()
     {
-        assert(NewInstance::of(Bar::class)->foo(), isNull());
+        assertNull(NewInstance::of(Bar::class)->foo());
     }
 
     /**
@@ -275,7 +276,7 @@ class ReturnSelfTest extends TestCase
      */
     public function doesNotReturnSelfWhenNoReturnTypeHintInDocComment()
     {
-        assert(NewInstance::of(Fump::class)->noReturn(), isNull());
+        assertNull(NewInstance::of(Fump::class)->noReturn());
     }
 
     /**
@@ -285,7 +286,7 @@ class ReturnSelfTest extends TestCase
      */
     public function canWorkWithSelfReturnTypeHintForInterfaceDirectly()
     {
-        assert(
+        assertThat(
                 NewInstance::of(WithSelfReturnTypeHint::class)->wow(),
                 isInstanceOf(WithSelfReturnTypeHint::class)
         );
@@ -298,7 +299,7 @@ class ReturnSelfTest extends TestCase
      */
     public function canWorkWithSelfReturnTypeHintForImplementingClass()
     {
-        assert(
+        assertThat(
                 NewInstance::stub(Really::class)->wow(),
                 isInstanceOf(WithSelfReturnTypeHint::class)
         );
@@ -311,7 +312,7 @@ class ReturnSelfTest extends TestCase
      */
     public function canWorkWithSelfReturnTypeHintForClassDirectly()
     {
-        assert(
+        assertThat(
                 NewInstance::stub(Really::class)->hui(),
                 isInstanceOf(Really::class)
         );

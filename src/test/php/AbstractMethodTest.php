@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
 /**
@@ -44,7 +44,7 @@ class AbstractMethodTest extends TestCase
      */
     public function returnsNullIfMethodCallNotMapped()
     {
-        assert($this->proxy->play(), isNull());
+        assertThat($this->proxy->play(), isNull());
     }
 
     /**
@@ -53,7 +53,7 @@ class AbstractMethodTest extends TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['play' => 'foo']);
-        assert($this->proxy->play(), equals('foo'));
+        assertThat($this->proxy->play(), equals('foo'));
     }
 
     /**
@@ -62,7 +62,7 @@ class AbstractMethodTest extends TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['play' => function() { return 'foo'; }]);
-        assert($this->proxy->play(808), equals('foo'));
+        assertThat($this->proxy->play(808), equals('foo'));
     }
 
     /**
@@ -94,7 +94,7 @@ class AbstractMethodTest extends TestCase
                 ]
         );
 
-        assert(
+        assertThat(
                 null === $argument ? $this->proxy->play() : $this->proxy->play($argument),
                 equals($expectedResult)
         );

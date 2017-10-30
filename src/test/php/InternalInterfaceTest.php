@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
 /**
@@ -37,7 +37,7 @@ class InternalInterfaceTest extends TestCase
      */
     public function returnsNullIfMethodCallNotMapped()
     {
-        assert($this->proxy->count(), isNull());
+        assertThat($this->proxy->count(), isNull());
     }
 
     /**
@@ -46,7 +46,7 @@ class InternalInterfaceTest extends TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['count' => 3]);
-        assert($this->proxy->count(), equals(3));
+        assertThat($this->proxy->count(), equals(3));
     }
 
     /**
@@ -55,7 +55,7 @@ class InternalInterfaceTest extends TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['count' => function() { return 42; }]);
-        assert($this->proxy->count(), equals(42));
+        assertThat($this->proxy->count(), equals(42));
     }
 
     /**

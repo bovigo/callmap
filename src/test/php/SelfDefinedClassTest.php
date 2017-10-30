@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 /**
@@ -57,7 +57,7 @@ class SelfDefinedClassTest extends TestCase
      */
     public function callsOriginalMethodIfNoMappingProvided()
     {
-        assert(
+        assertThat(
                 $this->proxy->action(new SelfDefined(), function() {}),
                 equals('selfdefined')
         );
@@ -69,7 +69,7 @@ class SelfDefinedClassTest extends TestCase
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => 'foo']);
-        assert(
+        assertThat(
                 $this->proxy->action(new SelfDefined(), function() {}),
                 equals('foo')
         );
@@ -81,7 +81,7 @@ class SelfDefinedClassTest extends TestCase
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
         $this->proxy->mapCalls(['action' => function() { return 'foo'; }]);
-        assert(
+        assertThat(
                 $this->proxy->action(new SelfDefined(), function() {}),
                 equals('foo')
         );
