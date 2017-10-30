@@ -7,7 +7,7 @@ Compatible with any [unit test framework](http://en.wikipedia.org/wiki/List_of_u
 Package status
 --------------
 
-[![Build Status](https://secure.travis-ci.org/mikey179/bovigo-callmap.png)](http://travis-ci.org/mikey179/bovigo-callmap) [![Coverage Status](https://coveralls.io/repos/github/mikey179/bovigo-callmap/badge.svg?branch=master)](https://coveralls.io/github/mikey179/bovigo-callmap?branch=master)
+[![Build Status](https://secure.travis-ci.org/mikey179/bovigo-callmap.png)](http://travis-ci.org/mikey179/bovigo-callmap) [![Build Status Windows](https://ci.appveyor.com/api/projects/status/1a5ljd006qtpebde/branch/master?svg=true)](https://ci.appveyor.com/project/mikey179/bovigo-callmap/branch/master) [![Coverage Status](https://coveralls.io/repos/github/mikey179/bovigo-callmap/badge.svg?branch=master)](https://coveralls.io/github/mikey179/bovigo-callmap?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/bovigo/callmap/version.png)](https://packagist.org/packages/bovigo/callmap) [![Latest Unstable Version](https://poser.pugx.org/bovigo/callmap/v/unstable.png)](//packagist.org/packages/bovigo/callmap)
 
