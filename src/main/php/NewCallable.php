@@ -112,6 +112,12 @@ class NewCallable
     private static function createProxyCode(\ReflectionFunction $function): string
     {
         $param = paramsOf($function);
+        $return = true;
+        $returnType = determineReturnTypeOf($function);
+        if ($returnType === ': void') {
+            $return = false;
+        }
+
         $code  = sprintf(
                     "class %sCallMapProxy extends \bovigo\callmap\FunctionProxy{\n"
                     . "    protected \$paramNames = %s;\n"
@@ -121,13 +127,16 @@ class NewCallable
                     . "        return \$this;\n"
                     . "    }\n"
                     . "    public function __invoke(%s)%s {\n"
-                    . "        return \$this->handleFunctionCall(func_get_args());\n"
+                    . "        %s\$this->handleFunctionCall(func_get_args());\n"
                     . "    }\n"
+                    . "    protected \$returnVoid = %s;"
                     . "}\n",
                     ucfirst($function->getShortName()),
                     var_export($param['names'], true),
                     $param['string'],
-                    determineReturnTypeOf($function)
+                    determineReturnTypeOf($function),
+                    $return ? 'return ' : '',
+                    $return ? 'false' : 'true'
         );
         if ($function->inNamespace()) {
             return sprintf(

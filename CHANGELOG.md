@@ -1,3 +1,9 @@
+4.0.1 (2018-02-11)
+------------------
+
+  * fixed invalid handling of methods and functions with return type declared as `void`
+
+
 4.0.0 (2017-09-20)
 ------------------
 

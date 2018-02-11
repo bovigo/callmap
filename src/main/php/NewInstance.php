@@ -237,17 +237,26 @@ class NewInstance
         $code    = '';
         $methods = [];
         $params  = [];
+        $voidMethods = [];
         foreach (self::methodsOf($class) as $method) {
+            $return = true;
+            $returnType = determineReturnTypeOf($method);
+            if ($returnType === ': void') {
+                $voidMethods[$method->getName()] = $method->getName();
+                $return = false;
+            }
+
             $param = paramsOf($method);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
                     "    %s function %s(%s)%s {\n"
-                  . "        return \$this->handleMethodCall('%s', func_get_args(), %s);\n"
+                  . "        %s\$this->handleMethodCall('%s', func_get_args(), %s);\n"
                   . "    }\n",
                     ($method->isPublic() ? 'public' : 'protected'),
                     $method->getName(),
                     $param['string'],
-                    determineReturnTypeOf($method),
+                    $returnType,
+                    $return ? 'return ' : '',
                     $method->getName(),
                     self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
@@ -261,6 +270,9 @@ class NewInstance
         ) . sprintf(
                 "\n    private \$_methodParams = %s;\n",
                 var_export($params, true)
+        ) . sprintf(
+                "\n    private \$_voidMethods = %s;\n",
+                var_export($voidMethods, true)
         );
     }
 

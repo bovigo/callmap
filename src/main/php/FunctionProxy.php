@@ -15,6 +15,12 @@ namespace bovigo\callmap;
 abstract class FunctionProxy implements Proxy
 {
     /**
+     * name of mocked function
+     *
+     * @type  string
+     */
+    private $name;
+    /**
      * map of method with closures to call instead
      *
      * @type  \bovigo\callmap\CallMap
@@ -36,6 +42,7 @@ abstract class FunctionProxy implements Proxy
      */
     public function __construct(string $functionName)
     {
+        $this->name = $functionName;
         $this->invocations = new Invocations($functionName, $this->paramNames);
     }
 
@@ -45,10 +52,18 @@ abstract class FunctionProxy implements Proxy
      * @api
      * @param   mixed  $returnValue
      * @return  $this
+     * @throws  \LogicException when mapped function is declared as returning void
      * @since   3.2.0
      */
     public function returns($returnValue): self
     {
+        if ($this->returnVoid) {
+            throw new \LogicException(
+                'Trying to map function ' . $this->name
+                . '(), but it is declared as returning void.'
+            );
+        }
+
         $this->callMap = new CallMap(['function' => $returnValue]);
         return $this;
     }

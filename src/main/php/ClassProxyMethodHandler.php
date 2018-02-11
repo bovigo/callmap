@@ -56,7 +56,7 @@ trait ClassProxyMethodHandler
     public function returns(array $callMap): ClassProxy
     {
         foreach (array_keys($callMap) as $method) {
-            if (!isset($this->_allowedMethods[$method])) {
+            if (!isset($this->_allowedMethods[$method]) || isset($this->_voidMethods[$method])) {
                 throw new \InvalidArgumentException(
                         $this->canNot('map', $method)
                 );
@@ -166,14 +166,19 @@ trait ClassProxyMethodHandler
      */
     private function canNot(string $message, string $invalidMethod): string
     {
+        if (isset($this->_voidMethods[$invalidMethod])) {
+            $reason = 'is declared as returning void.';
+        } elseif (method_exists($this, $invalidMethod)) {
+            $reason = 'is not applicable for mapping.';
+        } else {
+            $reason = 'does not exist. Probably a typo?';
+        }
+
         return sprintf(
                 'Trying to %s method %s, but it %s',
                 $message,
                 $this->completeNameOf($invalidMethod),
-                (method_exists($this, $invalidMethod) ?
-                    'is not applicable for mapping.' :
-                    'does not exist. Probably a typo?'
-                )
+                $reason
         );
     }
 }
