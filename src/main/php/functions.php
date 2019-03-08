@@ -72,11 +72,11 @@ namespace bovigo\callmap {
      */
     function determineReturnTypeOf(\ReflectionFunctionAbstract $function): string
     {
-        if (!$function->hasReturnType()) {
+        $returnType = $function->getReturnType();
+        if (null === $returnType) {
             return '';
         }
 
-        $returnType = $function->getReturnType();
         if ($returnType->isBuiltin()) {
             return ': ' . $returnType;
         }
