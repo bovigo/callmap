@@ -225,8 +225,8 @@ class Verification
      * If a constraint is not an instance of PHPUnit\Framework\Constraint\Constraint it
      * will automatically use PHPUnit\Framework\Constraint\IsEqual.
      *
-     * @param   int                                                                       $invocation  number of invocation to check
-     * @param   mixed|\bovigo\assert\predicate\Predicate|\PHPUnit\Framework\Constraint\Constraint[]  $expected    constraints which describe expected parameters
+     * @param   int    $invocation  number of invocation to check
+     * @param   array  $expected    constraints which describe expected parameters
      * @return  bool
      * @throws  \bovigo\callmap\ArgumentMismatch
      */

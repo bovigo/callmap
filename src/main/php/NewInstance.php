@@ -280,9 +280,9 @@ class NewInstance
      * returns applicable methods for given class
      *
      * @param   \ReflectionClass  $class
-     * @return  \ReflectionMethod[]
+     * @return  \Iterator
      */
-    private static function methodsOf(\ReflectionClass $class): \Traversable
+    private static function methodsOf(\ReflectionClass $class): \Iterator
     {
         return new \CallbackFilterIterator(
                 new \ArrayIterator($class->getMethods()),
