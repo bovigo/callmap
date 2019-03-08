@@ -95,7 +95,6 @@ class TraitTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {
@@ -115,7 +114,6 @@ class TraitTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function listOfReceivedArgumentsContainsGivenArguments()
     {

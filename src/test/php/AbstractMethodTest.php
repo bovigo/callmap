@@ -132,7 +132,6 @@ class AbstractMethodTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function canVerifyReceivedArguments()
     {
@@ -142,7 +141,6 @@ class AbstractMethodTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function canVerifyReceivedArgumentsOfSpecificInvocation()
     {

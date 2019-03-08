@@ -6,9 +6,9 @@
         "php": "^7.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0",
-        "bovigo/assert": " ^4.0",
-        "xp-framework/unittest": "^9.0"
+        "phpunit/phpunit": "^7.5",
+        "bovigo/assert": " ^5.0",
+        "xp-framework/unittest": "^9.7"
     },
     "suggest": {
         "bovigo/assert": "To use argument verification",

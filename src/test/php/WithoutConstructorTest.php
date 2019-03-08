@@ -96,7 +96,6 @@ class WithoutConstructorTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {

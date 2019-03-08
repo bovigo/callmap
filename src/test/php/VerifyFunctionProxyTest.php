@@ -385,7 +385,7 @@ class VerifyFunctionProxyTest extends TestCase
         expect(function() use ($function) {
                 verify($function)->received(808);
         })
-                ->throws(\PHPUnit\Framework\ExpectationFailedException::class)
+                ->throws(\PHPUnit\Framework\AssertionFailedError::class)
                 ->withMessage(
                     'Failed asserting that \'world\' is equal to 808.
 Parameter ' . $parameterName . 'at position 0 for invocation #1 of ' . $functionName

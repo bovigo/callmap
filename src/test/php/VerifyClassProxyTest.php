@@ -367,7 +367,7 @@ class VerifyClassProxyTest extends TestCase
         expect(function() {
                 verify($this->proxy, 'aMethod')->received(808);
         })
-                ->throws(\PHPUnit\Framework\ExpectationFailedException::class)
+                ->throws(\PHPUnit\Framework\AssertionFailedError::class)
                 ->withMessage(
                     'Failed asserting that 303 is equal to 808.
 Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aMethod()'

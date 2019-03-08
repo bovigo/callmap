@@ -91,7 +91,6 @@ class InternalClassTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function canVerifyReceivedArguments()
     {
@@ -101,7 +100,6 @@ class InternalClassTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function canVerifyReceivedArgumentsOfSpecificInvocation()
     {

@@ -109,7 +109,6 @@ class SelfDefinedClassTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function returnsListOfReceivedArgumentsIfMethodCalled()
     {
