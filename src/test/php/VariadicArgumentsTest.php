@@ -35,10 +35,6 @@ class VariadicArgumentsTest extends TestCase
      */
     public function canCreateProxyForTypeWithVariadicReference()
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('HHVM does not support variadic parameters by reference');
-        }
-
         eval(
                 'class VariadicReference
                 {
@@ -58,10 +54,6 @@ class VariadicArgumentsTest extends TestCase
      */
     public function canCreateProxyForTypeWithVariadicTypehint()
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('HHVM does not support variadic parameters with type hints');
-        }
-
         eval(
                 'class VariadicTypeHint
                 {
