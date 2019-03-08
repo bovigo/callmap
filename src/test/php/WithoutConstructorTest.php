@@ -9,28 +9,12 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\ClassWithConstructor;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
-/**
- * Helper class for the test.
- */
-class ClassWithConstructor
-{
-    private $foo;
-
-    public function __construct(\stdClass $foo)
-    {
-        $this->foo = $foo;
-    }
-
-    public function action()
-    {
-        return $this->foo->bar;
-    }
-}
 /**
  * Applies tests to a stub of a class.
  */

@@ -9,31 +9,12 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\SelfDefined;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
-/**
- * Helper class for the test.
- */
-class SelfDefined
-{
-    public function action(self $self, callable $something, array $optional = [], $roland = 303): string
-    {
-        return 'selfdefined';
-    }
-
-    public function passByReference(&$foo, array $bar = ['baz' => 303])
-    {
-
-    }
-
-    public function optionalNull($baz = null)
-    {
-
-    }
-}
 /**
  * Applies tests to a self defined class.
  */

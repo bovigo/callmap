@@ -9,21 +9,12 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\OneMoreSelfDefined;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isNull;
-/**
- * Helper class for the test.
- */
-class OneMoreSelfDefined
-{
-    public function getName()
-    {
-        return 'bar';
-    }
-}
 /**
  * Tests for call mapping with a list of return values.
  */

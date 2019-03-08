@@ -9,19 +9,10 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\FailingTrait;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
-/**
- * Helper trait for the test.
- */
-trait FailingTrait
-{
-    public function action($something)
-    {
-        return $something;
-    }
-}
 /**
  * Tests for bovigo\callmap\NewInstance regarding parse errors in eval().
  *

@@ -9,19 +9,10 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\SomeClassWithMethodReturningVoid;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
-/**
- * Helper class for the test.
- */
-class SomeClassWithMethodReturningVoid
-{
-    public function returnNothing(): void
-    {
-        // intentionally empty
-    }
-}
 function whichReturnsNothing(): void
 {
     // intentionally empty

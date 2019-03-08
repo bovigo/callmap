@@ -9,6 +9,13 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\Extended;
+use bovigo\callmap\helper\Bar;
+use bovigo\callmap\helper\Base;
+use bovigo\callmap\helper\Fump;
+use bovigo\callmap\helper\OneMoreThing;
+use bovigo\callmap\helper\Really;
+use bovigo\callmap\helper\WithSelfReturnTypeHint;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertNull;
@@ -16,143 +23,6 @@ use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\assert\predicate\isNull;
-/**
- * Helper interface for the test below.
- */
-interface Bar
-{
-    /**
-     * @return
-     */
-    public function foo();
-}
-/**
- * Helper interface for the test below.
- */
-interface OneMoreThing
-{
-    /**
-     * @return  OneMoreThing
-     */
-    public function wow();
-}
-/**
- * Helper class for the test below.
- */
-class Base implements OneMoreThing
-{
-    /**
-     * @return self
-     */
-    public function baz()
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return  Base
-     */
-    public function aha()
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return  OneMoreThing
-     */
-    public function wow()
-    {
-        // no actual return on purpose
-    }
-}
-/**
- * Helper class for the test below.
- */
-class Extended extends Base implements Bar, \IteratorAggregate
-{
-    /**
-     * @return  Bar
-     */
-    public function foo()
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return $this
-     */
-    public function yo()
-    {
-
-    }
-
-    /**
-     * @return  \bovigo\callmap\Extended
-     */
-    public function action()
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return  bovigo\callmap\Extended
-     */
-    public function moreAction()
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return  Extended
-     */
-    public function minorAction()
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return  \Traversable
-     */
-    public function getIterator()
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return Other
-     */
-    public function other()
-    {
-        // no actual return on purpose
-    }
-
-}
-/**
- * @since  3.0.0
- */
-interface Fump
-{
-    /**
-     *
-     */
-    public function noReturn();
-}
-/**
- * @since  3.0.2
- */
-interface WithSelfReturnTypeHint
-{
-    public function wow(): self;
-}
-/**
- * @since  3.0.2
- */
-class Really implements WithSelfReturnTypeHint
-{
-    public function wow(): WithSelfReturnTypeHint { return $this; }
-
-    public function hui(): self { return $this; }
-}
 /**
  * Tests for automated return self.
  *

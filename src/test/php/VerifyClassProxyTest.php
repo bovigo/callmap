@@ -9,26 +9,12 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\Verified;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
-/**
- * Helper for the test.
- */
-class Verified
-{
-    public function aMethod(int $roland = 303)
-    {
-
-    }
-
-    public function otherMethod(int $roland = 909)
-    {
-
-    }
-}
 /**
  * Test for bovigo\callmap\verify() with class proxy.
  *
@@ -80,7 +66,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(CallAmountViolation::class)
                 ->withMessage(
-                        'bovigo\callmap\Verified::aMethod() was not expected to'
+                        Verified::class . '::aMethod() was not expected to'
                         . ' be called, but actually called 1 time(s).'
                 );
     }
@@ -106,7 +92,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(CallAmountViolation::class)
                 ->withMessage(
-                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        Verified::class . '::aMethod() was expected to be'
                         . ' called 2 time(s), but actually called 1 time(s).'
                 );
     }
@@ -124,7 +110,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(CallAmountViolation::class)
                 ->withMessage(
-                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        Verified::class . '::aMethod() was expected to be'
                         . ' called 2 time(s), but actually called 3 time(s).'
                 );
     }
@@ -148,7 +134,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(CallAmountViolation::class)
                 ->withMessage(
-                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        Verified::class . '::aMethod() was expected to be'
                         . ' called once, but actually never called.'
                 );
     }
@@ -165,7 +151,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(CallAmountViolation::class)
                 ->withMessage(
-                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        Verified::class . '::aMethod() was expected to be'
                         . ' called once, but actually called 2 time(s).'
                 );
     }
@@ -202,7 +188,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(CallAmountViolation::class)
                 ->withMessage(
-                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        Verified::class . '::aMethod() was expected to be'
                         . ' called at least 2 time(s), but actually called 1 time(s).'
                 );
     }
@@ -236,7 +222,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(CallAmountViolation::class)
                 ->withMessage(
-                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        Verified::class . '::aMethod() was expected to be'
                         . ' called at least once, but was never called.'
                 );
     }
@@ -273,7 +259,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(CallAmountViolation::class)
                 ->withMessage(
-                        'bovigo\callmap\Verified::aMethod() was expected to be'
+                        Verified::class . '::aMethod() was expected to be'
                         . ' called at most 2 time(s), but actually called 3 time(s).'
                 );
     }
@@ -288,7 +274,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(MissingInvocation::class)
                 ->withMessage(
-                        'Missing invocation #1 for bovigo\callmap\Verified::aMethod(),'
+                        'Missing invocation #1 for ' . Verified::class . '::aMethod(),'
                         . ' was never called.'
                 );
     }
@@ -304,7 +290,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(MissingInvocation::class)
                 ->withMessage(
-                        'Missing invocation #2 for bovigo\callmap\Verified::aMethod(),'
+                        'Missing invocation #2 for ' . Verified::class . '::aMethod(),'
                         . ' was only called once.');
     }
 
@@ -320,7 +306,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(MissingInvocation::class)
                 ->withMessage(
-                        'Missing invocation #3 for bovigo\callmap\Verified::aMethod(),'
+                        'Missing invocation #3 for ' . Verified::class . '::aMethod(),'
                         . ' was only called 2 times.'
                 );
     }
@@ -336,7 +322,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(ArgumentMismatch::class)
                 ->withMessage(
-                        'Argument count for invocation #1 of bovigo\callmap\Verified::aMethod()'
+                        'Argument count for invocation #1 of ' . Verified::class . '::aMethod()'
                         . ' is too high: received 1 argument(s), expected no arguments.'
                 );
     }
@@ -352,7 +338,7 @@ class VerifyClassProxyTest extends TestCase
         })
                 ->throws(ArgumentMismatch::class)
                 ->withMessage(
-                        'Argument count for invocation #1 of bovigo\callmap\Verified::aMethod()'
+                        'Argument count for invocation #1 of ' . Verified::class . '::aMethod()'
                         . ' is too low: received 0 argument(s), expected 1 argument(s).'
                 );
     }
@@ -370,7 +356,7 @@ class VerifyClassProxyTest extends TestCase
                 ->throws(\PHPUnit\Framework\AssertionFailedError::class)
                 ->withMessage(
                     'Failed asserting that 303 is equal to 808.
-Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aMethod()'
+Parameter $roland at position 0 for invocation #1 of ' . Verified::class . '::aMethod()'
                     . ' does not match expected value.'
                 );
     }

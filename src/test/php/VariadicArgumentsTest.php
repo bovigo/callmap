@@ -9,24 +9,10 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\Variadic1;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
-/**
- * Helper class for the test.
- */
-class Variadic1
-{
-    public function something(...$foo)
-    {
-        // intentionally empty
-    }
-
-    public function doSomething($x, ...$foo)
-    {
-        // intentionally empty
-    }
-}
 /**
  * Tests for bovigo\callmap\NewInstance regarding variadic arguments.
  *

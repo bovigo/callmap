@@ -21,6 +21,11 @@
         },
         "files": ["src/main/php/functions.php"]
     },
+    "autoload-dev": {
+      "psr-4": {
+          "bovigo\\callmap\\": "src/test/php"
+      }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "5.0.x-dev"

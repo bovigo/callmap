@@ -9,24 +9,13 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\SomeTrait;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\each;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isOfType;
-/**
- * Helper trait for the test.
- */
-trait SomeTrait
-{
-    public function action($something)
-    {
-        return $something;
-    }
-
-    abstract public function other(array $optional = [], int $roland = 303);
-}
 /**
  * Applies tests to a self defined class.
  *

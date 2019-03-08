@@ -9,89 +9,15 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\Extended7;
+use bovigo\callmap\helper\Bar7;
+use bovigo\callmap\helper\Base7;
+use bovigo\callmap\helper\OneMoreThing7;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\assert\predicate\isNull;
-interface Bar7
-{
-    /**
-     * @return
-     */
-    public function foo();
-}
-interface OneMoreThing7
-{
-    public function wow(): OneMoreThing7;
-}
-class Base7 implements OneMoreThing7
-{
-    /**
-     * @return self
-     */
-    public function baz()
-    {
-        // no actual return on purpose
-    }
-
-    public function aha(): Base7
-    {
-        // no actual return on purpose
-    }
-
-    public function wow(): OneMoreThing7
-    {
-        // no actual return on purpose
-    }
-}
-class Extended7 extends Base7 implements Bar7, \IteratorAggregate
-{
-    public function foo(): Bar7
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return $this
-     */
-    public function yo()
-    {
-
-    }
-
-    public function action(): \bovigo\callmap\Extended7
-    {
-        // no actual return on purpose
-    }
-
-    public function moreAction(): \bovigo\callmap\Extended7
-    {
-        // no actual return on purpose
-    }
-
-    public function minorAction(): \bovigo\callmap\Extended7
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return  \Traversable
-     */
-    public function getIterator()
-    {
-        // no actual return on purpose
-    }
-
-    /**
-     * @return  Other
-     */
-    public function other()
-    {
-        // no actual return on purpose
-    }
-
-}
 /**
  * Tests for automated return self.
  *

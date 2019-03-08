@@ -9,6 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use bovigo\callmap\helper\AnotherTestHelperClass;
+use bovigo\callmap\helper\ReturnTypeHints;
+use bovigo\callmap\helper\ThisIsNotPossible;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -19,39 +22,6 @@ use function bovigo\assert\{
     predicate\isNotSameAs,
     predicate\isNull
 };
-/**
- * Helper class for the test.
- */
-class AnotherTestHelperClass
-{
-    public function doSomething() { }
-
-    private function doNotTouchThis() { }
-
-    public function gimmeFive()
-    {
-        return 5;
-    }
-}
-/**
- * Another helper class.
- */
-final class ThisIsNotPossible
-{
-
-}
-/**
- * One more helper, this time with a PHP 7 return type hint.
- *
- * @since  2.0.0
- */
-class ReturnTypeHints
-{
-    public function something(): array
-    {
-        return [];
-    }
-}
 /**
  * All remaining tests for bovigo\callmap\NewInstance.
  */
@@ -166,7 +136,7 @@ class NewInstanceTest extends TestCase
                         ->returns(['doesNotExist' => true]);
         })
         ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to map method bovigo\callmap\AnotherTestHelperClass::doesNotExist(), but it does not exist. Probably a typo?');
+        ->withMessage('Trying to map method ' . AnotherTestHelperClass::class.'::doesNotExist(), but it does not exist. Probably a typo?');
     }
 
     /**
@@ -180,7 +150,7 @@ class NewInstanceTest extends TestCase
                         ->returns(['doSomethingy' => true]);
         })
         ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to map method bovigo\callmap\AnotherTestHelperClass::doSomethingy(), but it does not exist. Probably a typo?');
+        ->withMessage('Trying to map method ' . AnotherTestHelperClass::class.'::doSomethingy(), but it does not exist. Probably a typo?');
     }
 
     /**
@@ -196,7 +166,7 @@ class NewInstanceTest extends TestCase
                 ->throws(\InvalidArgumentException::class)
                 ->withMessage(
                         'Trying to map method '
-                        . 'bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(),'
+                        . AnotherTestHelperClass::class.'::doNotTouchThis(),'
                         . ' but it is not applicable for mapping.'
                 );
     }
@@ -212,7 +182,7 @@ class NewInstanceTest extends TestCase
                 ->throws(\InvalidArgumentException::class)
                 ->withMessage(
                         'Trying to retrieve invocations for method '
-                        . 'bovigo\callmap\AnotherTestHelperClass::doesNotExist(),'
+                        . AnotherTestHelperClass::class.'::doesNotExist(),'
                         . ' but it does not exist. Probably a typo?'
                 );
     }
@@ -228,7 +198,7 @@ class NewInstanceTest extends TestCase
                 ->throws(\InvalidArgumentException::class)
                 ->withMessage(
                         'Trying to retrieve invocations for method '
-                        . 'bovigo\callmap\AnotherTestHelperClass::doSomethingy(),'
+                        . AnotherTestHelperClass::class.'::doSomethingy(),'
                         . ' but it does not exist. Probably a typo?'
                 );
     }
@@ -244,7 +214,7 @@ class NewInstanceTest extends TestCase
                 ->throws(\InvalidArgumentException::class)
                 ->withMessage(
                         'Trying to retrieve invocations for method '
-                        . 'bovigo\callmap\AnotherTestHelperClass::doNotTouchThis(),'
+                        . AnotherTestHelperClass::class.'::doNotTouchThis(),'
                         . ' but it is not applicable for mapping.'
                 );
     }
