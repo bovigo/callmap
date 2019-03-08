@@ -269,7 +269,7 @@ class Verification
      * @param   mixed                                                                   $received    actually received argument
      * @param   string                                                                  $description  description for invocation in case of error
      * @return  bool
-     * @throws  \RuntimeException  in case neither bovigo/assert, PHPUnit not xp-framework/core is present
+     * @throws  \RuntimeException  in case neither bovigo/assert, PHPUnit not xp-framework/unittest is present
      */
     private function evaluate($constraint, $received, string $description): bool
     {
@@ -289,7 +289,7 @@ class Verification
             return $this->evaluateWithXpFrameworkCore($constraint, $received, $description);
         }
 
-        throw new \RuntimeException('Neither bovigo/assert, PHPUnit nor xp-framework/core found, can not perform argument verification');
+        throw new \RuntimeException('Neither bovigo/assert, PHPUnit nor xp-framework/unittest found, can not perform argument verification');
     }
 
     /**
