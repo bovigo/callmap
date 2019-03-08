@@ -56,9 +56,9 @@ class NewCallable
     }
 
     /**
-     * returns the proxy class for given target class or interface
+     * returns the proxy class for given function
      *
-     * @param   string|object  $target
+     * @param   string|object  $function
      * @return  \ReflectionClass
      */
     private static function callMapClass($function): \ReflectionClass
