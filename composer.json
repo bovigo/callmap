@@ -24,7 +24,8 @@
     "autoload-dev": {
       "psr-4": {
           "bovigo\\callmap\\": "src/test/php"
-      }
+      },
+      "files": ["src/test/php/helper/functions.php"]
     },
     "extra": {
         "branch-alias": {

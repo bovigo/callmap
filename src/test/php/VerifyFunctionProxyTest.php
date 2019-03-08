@@ -14,13 +14,7 @@ use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
-/**
- * Helper function for the test.
- */
-function say(string $whom)
-{
-    return 'Hello ' . $whom;
-}
+use function bovigo\callmap\helper\say;
 /**
  * Test for bovigo\callmap\verify() with function proxy.
  *
@@ -31,7 +25,7 @@ class VerifyFunctionProxyTest extends TestCase
 {
     public function functionNames(): array
     {
-        return [['strlen', '$str '], ['bovigo\callmap\say', '$whom ']];
+        return [['strlen', '$str '], ['bovigo\callmap\helper\say', '$whom ']];
     }
 
     /**

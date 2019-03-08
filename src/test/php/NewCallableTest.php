@@ -19,20 +19,7 @@ use function bovigo\assert\{
     predicate\isInstanceOf,
     predicate\isNotSameAs
 };
-/**
- * Helper function for the test.
- */
-function doSomething(): string
-{
-    return 'did something';
-}
-/**
- * Helper function for the test.
- */
-function greet(string $whom)
-{
-    return 'Hello ' . $whom;
-}
+use function bovigo\callmap\helper\{doSomething, greet};
 /**
  * All remaining tests for bovigo\callmap\NewCallable.
  *
@@ -88,14 +75,14 @@ class NewCallableTest extends TestCase
     public function canCreateInstanceFromFunctionWithPhp7ReturnTypeHint()
     {
         assertThat(
-                NewCallable::of('bovigo\callmap\doSomething'),
+                NewCallable::of('bovigo\callmap\helper\doSomething'),
                 isInstanceOf(FunctionProxy::class)
         );
     }
 
     public function functionNames(): array
     {
-        return [['strlen', 5], ['bovigo\callmap\greet', 'Hello world']];
+        return [['strlen', 5], ['bovigo\callmap\helper\greet', 'Hello world']];
     }
 
     /**

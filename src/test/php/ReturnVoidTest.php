@@ -13,10 +13,7 @@ use bovigo\callmap\helper\SomeClassWithMethodReturningVoid;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
-function whichReturnsNothing(): void
-{
-    // intentionally empty
-}
+use function bovigo\callmap\helper\whichReturnsNothing;
 /**
  * Tests for functions which are declared with return type void.
  *
@@ -41,7 +38,7 @@ class ReturnVoidTest extends TestCase
     public function voidRequiresNoReturnForFunctions()
     {
         expect(function() {
-            NewCallable::of('bovigo\callmap\whichReturnsNothing')();
+            NewCallable::of('bovigo\callmap\helper\whichReturnsNothing')();
         })->doesNotThrow();
     }
 
@@ -64,8 +61,8 @@ class ReturnVoidTest extends TestCase
     public function mapVoidFunctionFails()
     {
         expect(function() {
-            NewCallable::of('bovigo\callmap\whichReturnsNothing')->returns(true);
+            NewCallable::of('bovigo\callmap\helper\whichReturnsNothing')->returns(true);
         })->throws(\LogicException::class)
-        ->withMessage('Trying to map function bovigo\callmap\whichReturnsNothing(), but it is declared as returning void.');
+        ->withMessage('Trying to map function bovigo\callmap\helper\whichReturnsNothing(), but it is declared as returning void.');
     }
 }
