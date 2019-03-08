@@ -68,19 +68,6 @@ trait ClassProxyMethodHandler
     }
 
     /**
-     *  alias for returns()
-     *
-     * @deprecated  since 3.2.0, use returns() instead, will likely be removed with 4.0.0
-     * @param   array  $callMap
-     * @return  ClassProxy
-     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
-     */
-    public function mapCalls(array $callMap): ClassProxy
-    {
-        return $this->returns($callMap);
-    }
-
-    /**
      * handles actual method calls
      *
      * @param   string    $method            actually called method

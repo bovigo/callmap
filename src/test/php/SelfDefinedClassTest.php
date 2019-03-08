@@ -68,7 +68,7 @@ class SelfDefinedClassTest extends TestCase
      */
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['action' => 'foo']);
+        $this->proxy->returns(['action' => 'foo']);
         assertThat(
                 $this->proxy->action(new SelfDefined(), function() {}),
                 equals('foo')
@@ -80,7 +80,7 @@ class SelfDefinedClassTest extends TestCase
      */
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['action' => function() { return 'foo'; }]);
+        $this->proxy->returns(['action' => function() { return 'foo'; }]);
         assertThat(
                 $this->proxy->action(new SelfDefined(), function() {}),
                 equals('foo')

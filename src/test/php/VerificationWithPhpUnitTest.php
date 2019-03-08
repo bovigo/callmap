@@ -46,7 +46,7 @@ class VerificationWithPhpUnitTest extends TestCase
     public function usingConstraintEvaluatesWithThisConstraint()
     {
         $constraint = NewInstance::of(\PHPUnit\Framework\Constraint\Constraint::class)
-                ->mapCalls(['evaluate' => true]);
+                ->returns(['evaluate' => true]);
         assertTrue($this->phpUnitVerification->evaluateWithPhpUnit(
                 $constraint,
                 'foo',

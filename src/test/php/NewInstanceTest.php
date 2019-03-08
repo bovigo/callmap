@@ -163,7 +163,7 @@ class NewInstanceTest extends TestCase
     {
         expect(function() {
                 NewInstance::of(AnotherTestHelperClass::class)
-                        ->mapCalls(['doesNotExist' => true]);
+                        ->returns(['doesNotExist' => true]);
         })
         ->throws(\InvalidArgumentException::class)
         ->withMessage('Trying to map method bovigo\callmap\AnotherTestHelperClass::doesNotExist(), but it does not exist. Probably a typo?');
@@ -177,7 +177,7 @@ class NewInstanceTest extends TestCase
     {
         expect(function() {
                 NewInstance::of(AnotherTestHelperClass::class)
-                        ->mapCalls(['doSomethingy' => true]);
+                        ->returns(['doSomethingy' => true]);
         })
         ->throws(\InvalidArgumentException::class)
         ->withMessage('Trying to map method bovigo\callmap\AnotherTestHelperClass::doSomethingy(), but it does not exist. Probably a typo?');
@@ -191,7 +191,7 @@ class NewInstanceTest extends TestCase
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
         expect(function() use ($proxy) {
-                $proxy->mapCalls(['doNotTouchThis' => true]);
+                $proxy->returns(['doNotTouchThis' => true]);
         })
                 ->throws(\InvalidArgumentException::class)
                 ->withMessage(
@@ -268,7 +268,7 @@ class NewInstanceTest extends TestCase
     public function mapReturnValueToNullShouldNotCallOriginalMethod()
     {
         $instance = NewInstance::of(AnotherTestHelperClass::class)
-                ->mapCalls(['gimmeFive' => null]);
+                ->returns(['gimmeFive' => null]);
         assertThat($instance->gimmeFive(), isNull());
     }
 }

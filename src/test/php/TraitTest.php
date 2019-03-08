@@ -60,7 +60,7 @@ class TraitTest extends TestCase
      */
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['action' => 'foo']);
+        $this->proxy->returns(['action' => 'foo']);
         assertThat($this->proxy->action(313), equals('foo'));
     }
 
@@ -69,7 +69,7 @@ class TraitTest extends TestCase
      */
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['action' => function() { return 'foo'; }]);
+        $this->proxy->returns(['action' => function() { return 'foo'; }]);
         assertThat($this->proxy->action(313), equals('foo'));
     }
 

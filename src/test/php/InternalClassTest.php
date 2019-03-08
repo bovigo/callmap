@@ -44,7 +44,7 @@ class InternalClassTest extends TestCase
      */
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['getName' => 'foo']);
+        $this->proxy->returns(['getName' => 'foo']);
         assertThat($this->proxy->getName(), equals('foo'));
     }
 
@@ -53,7 +53,7 @@ class InternalClassTest extends TestCase
      */
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['getName' => function() { return 'foo'; }]);
+        $this->proxy->returns(['getName' => function() { return 'foo'; }]);
         assertThat($this->proxy->getName(), equals('foo'));
     }
 
@@ -63,7 +63,7 @@ class InternalClassTest extends TestCase
      */
     public function mapToCallableReturnsCallableReturnValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['getName' => 'strtoupper']);
+        $this->proxy->returns(['getName' => 'strtoupper']);
         assertThat($this->proxy->getName('foo'), equals('FOO'));
     }
 

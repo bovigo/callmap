@@ -45,7 +45,7 @@ class InternalInterfaceTest extends TestCase
      */
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['count' => 3]);
+        $this->proxy->returns(['count' => 3]);
         assertThat($this->proxy->count(), equals(3));
     }
 
@@ -54,7 +54,7 @@ class InternalInterfaceTest extends TestCase
      */
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['count' => function() { return 42; }]);
+        $this->proxy->returns(['count' => function() { return 42; }]);
         assertThat($this->proxy->count(), equals(42));
     }
 

@@ -402,7 +402,7 @@ Parameter $roland at position 0 for invocation #1 of bovigo\callmap\Verified::aM
      */
     public function canVerifyArgumentsForNonMappedMethod()
     {
-        $this->proxy->mapCalls(['aMethod' => 'hello']);
+        $this->proxy->returns(['aMethod' => 'hello']);
         $this->proxy->otherMethod(303);
         verify($this->proxy, 'otherMethod')->received(equals(303));
     }

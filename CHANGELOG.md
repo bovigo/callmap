@@ -4,6 +4,7 @@
 ### HEADS UP
 
   * raised minimum required PHP version to 7.2.0
+  * removed `bovigo\callmap\ClassProxy::mapCalls()` and `bovigo\callmap\FunctionProxy::mapCall()`, deprecated since 3.2.0
 
 
 4.0.1 (2018-02-11)

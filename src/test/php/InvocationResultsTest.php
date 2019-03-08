@@ -47,7 +47,7 @@ class InvocationResultsTest extends TestCase
      */
     public function mapToInvocationResultsReturnsResultOnMethodCall()
     {
-        $this->proxy->mapCalls(
+        $this->proxy->returns(
             ['getName' => onConsecutiveCalls('foo', 'bar', 'baz')]
         );
         foreach (['foo', 'bar', 'baz'] as $expected) {
@@ -61,7 +61,7 @@ class InvocationResultsTest extends TestCase
      */
     public function mapToInvocationResultsWithCallableReturnsResultOfCallable()
     {
-        $this->proxy->mapCalls(
+        $this->proxy->returns(
                 ['getName' => onConsecutiveCalls(function() { return 'foo'; })]
         );
         assertThat($this->proxy->getName(), equals('foo'));
@@ -72,7 +72,7 @@ class InvocationResultsTest extends TestCase
      */
     public function invocationResultIsResultOfOriginalMethodIfCalledMoreOftenThenResultsDefined()
     {
-        $this->proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
+        $this->proxy->returns(['getName' => onConsecutiveCalls('foo')]);
         $this->proxy->getName(); // foo
         assertThat($this->proxy->getName(), equals(__CLASS__));
     }
@@ -84,7 +84,7 @@ class InvocationResultsTest extends TestCase
     public function invocationResultIsNullForStubIfCalledMoreOftenThenResultsDefined()
     {
         $proxy = NewInstance::stub(OneMoreSelfDefined::class);
-        $proxy->mapCalls(['getName' => onConsecutiveCalls('foo')]);
+        $proxy->returns(['getName' => onConsecutiveCalls('foo')]);
         $proxy->getName(); // foo
         assertThat($proxy->getName(), isNull());
     }
@@ -96,7 +96,7 @@ class InvocationResultsTest extends TestCase
     public function invocationResultIsNullForInterfaceIfCalledMoreOftenThenResultsDefined()
     {
         $proxy = NewInstance::stub(\Countable::class);
-        $proxy->mapCalls(['count' => onConsecutiveCalls(303)]);
+        $proxy->returns(['count' => onConsecutiveCalls(303)]);
         $proxy->count(); // 303
         assertThat($proxy->count(), isNull());
     }

@@ -52,7 +52,7 @@ class AbstractMethodTest extends TestCase
      */
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['play' => 'foo']);
+        $this->proxy->returns(['play' => 'foo']);
         assertThat($this->proxy->play(), equals('foo'));
     }
 
@@ -61,7 +61,7 @@ class AbstractMethodTest extends TestCase
      */
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['play' => function() { return 'foo'; }]);
+        $this->proxy->returns(['play' => function() { return 'foo'; }]);
         assertThat($this->proxy->play(808), equals('foo'));
     }
 
@@ -80,7 +80,7 @@ class AbstractMethodTest extends TestCase
      */
     public function givenArgumentsArePassedToClosure($argument, $expectedResult)
     {
-        $this->proxy->mapCalls(
+        $this->proxy->returns(
                 ['play' => function($roland = 303)
                             {
                                 if (303 === $roland) {

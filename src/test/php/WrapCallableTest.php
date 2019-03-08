@@ -27,7 +27,7 @@ class WrapCallableTest extends TestCase
     {
         $callable = function() {};
         $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
-                ->mapCalls(['getName' => wrap($callable)]);
+                ->returns(['getName' => wrap($callable)]);
         assertThat($proxy->getName(), isSameAs($callable));
     }
 
@@ -38,7 +38,7 @@ class WrapCallableTest extends TestCase
     {
         $callable = function() {};
         $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
-                ->mapCalls(['getName' => onConsecutiveCalls(wrap($callable))]);
+                ->returns(['getName' => onConsecutiveCalls(wrap($callable))]);
         assertThat($proxy->getName(), isSameAs($callable));
     }
 }

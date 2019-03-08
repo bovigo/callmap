@@ -61,7 +61,7 @@ class WithoutConstructorTest extends TestCase
      */
     public function mapToSimpleValueReturnsValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['action' => 3]);
+        $this->proxy->returns(['action' => 3]);
         assertThat($this->proxy->action(), equals(3));
     }
 
@@ -70,7 +70,7 @@ class WithoutConstructorTest extends TestCase
      */
     public function mapToClosureReturnsClosureReturnValueOnMethodCall()
     {
-        $this->proxy->mapCalls(['action' => function() { return 42; }]);
+        $this->proxy->returns(['action' => function() { return 42; }]);
         assertThat($this->proxy->action(), equals(42));
     }
 

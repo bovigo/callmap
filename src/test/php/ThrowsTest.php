@@ -39,7 +39,7 @@ class ThrowsTest extends TestCase
     public function throwsExceptionPassedViaThrows()
     {
         $e = new \ReflectionException('some error');
-        $this->proxy->mapCalls(['getName' => throws($e)]);
+        $this->proxy->returns(['getName' => throws($e)]);
         expect(function() {
             $this->proxy->getName();
         })
@@ -54,7 +54,7 @@ class ThrowsTest extends TestCase
     public function throwsExceptionPassedViaInvocationResults()
     {
         $e = new \ReflectionException('some error');
-        $this->proxy->mapCalls(
+        $this->proxy->returns(
                 ['getName' => onConsecutiveCalls('foo', throws($e))]
         );
         $this->proxy->getName(); // foo
