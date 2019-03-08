@@ -69,18 +69,6 @@ abstract class FunctionProxy implements Proxy
     }
 
     /**
-     * sets the call map to use
-     *
-     * @deprecated  since 3.2.0, use returns() instead, will likely be removed with 4.0.0
-     * @param   mixed  $returnValue
-     * @return  $this
-     */
-    public function mapCall($returnValue): self
-    {
-        return $this->returns($returnValue);
-    }
-
-    /**
      * shortcut for returns(throws($e))
      *
      * @api

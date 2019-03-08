@@ -124,7 +124,7 @@ class NewCallableTest extends TestCase
      */
     public function mapReturnValueToNullShouldNotCallOriginalFunction($functionName)
     {
-        $function = NewCallable::of($functionName)->mapCall(null);
+        $function = NewCallable::of($functionName)->returns(null);
         assertNull($function('world'));
     }
 
@@ -134,7 +134,7 @@ class NewCallableTest extends TestCase
      */
     public function mapReturnValueReturnsMappedValueOnInvocation($functionName)
     {
-        $function = NewCallable::of($functionName)->mapCall('great stuff');
+        $function = NewCallable::of($functionName)->returns('great stuff');
         assertThat($function('world'), equals('great stuff'));
     }
 
@@ -145,7 +145,7 @@ class NewCallableTest extends TestCase
     public function canMapWithConsecutiveCalls($functionName, $expected)
     {
         $function = NewCallable::of($functionName)
-                ->mapCall(onConsecutiveCalls('great', 'stuff'));
+                ->returns(onConsecutiveCalls('great', 'stuff'));
         assertThat($function('world'), equals('great'));
         assertThat($function('world'), equals('stuff'));
         assertThat($function('world'), equals($expected));
