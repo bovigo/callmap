@@ -1,0 +1,28 @@
+parameters:
+  level: max
+  paths:
+    - ./src/main/php
+    - ./src/test/php
+  ignoreErrors:
+    # The returned object is an instance of what is defined, but phpstan can't detect this
+    - '#Method bovigo\\callmap\\New(Callable|Instance)::of\(\) should return bovigo\\callmap\\(FunctionProxy|ClassProxy) but returns object.#'
+        # Generated instances of ClassProxy always contain this method, inherited from trait ClassProxyMethodHandler.
+    - '#Call to an undefined method object::preventParentCalls\(\)#'
+    # Lots of false positives from tests
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::wow\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::foo\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::getName\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::returnNothing\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::hui\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::noReturn\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::gimmeFive\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::count\(\)#'
+    # Instances of FunctionProxy are a callable, but __invoke() is not defined in FunctionProxy itself due to
+    # that each instance has a different method signature and this would yield a
+    # Fatal error: "must be compatible" otherwise.
+    - '#Trying to invoke bovigo\\callmap\\FunctionProxy but it might not be a callable.#'
+    # False positive, that is exactly what the test where this occurs is about.
+    - '#Parameter \#1 $target of static method bovigo\\callmap\\NewInstance::of\(\) expects object|string, int given.#'
+  excludes_analyse:
+    # Those files contain explicit wrong doc comments for test purposes.
+    - %currentWorkingDirectory%/src/test/php/helper/Bar*
