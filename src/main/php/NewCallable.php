@@ -58,10 +58,10 @@ class NewCallable
     /**
      * returns the proxy class for given function
      *
-     * @param   string|object  $function
+     * @param   string  $function
      * @return  \ReflectionClass
      */
-    private static function callMapClass($function): \ReflectionClass
+    private static function callMapClass(string $function): \ReflectionClass
     {
         if (!isset(self::$functions[$function])) {
             self::$functions[$function] = self::forkCallMapClass(
