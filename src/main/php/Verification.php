@@ -273,8 +273,8 @@ class Verification
      */
     private function evaluate($constraint, $received, string $description): bool
     {
-        if (function_exists('bovigo\assert\assert')) {
-            return \bovigo\assert\assert(
+        if (function_exists('bovigo\assert\assertThat')) {
+            return \bovigo\assert\assertThat(
                     $received,
                     $this->predicateFor($constraint),
                     $description
