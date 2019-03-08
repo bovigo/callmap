@@ -30,13 +30,13 @@ trait FailingTrait
  */
 class NewInstanceParseErrorTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         NewInstance::$compile = NewCallable::of(__NAMESPACE__ . '\compile')
                 ->throws(new \ParseError('failed to evaluate'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         NewInstance::$compile = __NAMESPACE__ . '\compile';
     }

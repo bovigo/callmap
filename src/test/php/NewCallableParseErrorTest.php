@@ -20,13 +20,13 @@ use function bovigo\assert\expect;
  */
 class NewCallableParseErrorTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         NewCallable::$compile = NewCallable::of(__NAMESPACE__ . '\compile')
                 ->mapCall(throws(new \ParseError('failed to evaluate')));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         NewCallable::$compile = __NAMESPACE__ . '\compile';
     }
