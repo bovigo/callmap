@@ -95,14 +95,6 @@ abstract class FunctionProxy implements Proxy
     }
 
     /**
-     * marks the proxy as a stub that should not call the mocked function
-     *
-     * @internal
-     * @return    $this
-     */
-    abstract public function preventParentCalls(): self;
-
-    /**
      * handles actual function calls
      *
      * @param   mixed[]  $arguments  list of given arguments for function

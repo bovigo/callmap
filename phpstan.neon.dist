@@ -6,8 +6,9 @@ parameters:
   ignoreErrors:
     # The returned object is an instance of what is defined, but phpstan can't detect this
     - '#Method bovigo\\callmap\\New(Callable|Instance)::of\(\) should return bovigo\\callmap\\(FunctionProxy|ClassProxy) but returns object.#'
-        # Generated instances of ClassProxy always contain this method, inherited from trait ClassProxyMethodHandler.
+    # Generated instances always contain this method
     - '#Call to an undefined method object::preventParentCalls\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\FunctionProxy::preventParentCalls\(\)#'
     # Lots of false positives from tests
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::wow\(\)#'
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::foo\(\)#'
