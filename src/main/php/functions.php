@@ -82,7 +82,11 @@ namespace bovigo\callmap {
         }
 
         if ('self' == $returnType) {
-            return ': \\' . $function->getDeclaringClass()->getName();
+            if ($function instanceof \ReflectionMethod) {
+                return ': \\' . $function->getDeclaringClass()->getName();
+            }
+
+            throw new \UnexpectedValueException('Function ' . $function->getName() . ' defines return type self but that is not possible.');
         }
 
         return ': \\' . $returnType;
