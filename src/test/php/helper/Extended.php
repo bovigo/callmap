@@ -39,7 +39,7 @@ class Extended extends Base implements Bar, \IteratorAggregate
     }
 
     /**
-     * @return  bovigo\callmap\helper\Extended
+     * @return  \bovigo\callmap\helper\Extended
      */
     public function moreAction()
     {
