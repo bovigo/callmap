@@ -34,6 +34,18 @@ abstract class FunctionProxy implements Proxy
      * @type  bool
      */
     protected $parentCallsAllowed = true;
+    /**
+     * overwritten by proxy generated from NewCallable
+     *
+     * @type  array
+     */
+    protected $paramNames = [];
+    /**
+     * overwritten by proxy generated from NewCallable
+     *
+     * @type  bool
+     */
+    protected $returnVoid;
 
     /**
      * constructor
