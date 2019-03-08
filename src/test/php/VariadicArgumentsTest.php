@@ -10,6 +10,8 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 use bovigo\callmap\helper\Variadic1;
+use bovigo\callmap\helper\VariadicReference;
+use bovigo\callmap\helper\VariadicTypeHint;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
@@ -35,16 +37,6 @@ class VariadicArgumentsTest extends TestCase
      */
     public function canCreateProxyForTypeWithVariadicReference()
     {
-        eval(
-                'class VariadicReference
-                {
-                    public function reference(&...$foo)
-                    {
-                        // intentionally empty
-                    }
-                }'
-        );
-
         expect(function() { NewInstance::of(VariadicReference::class); })
             ->doesNotThrow(\ReflectionException::class);
     }
@@ -54,21 +46,6 @@ class VariadicArgumentsTest extends TestCase
      */
     public function canCreateProxyForTypeWithVariadicTypehint()
     {
-        eval(
-                'class VariadicTypeHint
-                {
-                    public function other(self ...$bar)
-                    {
-                        // intentionally empty
-                    }
-
-                    public function otherThings($z, self ...$bar)
-                    {
-                        // intentionally empty
-                    }
-                }'
-        );
-
         expect(function() { NewInstance::of(VariadicTypeHint::class); })
             ->doesNotThrow(\ReflectionException::class);
     }
