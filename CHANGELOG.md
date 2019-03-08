@@ -7,6 +7,11 @@
   * removed `bovigo\callmap\ClassProxy::mapCalls()` and `bovigo\callmap\FunctionProxy::mapCall()`, deprecated since 3.2.0
 
 
+### Other changes
+
+  * lots of code cleanups
+
+
 4.0.1 (2018-02-11)
 ------------------
 
