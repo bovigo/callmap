@@ -7,7 +7,7 @@ Compatible with any [unit test framework](http://en.wikipedia.org/wiki/List_of_u
 Package status
 --------------
 
-[![Build Status](https://secure.travis-ci.org/mikey179/bovigo-callmap.png)](http://travis-ci.org/mikey179/bovigo-callmap) [![Build Status Windows](https://ci.appveyor.com/api/projects/status/1a5ljd006qtpebde/branch/master?svg=true)](https://ci.appveyor.com/project/mikey179/bovigo-callmap/branch/master) [![Coverage Status](https://coveralls.io/repos/github/mikey179/bovigo-callmap/badge.svg?branch=master)](https://coveralls.io/github/mikey179/bovigo-callmap?branch=master)
+[![Build Status](https://secure.travis-ci.org/bovigo/callmap.png)](http://travis-ci.org/bovigo/callmap) [![Build Status Windows](https://ci.appveyor.com/api/projects/status/1a5ljd006qtpebde/branch/master?svg=true)](https://ci.appveyor.com/project/bovigo/callmap/branch/master) [![Coverage Status](https://coveralls.io/repos/github/bovigo/callmap/badge.svg?branch=master)](https://coveralls.io/github/bovigo/callmap?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/bovigo/callmap/version.png)](https://packagist.org/packages/bovigo/callmap) [![Latest Unstable Version](https://poser.pugx.org/bovigo/callmap/v/unstable.png)](//packagist.org/packages/bovigo/callmap)
 
@@ -33,7 +33,7 @@ _bovigo/callmap_ requires at least PHP 7.2.
 
 For argument verification one of the following packages is required:
 
-* [bovigo/assert](https://github.com/mikey179/bovigo-assert) (since release 2.0.0)
+* [bovigo/assert](https://github.com/bovigo/assert) (since release 2.0.0)
 * [PHPUnit](https://phpunit.de/)
 * [xp-framework/unittest](https://github.com/xp-framework/unittest) (since release 1.1.0)
 
@@ -46,7 +46,7 @@ verification will be done with the latter.
 Usage
 -----
 
-Explore the [tests](https://github.com/mikey179/bovigo-callmap/tree/master/src/test/php)
+Explore the [tests](https://github.com/bovigo/callmap/tree/master/src/test/php)
 to see how _bovigo/callmap_ can be used. For the very eager, here's a code
 example which features almost all of the possibilities:
 
