@@ -345,7 +345,7 @@ class NewInstance
     private static function detectReturnType(\ReflectionMethod $method): ?string
     {
         if ($method->hasReturnType()) {
-            return (string) $method->getReturnType();
+            return $method->getReturnType()->getName();
         }
 
         $docComment = $method->getDocComment();
