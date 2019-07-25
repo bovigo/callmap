@@ -1,3 +1,9 @@
+5.0.1 (2019-07-25)
+------------------
+
+  * prevent deprecation notice in PHP 7.4 by using proper methods
+
+
 5.0.0 (2019-04-08)
 ------------------
 
