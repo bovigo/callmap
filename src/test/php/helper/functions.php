@@ -37,3 +37,10 @@ function say(string $whom)
 {
     return 'Hello ' . $whom;
 }
+/**
+ * Helper function for the test.
+ */
+function withOptionalReturnValue(): ?Fump
+{
+    return null;
+}

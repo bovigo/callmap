@@ -27,6 +27,11 @@ class Extended7 extends Base7 implements Bar7, \IteratorAggregate
 
     }
 
+    public function actionOptional(): ?\bovigo\callmap\helper\Extended7
+    {
+        // no actual return on purpose
+    }
+
     public function action(): \bovigo\callmap\helper\Extended7
     {
         // no actual return on purpose

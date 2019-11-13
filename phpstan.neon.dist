@@ -18,6 +18,7 @@ parameters:
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::noReturn\(\)#'
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::gimmeFive\(\)#'
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::count\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::fump\(\)#'
     # Instances of FunctionProxy are a callable, but __invoke() is not defined in FunctionProxy itself due to
     # that each instance has a different method signature and this would yield a
     # Fatal error: "must be compatible" otherwise.

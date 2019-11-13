@@ -141,10 +141,10 @@ called.
 
 1.  Interfaces<br/>
     Default return value is always `null`, except the return type declaration
-    specifies the interface itself, or the `@return` type hint in the doc
-    comment specifies the short class name or the fully qualified class name of
-    the interface itself or any other interface it extends. In that case the
-    default return value will be the instance itself.
+    specifies the interface itself and is not optional, or the `@return` type
+    hint in the doc comment specifies the short class name or the fully
+    qualified class name of the interface itself or any other interface it
+    extends. In that case the default return value will be the instance itself.
 
 2.  Traits<br/>
     When instantiated with `NewInstance::of()` the default return value will be
@@ -158,11 +158,11 @@ called.
     the value which is returned by the according method of the original class.<br/>
     When instantiated with `NewInstance::stub()` and for abstract methods the
     default return value is `null`, except the return type declaration specifies
-    the class itself, or the `@return` type hint in the doc comment specifies
-    `$this` or `self`, the short class name or the fully qualified class name of
-    the class or of a parent class or any interface the class implements.
-    Exception to this: if the return type is `\Traversable` and the class
-    implements this interface return value will be `null`.
+    the class itself and is not optional, or the `@return` type hint in the doc
+    comment specifies `$this` or `self`, the short class name or the fully
+    qualified class name of the class or of a parent class or any interface the
+    class implements. Exception to this: if the return type is `\Traversable`
+    and the class implements this interface return value will be `null`.
 
 
 ### Specify a series of return values ###
@@ -262,7 +262,7 @@ return the object instance instead of null when no call mapping for a method was
 provided. To achieve that, _bovigo/callmap_ tries to detect the return type of a
 method from either from the return type hint or the method's doc comment. If the
 return type specified is the class or interface itself it will return the
-instance instead of null.
+instance instead of null, except when the return type hint allows null.
 
 If no return type is defined and the return type specified in the doc comment is
 one of `$this`, `self`, the short class name or the fully qualified class name

@@ -83,13 +83,13 @@ namespace bovigo\callmap {
 
         if ('self' == $returnType->getName()) {
             if ($function instanceof \ReflectionMethod) {
-                return ': \\' . $function->getDeclaringClass()->getName();
+                return ': ' . ($returnType->allowsNull() ? '?' : '') . '\\' . $function->getDeclaringClass()->getName();
             }
 
             throw new \UnexpectedValueException('Function ' . $function->getName() . ' defines return type self but that is not possible.');
         }
 
-        return ': \\' . $returnType->getName();
+        return ': ' . ($returnType->allowsNull() ? '?' : '') . '\\' . $returnType->getName();
     }
 
     /**
@@ -111,8 +111,11 @@ namespace bovigo\callmap {
                 $param .= '\\' . $parameter->getClass()->getName() . ' ';
             } elseif ($parameter->isCallable()) {
                 $param .= 'callable ';
-            } elseif ($parameter->hasType()) {
-                $param .= $parameter->getType()->getName() . ' ';
+            } else {
+                $paramType = $parameter->getType();
+                if (null !== $paramType) {
+                    $param .= $paramType->getName() . ' ';
+                }
             }
 
             if ($parameter->isPassedByReference()) {

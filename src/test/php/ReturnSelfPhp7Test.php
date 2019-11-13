@@ -15,6 +15,7 @@ use bovigo\callmap\helper\Base7;
 use bovigo\callmap\helper\OneMoreThing7;
 use PHPUnit\Framework\TestCase;
 
+use function bovigo\assert\assertNull;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\assert\predicate\isNull;
@@ -44,6 +45,16 @@ class ReturnSelfPhp7Test extends TestCase
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsThis()
     {
         assertThat($this->proxy, isSameAs($this->proxy->yo()));
+    }
+
+    /**
+     * @test
+     * @group  optional_return_value
+     * @since  5.0.2
+     */
+    public function returnsNullIfMethodCallNotMappedWhenReturnTypeIsOptional()
+    {
+        assertNull($this->proxy->actionOptional());
     }
 
     /**

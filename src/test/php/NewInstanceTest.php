@@ -15,6 +15,7 @@ use bovigo\callmap\helper\ThisIsNotPossible;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
+    assertNull,
     assertThat,
     expect,
     predicate\equals,
@@ -240,5 +241,15 @@ class NewInstanceTest extends TestCase
         $instance = NewInstance::of(AnotherTestHelperClass::class)
                 ->returns(['gimmeFive' => null]);
         assertThat($instance->gimmeFive(), isNull());
+    }
+
+    /**
+     * @test
+     * @group  optional_return_value
+     * @since  5.0.2
+     */
+    public function canWorkWithOptionalReturnTypehints()
+    {
+        assertNull(NewInstance::of(ReturnTypeHints::class)->fump());
     }
 }

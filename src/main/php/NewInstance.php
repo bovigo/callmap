@@ -263,7 +263,6 @@ class NewInstance
             $methods[] = "'" . $method->getName() . "' => '" . $method->getName() . "'";
             $params[$method->getName()] = $param['names'];
         }
-
         return $code . sprintf(
                 "\n    private \$_allowedMethods = [%s];\n",
                 join(', ', $methods)
@@ -344,8 +343,13 @@ class NewInstance
      */
     private static function detectReturnType(\ReflectionMethod $method): ?string
     {
-        if ($method->hasReturnType()) {
-            return $method->getReturnType()->getName();
+        $returnType = $method->getReturnType();
+        if (null !== $returnType) {
+            if ($returnType->allowsNull()) {
+                return null;
+            }
+
+            return $returnType->getName();
         }
 
         $docComment = $method->getDocComment();

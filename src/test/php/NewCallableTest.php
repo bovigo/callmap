@@ -150,4 +150,15 @@ class NewCallableTest extends TestCase
                 ->throws(\RuntimeException::class)
                 ->withMessage('failure');
     }
+
+    /**
+     * @test
+     * @group  optional_return_value
+     * @since  5.0.2
+     */
+    public function canWorkWithOptionalReturnTypehints()
+    {
+        $function = NewCallable::of('\bovigo\callmap\helper\withOptionalReturnValue');
+        assertNull($function());
+    }
 }

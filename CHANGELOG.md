@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.2 (2019-11-13)
+
+* fixed bug that optional return type hints aren't optional any more in mock instances
+
 ## 5.0.1 (2019-07-25)
 
 * prevent deprecation notice in PHP 7.4 by using proper methods

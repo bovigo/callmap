@@ -20,4 +20,9 @@ class ReturnTypeHints
     {
         return [];
     }
+
+    public function fump(): ?Fump
+    {
+        return null;
+    }
 }
