@@ -252,4 +252,14 @@ class NewInstanceTest extends TestCase
     {
         assertNull(NewInstance::of(ReturnTypeHints::class)->fump());
     }
+
+    /**
+     * @test
+     * @group  void_return
+     * @since  5.1.0
+     */
+    public function canWorkWithVoidReturnTypehints()
+    {
+        assertNull(NewInstance::of(ReturnTypeHints::class)->returnsVoid());
+    }
 }

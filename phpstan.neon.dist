@@ -14,6 +14,7 @@ parameters:
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::foo\(\)#'
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::getName\(\)#'
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::returnNothing\(\)#'
+    - '#Call to an undefined method bovigo\\callmap\\ClassProxy::returnsVoid\(\)#'
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::hui\(\)#'
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::noReturn\(\)#'
     - '#Call to an undefined method bovigo\\callmap\\ClassProxy::gimmeFive\(\)#'

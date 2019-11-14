@@ -44,3 +44,10 @@ function withOptionalReturnValue(): ?Fump
 {
     return null;
 }
+/**
+ * Helper function for the test.
+ */
+function returnsVoid(): void
+{
+    // intentionally empty
+}

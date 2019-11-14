@@ -161,4 +161,15 @@ class NewCallableTest extends TestCase
         $function = NewCallable::of('\bovigo\callmap\helper\withOptionalReturnValue');
         assertNull($function());
     }
+
+    /**
+     * @test
+     * @group  void_return
+     * @since  5.1.0
+     */
+    public function canWorkWithVoidReturnTypehints()
+    {
+        $function = NewCallable::of('\bovigo\callmap\helper\returnsVoid');
+        assertNull($function());
+    }
 }

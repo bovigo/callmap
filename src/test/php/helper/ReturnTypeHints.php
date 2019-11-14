@@ -25,4 +25,9 @@ class ReturnTypeHints
     {
         return null;
     }
+
+    public function returnsVoid(): void
+    {
+        // intentionally empty
+    }
 }
