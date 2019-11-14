@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 use bovigo\callmap\helper\AnotherTestHelperClass;
+use bovigo\callmap\helper\Extended7;
 use bovigo\callmap\helper\ReturnTypeHints;
 use bovigo\callmap\helper\ThisIsNotPossible;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +22,8 @@ use function bovigo\assert\{
     predicate\equals,
     predicate\isInstanceOf,
     predicate\isNotSameAs,
-    predicate\isNull
+    predicate\isNull,
+    predicate\isSameAs
 };
 /**
  * All remaining tests for bovigo\callmap\NewInstance.
@@ -261,5 +263,94 @@ class NewInstanceTest extends TestCase
     public function canWorkWithVoidReturnTypehints()
     {
         assertNull(NewInstance::of(ReturnTypeHints::class)->returnsVoid());
+    }
+
+    /**
+     * @test
+     * @group  void_return
+     * @group  stub
+     * @since  5.1.0
+     */
+    public function voidMethodCanBeStubbed()
+    {
+        $i = NewInstance::of(Extended7::class)->stub('noAction');
+        $i->noAction('example');
+        verify($i, 'noAction')->received('example');
+    }
+
+    /**
+     * @test
+     * @group  stub
+     * @since  5.1.0
+     */
+    public function methodsWithOptionalReturnValueCanBeStubbed()
+    {
+        $i = NewInstance::of(Extended7::class)->stub('noAction', 'actionOptional');
+        assertNull($i->actionOptional());
+        verify($i, 'actionOptional')->receivedNothing();
+    }
+
+    /**
+     * @test
+     * @group  stub
+     * @since  5.1.0
+     */
+    public function methodsWithSelfReturnValueCanBeStubbed()
+    {
+        $i = NewInstance::of(Extended7::class)->stub('action');
+        assertThat($i->action(), isSameAs($i));
+        verify($i, 'action')->receivedNothing();
+    }
+
+    /**
+     * @test
+     * @group  stub
+     * @since  5.1.0
+     */
+    public function stubNonExistingMethodThrowsInvalidArgumentException()
+    {
+        expect(function() { NewInstance::of(Extended7::class)->stub('doesNotExist'); })
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage(
+                'Trying to stub method '
+                . Extended7::class
+                . '::doesNotExist(), but it does not exist. Probably a typo?'
+            );
+    }
+
+    /**
+     * @test
+     * @group  stub
+     * @since  5.1.0
+     */
+    public function stubNonApplicableMethodThrowsInvalidArgumentException()
+    {
+        expect(function() { NewInstance::of(AnotherTestHelperClass::class)->stub('doNotTouchThis'); })
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage(
+                'Trying to stub method '
+                . AnotherTestHelperClass::class
+                . '::doNotTouchThis(), but it is not applicable for stubbing.'
+            );
+    }
+
+    /**
+     * @test
+     * @group  stub
+     * @since  5.1.0
+     */
+    public function stubMethodWhichWasAlreadyMappedThrowsInvalidArgumentException()
+    {
+        expect(function() {
+          NewInstance::of(Extended7::class)
+              ->returns(['action' => new Extended7()])
+              ->stub('action');
+        })
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage(
+                'Trying to stub method '
+                . Extended7::class
+                . '::action(), but it was already mapped with a return value.'
+            );
     }
 }

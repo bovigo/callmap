@@ -22,4 +22,14 @@ interface ClassProxy extends Proxy
      * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
     public function returns(array $callMap): self;
+
+    /**
+     * ensures given methods are stubbed and do not call parent methods
+     *
+     * @api
+     * @since   5.1.0
+     * @param   string...  $methods
+     * @return  $this
+     */
+    public function stub(string ...$methods): self;
 }

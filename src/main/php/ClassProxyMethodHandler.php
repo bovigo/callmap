@@ -32,6 +32,10 @@ trait ClassProxyMethodHandler
      * @type  bool
      */
     private $parentCallsAllowed = true;
+    /**
+     * @type  array<string,int>
+     */
+    private $stubs = [];
 
     /**
      * disable passing calls to parent class
@@ -57,13 +61,39 @@ trait ClassProxyMethodHandler
     {
         foreach (array_keys($callMap) as $method) {
             if (!isset($this->_allowedMethods[$method]) || isset($this->_voidMethods[$method])) {
-                throw new \InvalidArgumentException(
-                        $this->canNot('map', $method)
-                );
+                throw new \InvalidArgumentException($this->canNot('map', $method));
             }
         }
 
         $this->callMap = new CallMap($callMap);
+        return $this;
+    }
+
+    /**
+     * ensures given methods are stubbed and will not call parent method
+     *
+     * @api
+     * @since   5.1.0
+     * @param   string...  $methods
+     * @return  ClassProxy
+     * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
+     */
+    public function stub(string ...$methods): ClassProxy
+    {
+        foreach ($methods as $method) {
+            if (!isset($this->_allowedMethods[$method])) {
+                throw new \InvalidArgumentException($this->canNot('stub', $method));
+            }
+
+            if (null !== $this->callMap && $this->callMap->hasResult($method)) {
+                throw new \InvalidArgumentException(sprintf(
+                  'Trying to stub method %s, but it was already mapped with a return value.',
+                  $this->completeNameOf($method),
+                ));
+            }
+        }
+
+        $this->stubs = array_flip($methods);
         return $this;
     }
 
@@ -83,7 +113,7 @@ trait ClassProxyMethodHandler
             return $this->callMap->resultFor($method, $arguments, $invocation);
         }
 
-        if ($this->parentCallsAllowed && is_callable(['parent', $method])) {
+        if ($this->parentCallsAllowed && !isset($this->stubs[$method]) && is_callable(['parent', $method])) {
             // is_callable() returns true even for abstract methods
             $refMethod = new \ReflectionMethod(get_parent_class(), $method);
             if (!$refMethod->isAbstract()) {
@@ -156,7 +186,7 @@ trait ClassProxyMethodHandler
         if (isset($this->_voidMethods[$invalidMethod])) {
             $reason = 'is declared as returning void.';
         } elseif (method_exists($this, $invalidMethod)) {
-            $reason = 'is not applicable for mapping.';
+            $reason = 'is not applicable for ' . ('stub' === $message ? 'stubbing' : 'mapping') . '.';
         } else {
             $reason = 'does not exist. Probably a typo?';
         }

@@ -32,6 +32,18 @@ class CallMap
     }
 
     /**
+     * checks whether callmap has any result
+     *
+     * @since   5.1.0
+     * @param   string  $method  name of invoked method
+     * @return  bool
+     */
+    public function hasResult(string $method): bool
+    {
+        return array_key_exists($method, $this->callMap);
+    }
+
+    /**
      * checks whether callmap has a result for the invocation of method
      *
      * @param   string  $method           name of invoked method

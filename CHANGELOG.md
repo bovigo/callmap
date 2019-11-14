@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.1.0 (2019-11-14)
+
+* added `bovigo\callmap\ClassProxy::stub(string ...$methods)` to allow stubbing of methods
+on a proxy instance that otherwise forwards method calls to the original class
+
 ## 5.0.2 (2019-11-13)
 
 * fixed bug that optional return type hints aren't optional any more in mock instances
