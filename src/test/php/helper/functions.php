@@ -51,3 +51,10 @@ function returnsVoid(): void
 {
     // intentionally empty
 }
+/**
+ * Helper function for the test.
+ */
+function someOptionalString(): ?string
+{
+    return null;
+}

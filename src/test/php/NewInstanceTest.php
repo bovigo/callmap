@@ -257,6 +257,16 @@ class NewInstanceTest extends TestCase
 
     /**
      * @test
+     * @group  optional_return_value
+     * @since  5.1.0
+     */
+    public function canWorkWithOptionalBuiltinReturnTypehints()
+    {
+        assertNull(NewInstance::of(ReturnTypeHints::class)->someString());
+    }
+
+    /**
+     * @test
      * @group  void_return
      * @since  5.1.0
      */

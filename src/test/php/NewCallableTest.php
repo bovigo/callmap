@@ -164,6 +164,17 @@ class NewCallableTest extends TestCase
 
     /**
      * @test
+     * @group  optional_return_value
+     * @since  5.1.0
+     */
+    public function canWorkWithOptionalBuiltinReturnTypehints()
+    {
+        $function = NewCallable::of('\bovigo\callmap\helper\someOptionalString');
+        assertNull($function());
+    }
+
+    /**
+     * @test
      * @group  void_return
      * @since  5.1.0
      */

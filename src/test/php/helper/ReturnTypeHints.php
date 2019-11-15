@@ -30,4 +30,9 @@ class ReturnTypeHints
     {
         // intentionally empty
     }
+
+    public function someString(): ?string
+    {
+        return null;
+    }
 }

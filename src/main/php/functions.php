@@ -78,7 +78,7 @@ namespace bovigo\callmap {
         }
 
         if ($returnType->isBuiltin()) {
-            return ': ' . $returnType->getName();
+            return ': ' . ($returnType->allowsNull() ? '?' : '') . $returnType->getName();
         }
 
         if ('self' == $returnType->getName()) {
