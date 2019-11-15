@@ -86,9 +86,10 @@ trait ClassProxyMethodHandler
             }
 
             if (null !== $this->callMap && $this->callMap->hasResult($method)) {
-                throw new \InvalidArgumentException(
-                  'Trying to stub method ' . $this->completeNameOf($method) . ', but it was already mapped with a return value.'
-                );
+                throw new \InvalidArgumentException(sprintf(
+                  'Trying to stub method %s, but it was already mapped with a return value.',
+                  $this->completeNameOf($method)
+                ));
             }
         }
 
