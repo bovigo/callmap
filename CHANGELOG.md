@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.1.0 (2019-11-14)
+## 5.1.0 (2019-11-19)
 
 * added `bovigo\callmap\ClassProxy::stub(string ...$methods)` to allow stubbing of methods
 on a proxy instance that otherwise forwards method calls to the original class
