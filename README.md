@@ -1,33 +1,31 @@
-bovigo/callmap
-==============
+# bovigo/callmap
 
 Allows to stub and mock method and function calls by applying a callmap.
 Compatible with any [unit test framework](http://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#PHP).
 
-Package status
---------------
+## Package status
 
 [![Build Status](https://secure.travis-ci.org/bovigo/callmap.png)](http://travis-ci.org/bovigo/callmap) [![Build Status Windows](https://ci.appveyor.com/api/projects/status/t36eyscvd5057fpv?svg=true)](https://ci.appveyor.com/project/mikey179/callmap/branch/master) [![Coverage Status](https://coveralls.io/repos/github/bovigo/callmap/badge.svg?branch=master)](https://coveralls.io/github/bovigo/callmap?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/bovigo/callmap/version.png)](https://packagist.org/packages/bovigo/callmap) [![Latest Unstable Version](https://poser.pugx.org/bovigo/callmap/v/unstable.png)](//packagist.org/packages/bovigo/callmap)
 
-
-Installation
-------------
+## Installation
 
 _bovigo/callmap_ is distributed as [Composer](https://getcomposer.org/) package.
 To install it as a development dependency of your package use the following
 command:
 
-    composer require --dev "bovigo/callmap": "^5.0"
+```sh
+composer require --dev "bovigo/callmap": "^5.0"
+```
 
 To install it as a runtime dependency for your package use the following command:
 
-    composer require "bovigo/callmap=^5.0"
+```sh
+composer require "bovigo/callmap=^5.0"
+```
 
-
-Requirements
-------------
+## Requirements
 
 _bovigo/callmap_ requires at least PHP 7.2.
 
@@ -42,9 +40,7 @@ select the assertions to be used for argument verification. This means even if
 you run your tests with _PHPUnit_ but _bovigo/assert_ is present as well argument
 verification will be done with the latter.
 
-
-Usage
------
+## Usage
 
 Explore the [tests](https://github.com/bovigo/callmap/tree/master/src/test/php)
 to see how _bovigo/callmap_ can be used. For the very eager, here's a code
@@ -53,13 +49,13 @@ example which features almost all of the possibilities:
 ```php
 // set up the instance to be used
 $yourClass = NewInstance::of(YourClass::class, ['some', 'arguments'])
-        ->returns([
-                'aMethod'     => 313,
-                'otherMethod' => function() { return 'yeah'; },
-                'play'        => onConsecutiveCalls(303, 808, 909, throws(new \Exception('error')),
-                'ups'         => throws(new \Exception('error')),
-                'hey'         => 'strtoupper'
-        ]);
+    ->returns([
+        'aMethod'     => 313,
+        'otherMethod' => function() { return 'yeah'; },
+        'play'        => onConsecutiveCalls(303, 808, 909, throws(new \Exception('error')),
+        'ups'         => throws(new \Exception('error')),
+        'hey'         => 'strtoupper'
+    ]);
 
 // do some stuff, e.g. execute the logic to test
 ...
@@ -73,6 +69,7 @@ However, if you prefer text instead of code, read on.
 
 Note: for the sake of brevity below it is assumed the used classes and functions
 are imported into the current namespace via
+
 ```php
 use bovigo\callmap\NewInstance;
 use bovigo\callmap\NewCallable;
@@ -81,8 +78,7 @@ use function bovigo\callmap\onConsecutiveCalls;
 use function bovigo\callmap\verify;
 ```
 
-
-### Specify return values for method invocations ###
+### Specify return values for method invocations
 
 As the first step, you need to get an instance of the class, interface or trait
 you want to specify return values for. To do this, _bovigo/callmap_ provides two
@@ -112,8 +108,8 @@ for, how to do that?
 
 ```php
 $yourClass->returns([
-        'aMethod'     => 303,
-        'otherMethod' => function() { return 'yeah'; }
+    'aMethod'     => 303,
+    'otherMethod' => function() { return 'yeah'; }
 ]);
 ```
 
@@ -133,27 +129,27 @@ $yourClass->returns(['otherMethod' => function() { return 'yeah'; }]);
 
 As a result of this, `$yourClass->aMethod()` is not set any more to return `303`.
 
-### Default return values ###
+### Default return values
 
 Depending on what is instantiated and how, there will be default return values
 for the case that no call mapping has been passed for a method which actually is
 called.
 
-1.  Interfaces<br/>
+1. **Interfaces:**
     Default return value is always `null`, except the return type declaration
     specifies the interface itself and is not optional, or the `@return` type
     hint in the doc comment specifies the short class name or the fully
     qualified class name of the interface itself or any other interface it
     extends. In that case the default return value will be the instance itself.
 
-2.  Traits<br/>
+2. **Traits:**
     When instantiated with `NewInstance::of()` the default return value will be
     the value a call to the according method returns.<br/>
     When instantiated with `NewInstance::stub()` and for abstract methods the
     default return value is `null`, except the `@return` type hint in the doc
     comment specifies `$this` or `self`.
 
-3.  Classes<br/>
+3. **Classes:**
     When instantiated with `NewInstance::of()` the default return value will be
     the value which is returned by the according method of the original class.<br/>
     When instantiated with `NewInstance::stub()` and for abstract methods the
@@ -164,8 +160,7 @@ called.
     class implements. Exception to this: if the return type is `\Traversable`
     and the class implements this interface return value will be `null`.
 
-
-### Specify a series of return values ###
+### Specify a series of return values
 
 Sometimes a method gets called more than once and you need to specify different
 return values for each call.
@@ -179,8 +174,7 @@ in the order of the specified return values. If the method is called more often
 than return values are specified, each subsequent call will return the default
 return value as if no call mapping has been specified.
 
-
-### I want to return a callable, but it is executed on method invocation ###
+### I want to return a callable, but it is executed on method invocation
 
 Because callables are executed when the method is invoked it is required to wrap
 them into another callable. To ease this, the `wrap()` function is provided:
@@ -195,8 +189,7 @@ The reason it is that way is that it is far more likely you want to calculate
 the return value with a callable instead of simply returning the callable as a
 result of the method call.
 
-
-### Let's throw an exception ###
+### Let's throw an exception
 
 Sometimes you don't need to specify a return value, but want the method to throw
 an exception on invocation. Of course you could do that by providing a callable
@@ -226,8 +219,7 @@ the second call will lead to the exception being thrown.
 In case a method gets invoked more often than results are defined with
 `onConsecutiveCalls()` then it falls back to the default return value (see above).
 
-
-### Is there a way to access the passed arguments? ###
+### Is there a way to access the passed arguments?
 
 It might be useful to use the arguments passed to a method before returning a
 value. If you specify a callable this callable will receive all arguments passed
@@ -243,8 +235,7 @@ However, if a method has optional parameters the default value will *not* be
 passed as argument if it wasn't given in the actual method call. Only explicitly
 passed arguments will be forwarded to the callable.
 
-
-### Do I have to specify a closure or can I use an arbitrary callable? ###
+### Do I have to specify a closure or can I use an arbitrary callable?
 
 You can:
 
@@ -254,8 +245,7 @@ $yourClass->returns(['aMethod' => 'strtoupper']);
 echo $yourClass->aMethod('foo'); // prints FOO
 ```
 
-
-### How do I specify that an object returns itself? ###
+### How do I specify that an object returns itself?
 
 Actually, you don't. _bovigo/callmap_ is smart enough to detect when it should
 return the object instance instead of null when no call mapping for a method was
@@ -278,8 +268,7 @@ In case this leads to a false interpretation and the instance is returned when
 in fact it should not, you can always overrule that by explicitly stating a
 return value in the callmap.
 
-
-### Which methods can be used in the callmap? ###
+### Which methods can be used in the callmap?
 
 Only non-static, non-final public and protected methods can be used.
 
@@ -289,15 +278,13 @@ luck. Probably you should rethink your class design.
 Oh, and of course you can't use all of this with a class which is declared as
 final.
 
-
-### What happens if a method specified in the callmap doesn't exist? ###
+### What happens if a method specified in the callmap doesn't exist?
 
 In case the callmap contains a method which doesn't exist or is not applicable
 for mapping (see above) `returns()` will throw an `\InvalidArgumentException`.
 This also prevents typos and wondering why something doesn't work as expected.
 
-
-### Verify method invocations ###
+### Verify method invocations
 
 Sometimes it is required to ensure that a method was invoked a certain amount of
 times. In order to do that, _bovigo/callmap_ provides the `verify()` function:
@@ -320,17 +307,17 @@ in the callmap.
 Here is a list of methods that the instance returned by `verify()` offers for
 verifying the amount of method invocations:
 
-*   `wasCalledAtMost($times)`<br/>
+* `wasCalledAtMost($times)`:
     Asserts that the method was invoked at maximum the given amount of times.
-*   `wasCalledAtLeastOnce()`<br/>
+* `wasCalledAtLeastOnce()`:
     Asserts that the method was invoked at least once.
-*   `wasCalledAtLeast($times)`<br/>
+* `wasCalledAtLeast($times)`:
     Asserts that the method was invoked at minimum the given amount of times.
-*   `wasCalledOnce()`<br/>
+* `wasCalledOnce()`:
     Asserts that the method was invoked exactly once.
-*   `wasCalled($times)`<br/>
+* `wasCalled($times)`:
     Asserts that the method was invoked exactly the given amount of times.
-*   `wasNeverCalled()`<br/>
+* `wasNeverCalled()`:
     Asserts that the method was never invoked.
 
 In case the method to check doesn't exist or is not applicable for mapping (see
@@ -341,8 +328,7 @@ By the way, if PHPUnit is available, `CallAmountViolation` will extend
 `PHPUnit\Framework\ExpectationFailedException`. In case it isn't available it
 will simply extend `\Exception`.
 
-
-### Verify passed arguments ###
+### Verify passed arguments
 
 _Please note that for this feature a framework which provides assertions must be
 present. Please see the requirements section above for the list of currently
@@ -374,7 +360,7 @@ verify($yourClass, 'aMethod')->receivedNothing(3); // received nothing on third 
 ```
 
 In case the method wasn't invoked (that much), a `MissingInvocation` exception
-will be thrown.<br/>
+will be thrown.
 In case the method received less arguments than expected, a `ArgumentMismatch`
 exception will be thrown. It will also be thrown when `receivedNothing()` detects
 that at least one argument was received.
@@ -394,8 +380,8 @@ $this->assertTrue(verify($yourClass, 'aMethod')->receivedNothing());
 In case the verification fails an exception will be thrown. Which exactly
 depends on the available assertion framework.
 
-
 #### Verification details for bovigo/assert
+
 _Available since release 2.0.0._
 
 Both `reveived()` and `receivedOn()` also accept any instance of
@@ -413,7 +399,6 @@ In case the verification fails an `bovigo\assert\AssertionFailure` will be
 thrown. In case _PHPUnit_ is available as well this exception is also an instance
 of `PHPUnit\Framework\ExpectationFailedException`.
 
-
 #### Verification details for PHPUnit
 
 Both `reveived()` and `receivedOn()` also accept any instance of `PHPUnit\Framework\Constraint\Constraint`:
@@ -427,15 +412,14 @@ In case a bare value is passed it is assumed that `PHPUnit\Framework\Constraint\
 In case the verification fails an `PPHPUnit\Framework\ExpectationFailedException`
 will be thrown by the used `PHPUnit\Framework\Constraint\Constraint`.
 
-
 #### Verification details for xp-framework/unittest
+
 _Available since release 1.1.0._
 
 In case xp-framework/unittest is present, `\util\Objects::equal()` will be used.
 
 In case the verification fails an `\unittest\AssertionFailedError` will be
 thrown.
-
 
 ### Mocking injected functions
 
