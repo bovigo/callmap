@@ -16,13 +16,13 @@ To install it as a development dependency of your package use the following
 command:
 
 ```sh
-composer require --dev "bovigo/callmap": "^5.0"
+composer require --dev bovigo/callmap ^5.0
 ```
 
 To install it as a runtime dependency for your package use the following command:
 
 ```sh
-composer require "bovigo/callmap=^5.0"
+composer require bovigo/callmap ^5.0
 ```
 
 ## Requirements
