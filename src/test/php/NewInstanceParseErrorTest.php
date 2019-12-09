@@ -23,8 +23,7 @@ class NewInstanceParseErrorTest extends TestCase
 {
     public function setUp(): void
     {
-        NewInstance::$compile = NewCallable::of(__NAMESPACE__ . '\compile')
-                ->throws(new \ParseError('failed to evaluate'));
+        NewInstance::$compile = function() { throw new \ParseError('failed to evaluate'); };
     }
 
     public function tearDown(): void

@@ -22,8 +22,7 @@ class NewCallableParseErrorTest extends TestCase
 {
     public function setUp(): void
     {
-        NewCallable::$compile = NewCallable::of(__NAMESPACE__ . '\compile')
-                ->returns(throws(new \ParseError('failed to evaluate')));
+        NewCallable::$compile = function() { throw new \ParseError('failed to evaluate'); };
     }
 
     public function tearDown(): void
