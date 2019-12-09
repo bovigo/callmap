@@ -77,6 +77,7 @@ namespace bovigo\callmap {
             return '';
         }
 
+        /** @var \ReflectionNamedType $returnType */
         if ($returnType->isBuiltin()) {
             return ': ' . ($returnType->allowsNull() ? '?' : '') . $returnType->getName();
         }
@@ -114,6 +115,7 @@ namespace bovigo\callmap {
             } else {
                 $paramType = $parameter->getType();
                 if (null !== $paramType) {
+                    /** @var \ReflectionNamedType $paramType */
                     $param .= $paramType->getName() . ' ';
                 }
             }
