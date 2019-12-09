@@ -17,7 +17,7 @@ abstract class FunctionProxy implements Proxy
     /**
      * name of mocked function
      *
-     * @var  string
+     * @var  callable
      */
     private $name;
     /**
@@ -37,7 +37,7 @@ abstract class FunctionProxy implements Proxy
     /**
      * overwritten by proxy generated from NewCallable
      *
-     * @var  array
+     * @var  string[]
      */
     protected $paramNames = [];
     /**
@@ -50,10 +50,14 @@ abstract class FunctionProxy implements Proxy
     /**
      * constructor
      *
-     * @param  string  $functionName  name of proxied function
+     * @param  callable  $functionName  name of proxied function
      */
-    public function __construct(string $functionName)
+    public function __construct(callable $functionName)
     {
+        if (!\is_string($functionName)) {
+            throw new \InvalidArgumentException('Given function name must be a function name, methods are not supported');
+        }
+
         $this->name = $functionName;
         $this->invocations = new Invocations($functionName, $this->paramNames);
     }
@@ -71,7 +75,9 @@ abstract class FunctionProxy implements Proxy
     {
         if ($this->returnVoid) {
             throw new \LogicException(
-                'Trying to map function ' . $this->name
+                // should be $this->name, but phpstan doesn't understand that
+                // it is always a string even when marked as type callable
+                'Trying to map function ' . $this->invocations->name()
                 . '(), but it is declared as returning void.'
             );
         }
@@ -108,7 +114,7 @@ abstract class FunctionProxy implements Proxy
         }
 
         if ($this->parentCallsAllowed) {
-            $originalFunction = $this->invocations->name();
+            $originalFunction = $this->name;
             return $originalFunction(...$arguments);
         }
 
