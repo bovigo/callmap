@@ -27,13 +27,10 @@ use function bovigo\assert\predicate\isNull;
 class ReturnSelfPhp7Test extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\ClassProxy
      */
     private $proxy;
 
-    /**
-     * set up test environment
-     */
     public function setUp(): void
     {
         $this->proxy = NewInstance::stub(Extended7::class);

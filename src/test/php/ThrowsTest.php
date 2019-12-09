@@ -21,13 +21,10 @@ use function bovigo\assert\predicate\contains;
 class ThrowsTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\ClassProxy
      */
     private $proxy;
 
-    /**
-     * set up test environment
-     */
     public function setUp(): void
     {
         $this->proxy = NewInstance::of(\ReflectionObject::class, [$this]);

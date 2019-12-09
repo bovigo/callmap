@@ -21,7 +21,7 @@ use function bovigo\assert\predicate\isNull;
 class AbstractMethodTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\ClassProxy
      */
     private $proxy;
 
@@ -65,11 +65,13 @@ class AbstractMethodTest extends TestCase
     }
 
     /**
+     * @param  int|null  $argument
+     * @param  string    $expectedResult
      * @test
      * @dataProvider  arguments
      * @since  0.2.0
      */
-    public function givenArgumentsArePassedToClosure($argument, $expectedResult): void
+    public function givenArgumentsArePassedToClosure($argument, string $expectedResult): void
     {
         $this->proxy->returns([
             'play' => function($roland = 303)

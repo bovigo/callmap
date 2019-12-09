@@ -19,7 +19,7 @@ use function bovigo\assert\predicate\equals;
 class InternalClassTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\ClassProxy
      */
     private $proxy;
 

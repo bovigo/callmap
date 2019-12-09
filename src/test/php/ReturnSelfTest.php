@@ -31,13 +31,10 @@ use function bovigo\assert\predicate\isNull;
 class ReturnSelfTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\ClassProxy
      */
     private $proxy;
 
-    /**
-     * set up test environment
-     */
     public function setUp(): void
     {
         $this->proxy = NewInstance::stub(Extended::class);
