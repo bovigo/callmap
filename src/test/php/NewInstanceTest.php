@@ -33,19 +33,19 @@ class NewInstanceTest extends TestCase
     /**
      * @test
      */
-    public function callWithNonObjectOrClassNameThrowsInvalidArgumentException(): void
+    public function callWithNonObjectOrClassNameThrowsReflectionException(): void
     {
         expect(function() { NewInstance::of(313); })
-            ->throws(\InvalidArgumentException::class);
+            ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
      */
-    public function callWithNonExistingClassNameThrowsInvalidArgumentException(): void
+    public function callWithNonExistingClassNameThrowsReflectionException(): void
     {
         expect(function() { NewInstance::of('DoesNotExist'); })
-            ->throws(\InvalidArgumentException::class);
+            ->throws(\ReflectionException::class);
 
     }
 

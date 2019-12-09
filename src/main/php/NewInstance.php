@@ -76,34 +76,16 @@ class NewInstance
      */
     private static function callMapClass($target): \ReflectionClass
     {
-        $class = self::reflect($target);
+        if (is_object($target)) {
+            $target = \get_class($target);
+        }
+
+        $class = new \ReflectionClass($target);
         if (!isset(self::$classes[$class->getName()])) {
             self::$classes[$class->getName()] = self::forkCallMapClass($class);
         }
 
         return self::$classes[$class->getName()];
-    }
-
-    /**
-     * reflects given class value
-     *
-     * @param   string|object  $class
-     * @return  \ReflectionClass
-     * @throws  \InvalidArgumentException
-     */
-    private static function reflect($class): \ReflectionClass
-    {
-        if (is_string($class) && (class_exists($class) || interface_exists($class) || trait_exists($class))) {
-            return new \ReflectionClass($class);
-        } elseif (is_object($class)) {
-            return new \ReflectionObject($class);
-        }
-
-        throw new \InvalidArgumentException(
-                'Given class must either be an existing class, interface or'
-                . ' trait name or class instance, ' . \gettype($class)
-                . ' with value "' . $class . '" given'
-        );
     }
 
     /**
