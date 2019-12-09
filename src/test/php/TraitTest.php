@@ -24,7 +24,7 @@ use function bovigo\assert\predicate\isOfType;
 class TraitTest extends TestCase
 {
     /**
-     * @type  bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\Proxy
      */
     private $proxy;
 
@@ -39,7 +39,7 @@ class TraitTest extends TestCase
     /**
      * @test
      */
-    public function callsOriginalMethodIfNoMappingProvided()
+    public function callsOriginalMethodIfNoMappingProvided(): void
     {
         assertThat($this->proxy->action(313), equals(313));
     }
@@ -47,7 +47,7 @@ class TraitTest extends TestCase
     /**
      * @test
      */
-    public function mapToSimpleValueReturnsValueOnMethodCall()
+    public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => 'foo']);
         assertThat($this->proxy->action(313), equals('foo'));
@@ -56,7 +56,7 @@ class TraitTest extends TestCase
     /**
      * @test
      */
-    public function mapToClosureReturnsClosureReturnValueOnMethodCall()
+    public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => function() { return 'foo'; }]);
         assertThat($this->proxy->action(313), equals('foo'));
@@ -66,7 +66,7 @@ class TraitTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function amountOfCallsToMethodIsZeroIfNotCalled()
+    public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'action')->wasNeverCalled();
     }
@@ -75,7 +75,7 @@ class TraitTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function recordsAmountOfCallsToMethod()
+    public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->action(303);
         $this->proxy->action(313);
@@ -85,7 +85,7 @@ class TraitTest extends TestCase
     /**
      * @test
      */
-    public function returnsListOfReceivedArgumentsIfMethodCalled()
+    public function returnsListOfReceivedArgumentsIfMethodCalled(): void
     {
         $this->proxy->action(313);
         verify($this->proxy, 'action')->received(313);
@@ -95,7 +95,7 @@ class TraitTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed()
+    public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed(): void
     {
         $this->proxy->other();
         verify($this->proxy, 'other')->receivedNothing();
@@ -104,7 +104,7 @@ class TraitTest extends TestCase
     /**
      * @test
      */
-    public function listOfReceivedArgumentsContainsGivenArguments()
+    public function listOfReceivedArgumentsContainsGivenArguments(): void
     {
         $this->proxy->other(['play' => 808]);
         verify($this->proxy, 'other')->received(each(isOfType('int')));

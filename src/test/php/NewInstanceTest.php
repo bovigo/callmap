@@ -33,74 +33,64 @@ class NewInstanceTest extends TestCase
     /**
      * @test
      */
-    public function callWithNonObjectOrClassNameThrowsInvalidArgumentException()
+    public function callWithNonObjectOrClassNameThrowsInvalidArgumentException(): void
     {
-        expect(function() {
-                NewInstance::of(313);
-        })
-        ->throws(\InvalidArgumentException::class);
+        expect(function() { NewInstance::of(313); })
+            ->throws(\InvalidArgumentException::class);
     }
 
     /**
      * @test
      */
-    public function callWithNonExistingClassNameThrowsInvalidArgumentException()
+    public function callWithNonExistingClassNameThrowsInvalidArgumentException(): void
     {
-        expect(function() {
-                NewInstance::of('DoesNotExist');
-        })
-        ->throws(\InvalidArgumentException::class);
+        expect(function() { NewInstance::of('DoesNotExist'); })
+            ->throws(\InvalidArgumentException::class);
 
-    }
-
-    /**
-     * @test
-     * @since  0.4.0
-     */
-    public function canNotCreateInstanceOfFinalClass()
-    {
-        expect(function() {
-                NewInstance::of(ThisIsNotPossible::class);
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Can not create mapping proxy for final class ' . ThisIsNotPossible::class);
     }
 
     /**
      * @test
      * @since  0.4.0
      */
-    public function canNotCreateStubInstanceOfFinalClass()
+    public function canNotCreateInstanceOfFinalClass(): void
     {
-        expect(function() {
-                NewInstance::stub(ThisIsNotPossible::class);
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Can not create mapping proxy for final class ' . ThisIsNotPossible::class);
+        expect(function() { NewInstance::of(ThisIsNotPossible::class); })
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage('Can not create mapping proxy for final class ' . ThisIsNotPossible::class);
     }
 
     /**
      * @test
      * @since  0.4.0
      */
-    public function canNotRetrieveMappedClassnameForFinalClass()
+    public function canNotCreateStubInstanceOfFinalClass(): void
     {
-        expect(function() {
-                NewInstance::classname(ThisIsNotPossible::class);
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Can not create mapping proxy for final class ' . ThisIsNotPossible::class);
+        expect(function() { NewInstance::stub(ThisIsNotPossible::class);})
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage('Can not create mapping proxy for final class ' . ThisIsNotPossible::class);
+    }
+
+    /**
+     * @test
+     * @since  0.4.0
+     */
+    public function canNotRetrieveMappedClassnameForFinalClass(): void
+    {
+        expect(function() { NewInstance::classname(ThisIsNotPossible::class); })
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage('Can not create mapping proxy for final class ' . ThisIsNotPossible::class);
     }
 
     /**
      * @test
      * @since  0.2.0
      */
-    public function doesNotGenerateClassTwice()
+    public function doesNotGenerateClassTwice(): void
     {
         assertThat(
-                NewInstance::classname(\ReflectionObject::class),
-                equals(NewInstance::classname(\ReflectionObject::class))
+            NewInstance::classname(\ReflectionObject::class),
+            equals(NewInstance::classname(\ReflectionObject::class))
         );
     }
 
@@ -108,11 +98,11 @@ class NewInstanceTest extends TestCase
      * @test
      * @since  0.2.0
      */
-    public function doesCreateIndependentInstances()
+    public function doesCreateIndependentInstances(): void
     {
         assertThat(
-                NewInstance::of(\ReflectionObject::class, [$this]),
-                isNotSameAs(NewInstance::of(\ReflectionObject::class, [$this]))
+            NewInstance::of(\ReflectionObject::class, [$this]),
+            isNotSameAs(NewInstance::of(\ReflectionObject::class, [$this]))
         );
     }
 
@@ -120,11 +110,11 @@ class NewInstanceTest extends TestCase
      * @test
      * @since  0.2.0
      */
-    public function doesCreateIndependentStubs()
+    public function doesCreateIndependentStubs(): void
     {
         assertThat(
-                NewInstance::stub(AnotherTestHelperClass::class),
-                isNotSameAs(NewInstance::stub(AnotherTestHelperClass::class))
+            NewInstance::stub(AnotherTestHelperClass::class),
+            isNotSameAs(NewInstance::stub(AnotherTestHelperClass::class))
         );
     }
 
@@ -132,105 +122,105 @@ class NewInstanceTest extends TestCase
      * @test
      * @since  0.4.0
      */
-    public function mapNonExistingMethodThrowsInvalidArgumentException()
+    public function mapNonExistingMethodThrowsInvalidArgumentException(): void
     {
         expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->returns(['doesNotExist' => true]);
+            NewInstance::of(AnotherTestHelperClass::class)
+                  ->returns(['doesNotExist' => true]);
         })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to map method ' . AnotherTestHelperClass::class.'::doesNotExist(), but it does not exist. Probably a typo?');
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage('Trying to map method ' . AnotherTestHelperClass::class.'::doesNotExist(), but it does not exist. Probably a typo?');
     }
 
     /**
      * @test
      * @since  0.4.0
      */
-    public function mapExistingMethodWithTypoThrowsInvalidArgumentException()
+    public function mapExistingMethodWithTypoThrowsInvalidArgumentException(): void
     {
         expect(function() {
-                NewInstance::of(AnotherTestHelperClass::class)
-                        ->returns(['doSomethingy' => true]);
+            NewInstance::of(AnotherTestHelperClass::class)
+                ->returns(['doSomethingy' => true]);
         })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to map method ' . AnotherTestHelperClass::class.'::doSomethingy(), but it does not exist. Probably a typo?');
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage('Trying to map method ' . AnotherTestHelperClass::class.'::doSomethingy(), but it does not exist. Probably a typo?');
     }
 
     /**
      * @test
      * @since  0.4.0
      */
-    public function mapNonApplicableMethodThrowsInvalidArgumentException()
+    public function mapNonApplicableMethodThrowsInvalidArgumentException(): void
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
         expect(function() use ($proxy) {
-                $proxy->returns(['doNotTouchThis' => true]);
+            $proxy->returns(['doNotTouchThis' => true]);
         })
-                ->throws(\InvalidArgumentException::class)
-                ->withMessage(
-                        'Trying to map method '
-                        . AnotherTestHelperClass::class.'::doNotTouchThis(),'
-                        . ' but it is not applicable for mapping.'
-                );
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage(
+                'Trying to map method '
+                . AnotherTestHelperClass::class.'::doNotTouchThis(),'
+                . ' but it is not applicable for mapping.'
+            );
     }
 
     /**
      * @test
      * @since  0.5.0
      */
-    public function retrieveInvocationsForNonExistingMethodThrowsInvalidArgumentException()
+    public function retrieveInvocationsForNonExistingMethodThrowsInvalidArgumentException(): void
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
         expect(function() use ($proxy) { $proxy->invocations('doesNotExist'); })
-                ->throws(\InvalidArgumentException::class)
-                ->withMessage(
-                        'Trying to retrieve invocations for method '
-                        . AnotherTestHelperClass::class.'::doesNotExist(),'
-                        . ' but it does not exist. Probably a typo?'
-                );
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage(
+                'Trying to retrieve invocations for method '
+                . AnotherTestHelperClass::class.'::doesNotExist(),'
+                . ' but it does not exist. Probably a typo?'
+            );
     }
 
     /**
      * @test
      * @since  0.5.0
      */
-    public function retrieveInvocationsForExistingMethodWithTypoThrowsInvalidArgumentException()
+    public function retrieveInvocationsForExistingMethodWithTypoThrowsInvalidArgumentException(): void
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
         expect(function() use ($proxy) { $proxy->invocations('doSomethingy'); })
-                ->throws(\InvalidArgumentException::class)
-                ->withMessage(
-                        'Trying to retrieve invocations for method '
-                        . AnotherTestHelperClass::class.'::doSomethingy(),'
-                        . ' but it does not exist. Probably a typo?'
-                );
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage(
+                'Trying to retrieve invocations for method '
+                . AnotherTestHelperClass::class.'::doSomethingy(),'
+                . ' but it does not exist. Probably a typo?'
+            );
     }
 
     /**
      * @test
      * @since  0.5.0
      */
-    public function retrieveInvocationsForNonApplicableMethodThrowsInvalidArgumentException()
+    public function retrieveInvocationsForNonApplicableMethodThrowsInvalidArgumentException(): void
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
         expect(function() use ($proxy) { $proxy->invocations('doNotTouchThis'); })
-                ->throws(\InvalidArgumentException::class)
-                ->withMessage(
-                        'Trying to retrieve invocations for method '
-                        . AnotherTestHelperClass::class.'::doNotTouchThis(),'
-                        . ' but it is not applicable for mapping.'
-                );
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage(
+                'Trying to retrieve invocations for method '
+                . AnotherTestHelperClass::class.'::doNotTouchThis(),'
+                . ' but it is not applicable for mapping.'
+            );
     }
 
     /**
      * @test
      * @since  2.0.0
      */
-    public function canCreateInstanceFromClassWithPhp7ReturnTypeHintOnMethod()
+    public function canCreateInstanceFromClassWithPhp7ReturnTypeHintOnMethod(): void
     {
         assertThat(
-                NewInstance::of(ReturnTypeHints::class),
-                isInstanceOf(ReturnTypeHints::class)
+            NewInstance::of(ReturnTypeHints::class),
+            isInstanceOf(ReturnTypeHints::class)
         );
     }
 
@@ -238,10 +228,10 @@ class NewInstanceTest extends TestCase
      * @test
      * @since  2.0.1
      */
-    public function mapReturnValueToNullShouldNotCallOriginalMethod()
+    public function mapReturnValueToNullShouldNotCallOriginalMethod(): void
     {
         $instance = NewInstance::of(AnotherTestHelperClass::class)
-                ->returns(['gimmeFive' => null]);
+            ->returns(['gimmeFive' => null]);
         assertThat($instance->gimmeFive(), isNull());
     }
 
@@ -250,7 +240,7 @@ class NewInstanceTest extends TestCase
      * @group  optional_return_value
      * @since  5.0.2
      */
-    public function canWorkWithOptionalReturnTypehints()
+    public function canWorkWithOptionalReturnTypehints(): void
     {
         assertNull(NewInstance::of(ReturnTypeHints::class)->fump());
     }
@@ -260,7 +250,7 @@ class NewInstanceTest extends TestCase
      * @group  optional_return_value
      * @since  5.1.0
      */
-    public function canWorkWithOptionalBuiltinReturnTypehints()
+    public function canWorkWithOptionalBuiltinReturnTypehints(): void
     {
         assertNull(NewInstance::of(ReturnTypeHints::class)->someString());
     }
@@ -270,7 +260,7 @@ class NewInstanceTest extends TestCase
      * @group  void_return
      * @since  5.1.0
      */
-    public function canWorkWithVoidReturnTypehints()
+    public function canWorkWithVoidReturnTypehints(): void
     {
         assertNull(NewInstance::of(ReturnTypeHints::class)->returnsVoid());
     }
@@ -281,7 +271,7 @@ class NewInstanceTest extends TestCase
      * @group  stub
      * @since  5.1.0
      */
-    public function voidMethodCanBeStubbed()
+    public function voidMethodCanBeStubbed(): void
     {
         $i = NewInstance::of(Extended7::class)->stub('noAction');
         $i->noAction('example');
@@ -293,7 +283,7 @@ class NewInstanceTest extends TestCase
      * @group  stub
      * @since  5.1.0
      */
-    public function methodsWithOptionalReturnValueCanBeStubbed()
+    public function methodsWithOptionalReturnValueCanBeStubbed(): void
     {
         $i = NewInstance::of(Extended7::class)->stub('noAction', 'actionOptional');
         assertNull($i->actionOptional());
@@ -305,7 +295,7 @@ class NewInstanceTest extends TestCase
      * @group  stub
      * @since  5.1.0
      */
-    public function methodsWithSelfReturnValueCanBeStubbed()
+    public function methodsWithSelfReturnValueCanBeStubbed(): void
     {
         $i = NewInstance::of(Extended7::class)->stub('action');
         assertThat($i->action(), isSameAs($i));
@@ -317,7 +307,7 @@ class NewInstanceTest extends TestCase
      * @group  stub
      * @since  5.1.0
      */
-    public function stubNonExistingMethodThrowsInvalidArgumentException()
+    public function stubNonExistingMethodThrowsInvalidArgumentException(): void
     {
         expect(function() { NewInstance::of(Extended7::class)->stub('doesNotExist'); })
             ->throws(\InvalidArgumentException::class)
@@ -333,7 +323,7 @@ class NewInstanceTest extends TestCase
      * @group  stub
      * @since  5.1.0
      */
-    public function stubNonApplicableMethodThrowsInvalidArgumentException()
+    public function stubNonApplicableMethodThrowsInvalidArgumentException(): void
     {
         expect(function() { NewInstance::of(AnotherTestHelperClass::class)->stub('doNotTouchThis'); })
             ->throws(\InvalidArgumentException::class)
@@ -349,7 +339,7 @@ class NewInstanceTest extends TestCase
      * @group  stub
      * @since  5.1.0
      */
-    public function stubMethodWhichWasAlreadyMappedThrowsInvalidArgumentException()
+    public function stubMethodWhichWasAlreadyMappedThrowsInvalidArgumentException(): void
     {
         expect(function() {
           NewInstance::of(Extended7::class)

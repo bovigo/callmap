@@ -15,7 +15,7 @@ class NewInstance
     /**
      * map of already evaluated classes
      *
-     * @type  \ReflectionClass[]
+     * @var  \ReflectionClass[]
      */
     private static $classes = [];
 

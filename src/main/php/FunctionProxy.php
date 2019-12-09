@@ -17,33 +17,33 @@ abstract class FunctionProxy implements Proxy
     /**
      * name of mocked function
      *
-     * @type  string
+     * @var  string
      */
     private $name;
     /**
      * map of method with closures to call instead
      *
-     * @type  \bovigo\callmap\CallMap
+     * @var  \bovigo\callmap\CallMap
      */
     private $callMap;
     /**
-     * @type  \bovigo\callmap\Invocations
+     * @var  \bovigo\callmap\Invocations
      */
     private $invocations;
     /**
-     * @type  bool
+     * @var  bool
      */
     protected $parentCallsAllowed = true;
     /**
      * overwritten by proxy generated from NewCallable
      *
-     * @type  array
+     * @var  array
      */
     protected $paramNames = [];
     /**
      * overwritten by proxy generated from NewCallable
      *
-     * @type  bool
+     * @var  bool
      */
     protected $returnVoid;
 

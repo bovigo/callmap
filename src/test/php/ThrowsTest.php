@@ -21,7 +21,7 @@ use function bovigo\assert\predicate\contains;
 class ThrowsTest extends TestCase
 {
     /**
-     * @type  bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\Proxy
      */
     private $proxy;
 
@@ -36,32 +36,28 @@ class ThrowsTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionPassedViaThrows()
+    public function throwsExceptionPassedViaThrows(): void
     {
         $e = new \ReflectionException('some error');
         $this->proxy->returns(['getName' => throws($e)]);
-        expect(function() {
-            $this->proxy->getName();
-        })
-                ->throws(\ReflectionException::class)
-                ->message(contains('some error'));
+        expect(function() { $this->proxy->getName(); })
+            ->throws(\ReflectionException::class)
+            ->message(contains('some error'));
 
     }
 
     /**
      * @test
      */
-    public function throwsExceptionPassedViaInvocationResults()
+    public function throwsExceptionPassedViaInvocationResults(): void
     {
         $e = new \ReflectionException('some error');
         $this->proxy->returns(
                 ['getName' => onConsecutiveCalls('foo', throws($e))]
         );
         $this->proxy->getName(); // foo
-        expect(function() {
-                $this->proxy->getName(); // throws $e
-        })
-                ->throws(\ReflectionException::class)
-                ->message(contains('some error'));
+        expect(function() { $this->proxy->getName(); }) // throws $e
+            ->throws(\ReflectionException::class)
+            ->message(contains('some error'));
     }
 }

@@ -21,13 +21,10 @@ use function bovigo\assert\predicate\isNull;
 class AbstractMethodTest extends TestCase
 {
     /**
-     * @type  bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\Proxy
      */
     private $proxy;
 
-    /**
-     * set up test environment
-     */
     public function setUp(): void
     {
         $this->proxy = NewInstance::of(Instrument::class);
@@ -36,7 +33,7 @@ class AbstractMethodTest extends TestCase
     /**
      * @test
      */
-    public function returnsNullIfMethodCallNotMapped()
+    public function returnsNullIfMethodCallNotMapped(): void
     {
         assertThat($this->proxy->play(), isNull());
     }
@@ -44,7 +41,7 @@ class AbstractMethodTest extends TestCase
     /**
      * @test
      */
-    public function mapToSimpleValueReturnsValueOnMethodCall()
+    public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['play' => 'foo']);
         assertThat($this->proxy->play(), equals('foo'));
@@ -53,14 +50,14 @@ class AbstractMethodTest extends TestCase
     /**
      * @test
      */
-    public function mapToClosureReturnsClosureReturnValueOnMethodCall()
+    public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['play' => function() { return 'foo'; }]);
         assertThat($this->proxy->play(808), equals('foo'));
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function arguments(): array
     {
@@ -72,25 +69,24 @@ class AbstractMethodTest extends TestCase
      * @dataProvider  arguments
      * @since  0.2.0
      */
-    public function givenArgumentsArePassedToClosure($argument, $expectedResult)
+    public function givenArgumentsArePassedToClosure($argument, $expectedResult): void
     {
-        $this->proxy->returns(
-                ['play' => function($roland = 303)
-                            {
-                                if (303 === $roland) {
-                                    return 'blubber';
-                                } elseif (808 === $roland) {
-                                    return 'ba-dummz!';
-                                }
+        $this->proxy->returns([
+            'play' => function($roland = 303)
+                      {
+                          if (303 === $roland) {
+                              return 'blubber';
+                          } elseif (808 === $roland) {
+                              return 'ba-dummz!';
+                          }
 
-                                return 'foo';
-                            }
-                ]
-        );
+                          return 'foo';
+                      }
+        ]);
 
         assertThat(
-                null === $argument ? $this->proxy->play() : $this->proxy->play($argument),
-                equals($expectedResult)
+            null === $argument ? $this->proxy->play() : $this->proxy->play($argument),
+            equals($expectedResult)
         );
     }
 
@@ -98,7 +94,7 @@ class AbstractMethodTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function amountOfCallsToMethodIsZeroIfNotCalled()
+    public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'play')->wasNeverCalled();
     }
@@ -107,7 +103,7 @@ class AbstractMethodTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function recordsAmountOfCallsToMethod()
+    public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->play();
         $this->proxy->play(808);
@@ -118,7 +114,7 @@ class AbstractMethodTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed()
+    public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed(): void
     {
         $this->proxy->play();
         verify($this->proxy, 'play')->receivedNothing();
@@ -127,7 +123,7 @@ class AbstractMethodTest extends TestCase
     /**
      * @test
      */
-    public function canVerifyReceivedArguments()
+    public function canVerifyReceivedArguments(): void
     {
         $this->proxy->play(808);
         verify($this->proxy, 'play')->received(808);
@@ -136,7 +132,7 @@ class AbstractMethodTest extends TestCase
     /**
      * @test
      */
-    public function canVerifyReceivedArgumentsOfSpecificInvocation()
+    public function canVerifyReceivedArgumentsOfSpecificInvocation(): void
     {
         $this->proxy->play(808);
         $this->proxy->play(909);

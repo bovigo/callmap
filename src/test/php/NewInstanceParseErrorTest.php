@@ -35,26 +35,26 @@ class NewInstanceParseErrorTest extends TestCase
     /**
      * @test
      */
-    public function throwsProxyCreationFailureWhenEvalOfCreatedProxyClassFails()
+    public function throwsProxyCreationFailureWhenEvalOfCreatedProxyClassFails(): void
     {
         expect(function() { NewInstance::of(__CLASS__); })
-                ->throws(ProxyCreationFailure::class)
-                ->withMessage(
-                        'Failure while creating CallMap instance of '
-                        . __CLASS__ . ': failed to evaluate'
-                );
+            ->throws(ProxyCreationFailure::class)
+            ->withMessage(
+                'Failure while creating CallMap instance of '
+                . __CLASS__ . ': failed to evaluate'
+            );
     }
 
     /**
      * @test
      */
-    public function throwsProxyCreationFailureWhenEvalOfCreatedProxyTraitFails()
+    public function throwsProxyCreationFailureWhenEvalOfCreatedProxyTraitFails(): void
     {
         expect(function() { NewInstance::of(FailingTrait::class); })
-                ->throws(ProxyCreationFailure::class)
-                ->withMessage(
-                        'Failure while creating forked trait instance of '
-                        . FailingTrait::class . ': failed to evaluate'
-                );
+            ->throws(ProxyCreationFailure::class)
+            ->withMessage(
+                'Failure while creating forked trait instance of '
+                . FailingTrait::class . ': failed to evaluate'
+            );
     }
 }

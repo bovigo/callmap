@@ -26,7 +26,7 @@ class VariadicArgumentsTest extends TestCase
     /**
      * @test
      */
-    public function canCreateProxyForTypeWithVariadicArguments()
+    public function canCreateProxyForTypeWithVariadicArguments(): void
     {
         expect(function() { NewInstance::of(Variadic1::class); })
             ->doesNotThrow(\ReflectionException::class);
@@ -35,7 +35,7 @@ class VariadicArgumentsTest extends TestCase
     /**
      * @test
      */
-    public function canCreateProxyForTypeWithVariadicReference()
+    public function canCreateProxyForTypeWithVariadicReference(): void
     {
         expect(function() { NewInstance::of(VariadicReference::class); })
             ->doesNotThrow(\ReflectionException::class);
@@ -44,7 +44,7 @@ class VariadicArgumentsTest extends TestCase
     /**
      * @test
      */
-    public function canCreateProxyForTypeWithVariadicTypehint()
+    public function canCreateProxyForTypeWithVariadicTypehint(): void
     {
         expect(function() { NewInstance::of(VariadicTypeHint::class); })
             ->doesNotThrow(\ReflectionException::class);

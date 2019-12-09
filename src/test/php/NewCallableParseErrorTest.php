@@ -34,7 +34,7 @@ class NewCallableParseErrorTest extends TestCase
     /**
      * @test
      */
-    public function throwsProxyCreationFailureWhenEvalOfCreatedProxyClassFails()
+    public function throwsProxyCreationFailureWhenEvalOfCreatedProxyClassFails(): void
     {
         expect(function() { NewCallable::of('strlen'); })
                 ->throws(ProxyCreationFailure::class)

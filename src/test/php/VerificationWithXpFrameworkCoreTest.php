@@ -21,6 +21,9 @@ use function bovigo\assert\predicate\contains;
   */
 class VerificationWithXpFrameworkCoreTest extends TestCase
 {
+    /**
+     * @var  Verification
+     */
     private $xpFrameworkCoreVerification;
 
     public function setUp(): void
@@ -37,30 +40,30 @@ class VerificationWithXpFrameworkCoreTest extends TestCase
     /**
      * @test
      */
-    public function returnsTrueWhenBothValueAreEqual()
+    public function returnsTrueWhenBothValueAreEqual(): void
     {
         assertTrue(
-                $this->xpFrameworkCoreVerification->evaluateWithXpFrameworkCore(
-                        'foo',
-                        'foo',
-                        ''
-                )
+            $this->xpFrameworkCoreVerification->evaluateWithXpFrameworkCore(
+                'foo',
+                'foo',
+                ''
+            )
         );
     }
 
     /**
      * @test
      */
-    public function throwsAssertionFailedErrorWhenWhenBothValueAreNotEqual()
+    public function throwsAssertionFailedErrorWhenWhenBothValueAreNotEqual(): void
     {
         expect(function() {
-                $this->xpFrameworkCoreVerification->evaluateWithXpFrameworkCore(
-                        'foo',
-                        'bar',
-                        'some description'
-                );
+            $this->xpFrameworkCoreVerification->evaluateWithXpFrameworkCore(
+                'foo',
+                'bar',
+                'some description'
+            );
         })
-                ->throws(\unittest\AssertionFailedError::class)
-                ->message(contains('some description'));
+            ->throws(\unittest\AssertionFailedError::class)
+            ->message(contains('some description'));
     }
 }

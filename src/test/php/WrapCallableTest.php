@@ -23,7 +23,7 @@ class WrapCallableTest extends TestCase
     /**
      * @test
      */
-    public function wrappedCallableIsReturned()
+    public function wrappedCallableIsReturned(): void
     {
         $callable = function() {};
         $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
@@ -34,7 +34,7 @@ class WrapCallableTest extends TestCase
     /**
      * @test
      */
-    public function wrappedCallableIsReturnedFromInvocationResults()
+    public function wrappedCallableIsReturnedFromInvocationResults(): void
     {
         $callable = function() {};
         $proxy    = NewInstance::of(\ReflectionObject::class, [$this])

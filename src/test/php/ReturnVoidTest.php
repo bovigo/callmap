@@ -25,7 +25,7 @@ class ReturnVoidTest extends TestCase
     /**
      * @test
      */
-    public function voidRequiresNoReturnForMethods()
+    public function voidRequiresNoReturnForMethods(): void
     {
         expect(function() {
             NewInstance::of(SomeClassWithMethodReturningVoid::class)->returnNothing();
@@ -35,7 +35,7 @@ class ReturnVoidTest extends TestCase
     /**
      * @test
      */
-    public function voidRequiresNoReturnForFunctions()
+    public function voidRequiresNoReturnForFunctions(): void
     {
         expect(function() {
             NewCallable::of('bovigo\callmap\helper\whichReturnsNothing')();
@@ -45,7 +45,7 @@ class ReturnVoidTest extends TestCase
     /**
      * @test
      */
-    public function mapVoidMethodFails()
+    public function mapVoidMethodFails(): void
     {
         expect(function() {
             NewInstance::of(SomeClassWithMethodReturningVoid::class)->returns([
@@ -58,7 +58,7 @@ class ReturnVoidTest extends TestCase
     /**
      * @test
      */
-    public function mapVoidFunctionFails()
+    public function mapVoidFunctionFails(): void
     {
         expect(function() {
             NewCallable::of('bovigo\callmap\helper\whichReturnsNothing')->returns(true);

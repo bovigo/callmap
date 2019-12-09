@@ -14,7 +14,7 @@ namespace bovigo\callmap;
  */
 class ProxyCreationFailure extends \Exception
 {
-    public function __construct($message, \Throwable $cause)
+    public function __construct(string $message, \Throwable $cause)
     {
         parent::__construct($message, $cause->getCode(), $cause);
     }

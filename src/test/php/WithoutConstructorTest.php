@@ -21,7 +21,7 @@ use function bovigo\assert\predicate\isNull;
 class WithoutConstructorTest extends TestCase
 {
     /**
-     * @type  bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\Proxy
      */
     private $proxy;
 
@@ -35,7 +35,7 @@ class WithoutConstructorTest extends TestCase
     /**
      * @test
      */
-    public function returnsNullIfMethodCallNotMapped()
+    public function returnsNullIfMethodCallNotMapped(): void
     {
         assertThat($this->proxy->action(), isNull());
     }
@@ -43,7 +43,7 @@ class WithoutConstructorTest extends TestCase
     /**
      * @test
      */
-    public function mapToSimpleValueReturnsValueOnMethodCall()
+    public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => 3]);
         assertThat($this->proxy->action(), equals(3));
@@ -52,7 +52,7 @@ class WithoutConstructorTest extends TestCase
     /**
      * @test
      */
-    public function mapToClosureReturnsClosureReturnValueOnMethodCall()
+    public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => function() { return 42; }]);
         assertThat($this->proxy->action(), equals(42));
@@ -62,7 +62,7 @@ class WithoutConstructorTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function amountOfCallsToMethodIsZeroIfNotCalled()
+    public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'action')->wasNeverCalled();
     }
@@ -71,7 +71,7 @@ class WithoutConstructorTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function recordsAmountOfCallsToMethod()
+    public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->action();
         $this->proxy->action();
@@ -81,7 +81,7 @@ class WithoutConstructorTest extends TestCase
     /**
      * @test
      */
-    public function returnsListOfReceivedArgumentsIfMethodCalled()
+    public function returnsListOfReceivedArgumentsIfMethodCalled(): void
     {
         $this->proxy->action(303);
         verify($this->proxy, 'action')->received(303);

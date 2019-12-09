@@ -15,7 +15,7 @@ class NewCallable
     /**
      * map of already evaluated functions
      *
-     * @type  array
+     * @var  array<string,\ReflectionClass>
      */
     private static $functions = [];
 

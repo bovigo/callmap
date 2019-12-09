@@ -20,13 +20,10 @@ use function bovigo\assert\predicate\isNull;
 class InternalInterfaceTest extends TestCase
 {
     /**
-     * @type  bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\Proxy
      */
     private $proxy;
 
-    /**
-     * set up test environment
-     */
     public function setUp(): void
     {
         $this->proxy = NewInstance::of(\Countable::class);
@@ -35,7 +32,7 @@ class InternalInterfaceTest extends TestCase
     /**
      * @test
      */
-    public function returnsNullIfMethodCallNotMapped()
+    public function returnsNullIfMethodCallNotMapped(): void
     {
         assertThat($this->proxy->count(), isNull());
     }
@@ -43,7 +40,7 @@ class InternalInterfaceTest extends TestCase
     /**
      * @test
      */
-    public function mapToSimpleValueReturnsValueOnMethodCall()
+    public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['count' => 3]);
         assertThat($this->proxy->count(), equals(3));
@@ -52,7 +49,7 @@ class InternalInterfaceTest extends TestCase
     /**
      * @test
      */
-    public function mapToClosureReturnsClosureReturnValueOnMethodCall()
+    public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['count' => function() { return 42; }]);
         assertThat($this->proxy->count(), equals(42));
@@ -62,7 +59,7 @@ class InternalInterfaceTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function amountOfCallsToMethodIsZeroIfNotCalled()
+    public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'count')->wasNeverCalled();
     }
@@ -71,7 +68,7 @@ class InternalInterfaceTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function recordsAmountOfCallsToMethod()
+    public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->count();
         $this->proxy->count();
@@ -82,7 +79,7 @@ class InternalInterfaceTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function canVerifyThatMethodDidNotReveiveArguments()
+    public function canVerifyThatMethodDidNotReveiveArguments(): void
     {
         $this->proxy->count();
         verify($this->proxy, 'count')->receivedNothing();

@@ -21,13 +21,10 @@ use function bovigo\assert\predicate\isNull;
 class InvocationResultsTest extends TestCase
 {
     /**
-     * @type  bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\Proxy
      */
     private $proxy;
 
-    /**
-     * set up test environment
-     */
     public function setUp(): void
     {
         $this->proxy = NewInstance::of(\ReflectionObject::class, [$this]);
@@ -36,7 +33,7 @@ class InvocationResultsTest extends TestCase
     /**
      * @test
      */
-    public function mapToInvocationResultsReturnsResultOnMethodCall()
+    public function mapToInvocationResultsReturnsResultOnMethodCall(): void
     {
         $this->proxy->returns(
             ['getName' => onConsecutiveCalls('foo', 'bar', 'baz')]
@@ -50,18 +47,18 @@ class InvocationResultsTest extends TestCase
      * @test
      * @since  0.6.0
      */
-    public function mapToInvocationResultsWithCallableReturnsResultOfCallable()
+    public function mapToInvocationResultsWithCallableReturnsResultOfCallable(): void
     {
-        $this->proxy->returns(
-                ['getName' => onConsecutiveCalls(function() { return 'foo'; })]
-        );
+        $this->proxy->returns([
+            'getName' => onConsecutiveCalls(function() { return 'foo'; })
+        ]);
         assertThat($this->proxy->getName(), equals('foo'));
     }
 
     /**
      * @test
      */
-    public function invocationResultIsResultOfOriginalMethodIfCalledMoreOftenThenResultsDefined()
+    public function invocationResultIsResultOfOriginalMethodIfCalledMoreOftenThenResultsDefined(): void
     {
         $this->proxy->returns(['getName' => onConsecutiveCalls('foo')]);
         $this->proxy->getName(); // foo
@@ -72,7 +69,7 @@ class InvocationResultsTest extends TestCase
      * @test
      * @since  0.6.0
      */
-    public function invocationResultIsNullForStubIfCalledMoreOftenThenResultsDefined()
+    public function invocationResultIsNullForStubIfCalledMoreOftenThenResultsDefined(): void
     {
         $proxy = NewInstance::stub(OneMoreSelfDefined::class);
         $proxy->returns(['getName' => onConsecutiveCalls('foo')]);
@@ -84,7 +81,7 @@ class InvocationResultsTest extends TestCase
      * @test
      * @since  0.6.0
      */
-    public function invocationResultIsNullForInterfaceIfCalledMoreOftenThenResultsDefined()
+    public function invocationResultIsNullForInterfaceIfCalledMoreOftenThenResultsDefined(): void
     {
         $proxy = NewInstance::stub(\Countable::class);
         $proxy->returns(['count' => onConsecutiveCalls(303)]);

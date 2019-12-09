@@ -17,14 +17,14 @@ class CallMap
     /**
      * map of method with results for their invocation
      *
-     * @type  array
+     * @var  array<string,mixed>
      */
     private $callMap = [];
 
     /**
      * constructor
      *
-     * @param  array  $callMap  map of method with results for their invocation
+     * @param  array<string,mixed>  $callMap  map of method with results for their invocation
      */
     public function __construct(array $callMap)
     {

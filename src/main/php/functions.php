@@ -97,7 +97,7 @@ namespace bovigo\callmap {
      *
      * @internal
      * @param   \ReflectionFunctionAbstract  $function
-     * @return  array
+     * @return  array<string,mixed>
      */
     function paramsOf(\ReflectionFunctionAbstract $function): array
     {

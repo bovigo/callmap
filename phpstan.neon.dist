@@ -1,8 +1,12 @@
 parameters:
+  inferPrivatePropertyTypeFromConstructor: true
   level: max
   paths:
     - ./src/main/php
     - ./src/test/php
+  excludes_analyse:
+      # Those files contain explicit wrong doc comments for test purposes.
+      - src/test/php/helper
   ignoreErrors:
     # The returned object is an instance of what is defined, but phpstan can't detect this
     - '#Method bovigo\\callmap\\New(Callable|Instance)::of\(\) should return bovigo\\callmap\\(FunctionProxy|ClassProxy) but returns object.#'
@@ -30,6 +34,3 @@ parameters:
     - '#Trying to invoke bovigo\\callmap\\FunctionProxy but it might not be a callable.#'
     # False positive, that is exactly what the test where this occurs is about.
     - '#Parameter \#1 $target of static method bovigo\\callmap\\NewInstance::of\(\) expects object|string, int given.#'
-  excludes_analyse:
-    # Those files contain explicit wrong doc comments for test purposes.
-    - %currentWorkingDirectory%/src/test/php/helper/Bar*

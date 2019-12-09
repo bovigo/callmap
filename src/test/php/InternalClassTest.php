@@ -19,13 +19,10 @@ use function bovigo\assert\predicate\equals;
 class InternalClassTest extends TestCase
 {
     /**
-     * @type  bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\Proxy
      */
     private $proxy;
 
-    /**
-     * set up test environment
-     */
     public function setUp(): void
     {
         $this->proxy = NewInstance::of(\ReflectionObject::class, [$this]);
@@ -34,7 +31,7 @@ class InternalClassTest extends TestCase
     /**
      * @test
      */
-    public function callsOriginalMethodIfNoMappingProvided()
+    public function callsOriginalMethodIfNoMappingProvided(): void
     {
         assertThat($this->proxy->getName(), equals(__CLASS__));
     }
@@ -42,7 +39,7 @@ class InternalClassTest extends TestCase
     /**
      * @test
      */
-    public function mapToSimpleValueReturnsValueOnMethodCall()
+    public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['getName' => 'foo']);
         assertThat($this->proxy->getName(), equals('foo'));
@@ -51,7 +48,7 @@ class InternalClassTest extends TestCase
     /**
      * @test
      */
-    public function mapToClosureReturnsClosureReturnValueOnMethodCall()
+    public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['getName' => function() { return 'foo'; }]);
         assertThat($this->proxy->getName(), equals('foo'));
@@ -61,7 +58,7 @@ class InternalClassTest extends TestCase
      * @test
      * @since  0.4.0
      */
-    public function mapToCallableReturnsCallableReturnValueOnMethodCall()
+    public function mapToCallableReturnsCallableReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['getName' => 'strtoupper']);
         assertThat($this->proxy->getName('foo'), equals('FOO'));
@@ -71,7 +68,7 @@ class InternalClassTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function amountOfCallsToMethodIsZeroIfNotCalled()
+    public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'getNamespaceName')->wasNeverCalled();
     }
@@ -80,7 +77,7 @@ class InternalClassTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function recordsAmountOfCallsToMethod()
+    public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->getName();
         $this->proxy->getName();
@@ -92,7 +89,7 @@ class InternalClassTest extends TestCase
     /**
      * @test
      */
-    public function canVerifyReceivedArguments()
+    public function canVerifyReceivedArguments(): void
     {
         $this->proxy->implementsInterface(Proxy::class);
         verify($this->proxy, 'implementsInterface')->received(Proxy::class);
@@ -101,7 +98,7 @@ class InternalClassTest extends TestCase
     /**
      * @test
      */
-    public function canVerifyReceivedArgumentsOfSpecificInvocation()
+    public function canVerifyReceivedArgumentsOfSpecificInvocation(): void
     {
         $this->proxy->hasProperty('foo');
         $this->proxy->hasProperty('bar');

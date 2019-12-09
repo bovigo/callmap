@@ -21,7 +21,7 @@ use function bovigo\assert\predicate\isInstanceOf;
 class SelfDefinedClassTest extends TestCase
 {
     /**
-     * @type  bovigo\callmap\Proxy
+     * @var  \bovigo\callmap\Proxy
      */
     private $proxy;
 
@@ -36,7 +36,7 @@ class SelfDefinedClassTest extends TestCase
     /**
      * @test
      */
-    public function callsOriginalMethodIfNoMappingProvided()
+    public function callsOriginalMethodIfNoMappingProvided(): void
     {
         assertThat(
                 $this->proxy->action(new SelfDefined(), function() {}),
@@ -47,7 +47,7 @@ class SelfDefinedClassTest extends TestCase
     /**
      * @test
      */
-    public function mapToSimpleValueReturnsValueOnMethodCall()
+    public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => 'foo']);
         assertThat(
@@ -59,7 +59,7 @@ class SelfDefinedClassTest extends TestCase
     /**
      * @test
      */
-    public function mapToClosureReturnsClosureReturnValueOnMethodCall()
+    public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => function() { return 'foo'; }]);
         assertThat(
@@ -72,7 +72,7 @@ class SelfDefinedClassTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function amountOfCallsToMethodIsZeroIfNotCalled()
+    public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'action')->wasNeverCalled();
     }
@@ -81,7 +81,7 @@ class SelfDefinedClassTest extends TestCase
      * @test
      * @doesNotPerformAssertions
      */
-    public function recordsAmountOfCallsToMethod()
+    public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->action(new SelfDefined(), function() {});
         $this->proxy->action(new SelfDefined(), function() {});
@@ -91,14 +91,14 @@ class SelfDefinedClassTest extends TestCase
     /**
      * @test
      */
-    public function returnsListOfReceivedArgumentsIfMethodCalled()
+    public function returnsListOfReceivedArgumentsIfMethodCalled(): void
     {
         $arg1 = new SelfDefined();
         $arg2 = function() {};
         $this->proxy->action($arg1, $arg2);
         verify($this->proxy, 'action')->received(
-                isInstanceOf(SelfDefined::class),
-                $arg2
+            isInstanceOf(SelfDefined::class),
+            $arg2
         );
     }
 }

@@ -19,6 +19,9 @@ use function bovigo\assert\assertTrue;
   */
 class VerificationWithPhpUnitTest extends TestCase
 {
+    /**
+     * @var  Verification
+     */
     private $phpUnitVerification;
 
     public function setUp(): void
@@ -35,7 +38,7 @@ class VerificationWithPhpUnitTest extends TestCase
     /**
      * @test
      */
-    public function usingNoConstraintFallsBackToIsEquals()
+    public function usingNoConstraintFallsBackToIsEquals(): void
     {
         assertTrue($this->phpUnitVerification->evaluateWithPhpUnit('foo', 'foo', ''));
     }
@@ -43,14 +46,14 @@ class VerificationWithPhpUnitTest extends TestCase
     /**
      * @test
      */
-    public function usingConstraintEvaluatesWithThisConstraint()
+    public function usingConstraintEvaluatesWithThisConstraint(): void
     {
         $constraint = NewInstance::of(\PHPUnit\Framework\Constraint\Constraint::class)
                 ->returns(['evaluate' => true]);
         assertTrue($this->phpUnitVerification->evaluateWithPhpUnit(
-                $constraint,
-                'foo',
-                'some description'
+            $constraint,
+            'foo',
+            'some description'
         ));
         verify($constraint, 'evaluate')->received('foo', 'some description');
     }

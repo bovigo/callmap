@@ -16,15 +16,15 @@ namespace bovigo\callmap;
 class Invocations implements \Countable
 {
     /**
-     * @type  string
+     * @var  string
      */
     private $name;
     /**
-     * @type  string[]
+     * @var  string[]
      */
     private $paramNames;
     /**
-     * @type  array
+     * @var  array<array<mixed>>
      */
     private $callHistory = [];
 
