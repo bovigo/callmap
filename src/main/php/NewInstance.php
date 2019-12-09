@@ -91,7 +91,7 @@ class NewInstance
     /**
      * reference to compile function
      *
-     * @type  callable
+     * @var  callable
      * @internal
      */
     public static $compile = __NAMESPACE__ . '\compile';
