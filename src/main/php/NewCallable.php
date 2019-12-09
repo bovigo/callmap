@@ -15,7 +15,7 @@ class NewCallable
     /**
      * map of already evaluated functions
      *
-     * @var  array<string,\ReflectionClass>
+     * @var  array<string,\ReflectionClass<FunctionProxy>>
      */
     private static $functions = [];
 
@@ -28,6 +28,10 @@ class NewCallable
      */
     public static function of(string $function): FunctionProxy
     {
+        if (!function_exists($function)) {
+            throw new \InvalidArgumentException('Given function does not exist');
+        }
+
         return self::callMapClass($function)->newInstanceArgs([$function]);
     }
 
@@ -59,7 +63,7 @@ class NewCallable
      * returns the proxy class for given function
      *
      * @param   string  $function
-     * @return  \ReflectionClass
+     * @return  \ReflectionClass<FunctionProxy>
      */
     private static function callMapClass(string $function): \ReflectionClass
     {
@@ -75,7 +79,7 @@ class NewCallable
     /**
      * reference to compile function
      *
-     * @type  callable
+     * @var  callable
      * @internal
      */
     public static $compile = __NAMESPACE__ . '\compile';
@@ -84,7 +88,7 @@ class NewCallable
      * creates a new class from the given function which uses the CallMap trait
      *
      * @param   \ReflectionFunction  $function
-     * @return  \ReflectionClass
+     * @return  \ReflectionClass<FunctionProxy>
      * @throws  ProxyCreationFailure
      */
     private static function forkCallMapClass(\ReflectionFunction $function): \ReflectionClass
@@ -100,7 +104,9 @@ class NewCallable
             );
         }
 
-        return new \ReflectionClass($function->getName() . 'CallMapProxy');
+        $functionProxy = $function->getName() . 'CallMapProxy';
+        /** @var  class-string<FunctionProxy> $functionProxy */
+        return new \ReflectionClass($functionProxy);
     }
 
     /**
