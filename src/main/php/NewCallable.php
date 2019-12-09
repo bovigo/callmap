@@ -28,10 +28,6 @@ class NewCallable
      */
     public static function of(string $function): FunctionProxy
     {
-        if (!function_exists($function)) {
-            throw new \InvalidArgumentException('Given function does not exist');
-        }
-
         return self::callMapClass($function)->newInstanceArgs([$function]);
     }
 
