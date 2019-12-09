@@ -267,7 +267,7 @@ class NewInstance
     {
         return new \CallbackFilterIterator(
                 new \ArrayIterator($class->getMethods()),
-                function(\ReflectionMethod $method)
+                function(\ReflectionMethod $method): bool
                 {
                     return !$method->isPrivate()
                             && !$method->isFinal()
