@@ -17,7 +17,7 @@ interface ClassProxy extends Proxy
      *
      * @api
      * @since   3.2.0
-     * @param   array  $callMap
+     * @param   array<string,mixed>  $callMap
      * @return  $this
      * @throws  \InvalidArgumentException  in case any of the mapped methods does not exist or is not applicable
      */
