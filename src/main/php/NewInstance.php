@@ -331,6 +331,7 @@ class NewInstance
                 return null;
             }
 
+            /** @var \ReflectionNamedType $returnType */
             return $returnType->getName();
         }
 
