@@ -262,7 +262,8 @@ class NewInstanceTest extends TestCase
      */
     public function canWorkWithVoidReturnTypehints(): void
     {
-        assertNull(NewInstance::of(ReturnTypeHints::class)->returnsVoid());
+        expect(function() { NewInstance::of(ReturnTypeHints::class)->returnsVoid(); })
+            ->doesNotThrow();
     }
 
     /**
