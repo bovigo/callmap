@@ -32,4 +32,12 @@ interface ClassProxy extends Proxy
      * @return  $this
      */
     public function stub(string ...$methods): self;
+
+    /**
+     * turn this into a complete stub
+     *
+     * @internal
+     * @return  $this
+     */
+    public function preventParentCalls(): self;
 }

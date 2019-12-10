@@ -50,9 +50,9 @@ class NewInstance
      */
     public static function stub($target): ClassProxy
     {
-        return self::callMapClass($target)
-                ->newInstanceWithoutConstructor()
-                ->preventParentCalls();
+        $proxy = self::callMapClass($target)->newInstanceWithoutConstructor();
+        $proxy->preventParentCalls();
+        return $proxy;
     }
 
     /**
