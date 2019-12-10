@@ -20,7 +20,7 @@ use function bovigo\assert\predicate\isNull;
 class InternalInterfaceTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\ClassProxy
+     * @var  \Countable&\bovigo\callmap\ClassProxy
      */
     private $proxy;
 

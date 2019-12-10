@@ -24,7 +24,7 @@ use function bovigo\assert\predicate\equals;
 class VerifyClassProxyTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\ClassProxy
+     * @var  Verified&\bovigo\callmap\ClassProxy
      */
     private $proxy;
 

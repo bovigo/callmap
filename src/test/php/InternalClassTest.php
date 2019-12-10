@@ -19,7 +19,7 @@ use function bovigo\assert\predicate\equals;
 class InternalClassTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\ClassProxy
+     * @var  \ReflectionObject&\bovigo\callmap\ClassProxy
      */
     private $proxy;
 
@@ -60,8 +60,10 @@ class InternalClassTest extends TestCase
      */
     public function mapToCallableReturnsCallableReturnValueOnMethodCall(): void
     {
-        $this->proxy->returns(['getName' => 'strtoupper']);
-        assertThat($this->proxy->getName('foo'), equals('FOO'));
+        // doesn't make much sense with \ReflectionObject, but too lazy create
+        // a proper example
+        $this->proxy->returns(['getStaticPropertyValue' => 'strtoupper']);
+        assertThat($this->proxy->getStaticPropertyValue('foo'), equals('FOO'));
     }
 
     /**

@@ -21,7 +21,7 @@ use function bovigo\assert\predicate\isNull;
 class WithoutConstructorTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\ClassProxy
+     * @var  ClassWithConstructor&\bovigo\callmap\ClassProxy
      */
     private $proxy;
 
@@ -83,7 +83,7 @@ class WithoutConstructorTest extends TestCase
      */
     public function returnsListOfReceivedArgumentsIfMethodCalled(): void
     {
-        $this->proxy->action(303);
-        verify($this->proxy, 'action')->received(303);
+        $this->proxy->otherAction(303);
+        verify($this->proxy, 'otherAction')->received(303);
     }
 }

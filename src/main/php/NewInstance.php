@@ -15,7 +15,8 @@ class NewInstance
     /**
      * map of already evaluated classes
      *
-     * @var  \ReflectionClass[]
+     * @template T of object
+     * @var  array<\ReflectionClass<T&ClassProxy>>
      */
     private static $classes = [];
 
@@ -27,14 +28,14 @@ class NewInstance
      * of the target class.
      *
      * @api
-     * @param   string|object  $target           interface or class to create a new instance of
-     * @param   mixed[]        $constructorArgs  optional  list of arguments for the constructor
-     * @return  \bovigo\callmap\ClassProxy
+     * @template T of object
+     * @param   class-string<T>|T  $target           interface or class to create a new instance of
+     * @param   mixed[]            $constructorArgs  optional  list of arguments for the constructor
+     * @return  T&ClassProxy
      */
     public static function of($target, array $constructorArgs = []): ClassProxy
     {
-        return self::callMapClass($target)
-                ->newInstanceArgs($constructorArgs);
+        return self::callMapClass($target)->newInstanceArgs($constructorArgs);
     }
 
     /**
@@ -45,8 +46,9 @@ class NewInstance
      * passed to the target method if no mapping exists, but return null.
      *
      * @api
-     * @param   string|object  $target  interface or class to create a new instance of
-     * @return  \bovigo\callmap\ClassProxy
+     * @template T of object
+     * @param   class-string<T>|T  $target  interface or class to create a new instance of
+     * @return  T&ClassProxy
      */
     public static function stub($target): ClassProxy
     {
@@ -59,8 +61,9 @@ class NewInstance
      * returns the class name of any new instance for given target class or interface
      *
      * @api
-     * @param   string|object  $target
-     * @return  string
+     * @template T of object
+     * @param   class-string<T>|T  $target
+     * @return  class-string<T&ClassProxy>
      * @since   0.2.0
      */
     public static function classname($target): string
@@ -71,8 +74,9 @@ class NewInstance
     /**
      * returns the proxy class for given target class or interface
      *
-     * @param   string|object  $target
-     * @return  \ReflectionClass
+     * @template T of object
+     * @param   class-string<T>|T  $target
+     * @return  \ReflectionClass<T&ClassProxy>
      */
     private static function callMapClass($target): \ReflectionClass
     {
@@ -99,8 +103,9 @@ class NewInstance
     /**
      * creates a new class from the given class which uses the CallMap trait
      *
-     * @param   \ReflectionClass  $class
-     * @return  \ReflectionClass
+     * @template T of object
+     * @param   \ReflectionClass<T>  $class
+     * @return  \ReflectionClass<T&ClassProxy>
      * @throws  ProxyCreationFailure
      */
     private static function forkCallMapClass(\ReflectionClass $class): \ReflectionClass
@@ -120,15 +125,18 @@ class NewInstance
             );
         }
 
-        return new \ReflectionClass($class->getName() . 'CallMapProxy');
+        $classProxy = $class->getName() . 'CallMapProxy';
+        /** @var class-string<T&ClassProxy> $classProxy */
+        return new \ReflectionClass($classProxy);
     }
 
     /**
      * create an intermediate class for the trait so that any methods of the
      * trait become callable as parent
      *
-     * @param   \ReflectionClass  $class
-     * @return  \ReflectionClass
+     * @template T of object
+     * @param   \ReflectionClass<T>  $class
+     * @return  \ReflectionClass<T>
      * @throws  ProxyCreationFailure
      */
     private static function forkTrait(\ReflectionClass $class): \ReflectionClass
@@ -158,13 +166,16 @@ class NewInstance
             );
         }
 
-        return new \ReflectionClass($class->getName() . 'CallMapFork');
+        $traitProxy = $class->getName() . 'CallMapFork';
+        /** @var  class-string<ClassProxy&T> $traitProxy */
+        return new \ReflectionClass($traitProxy);
     }
 
     /**
      * creates code for new class
      *
-     * @param   \ReflectionClass  $class
+     * @template T of object
+     * @param   \ReflectionClass<T>  $class
      * @return  string
      */
     private static function createCallmapProxyCode(\ReflectionClass $class): string
@@ -193,7 +204,8 @@ class NewInstance
     /**
      * creates class definition for the proxy
      *
-     * @param   \ReflectionClass $class
+     * @template T of object
+     * @param   \ReflectionClass<T> $class
      * @return  string
      */
     private static function createClassDefinition(\ReflectionClass $class): string
@@ -211,7 +223,8 @@ class NewInstance
     /**
      * creates methods for the proxy
      *
-     * @param  \ReflectionClass  $class
+     * @template T of object
+     * @param  \ReflectionClass<T>  $class
      * @return  string
      */
     private static function createMethods(\ReflectionClass $class): string
@@ -260,8 +273,9 @@ class NewInstance
     /**
      * returns applicable methods for given class
      *
-     * @param   \ReflectionClass  $class
-     * @return  \Iterator
+     * @template T of object
+     * @param   \ReflectionClass<T>  $class
+     * @return  \Iterator<\ReflectionMethod>
      */
     private static function methodsOf(\ReflectionClass $class): \Iterator
     {
@@ -281,7 +295,8 @@ class NewInstance
     /**
      * detects whether a method should return the instance or null
      *
-     * @param   \ReflectionClass $class
+     * @template T of object
+     * @param   \ReflectionClass<T> $class
      * @param   \ReflectionMethod $method
      * @return  bool
      */

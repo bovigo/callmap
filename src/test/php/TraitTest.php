@@ -17,14 +17,14 @@ use function bovigo\assert\predicate\each;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isOfType;
 /**
- * Applies tests to a self defined class.
+ * Tests that mocks of traits can be created.
  *
  * @group  issue_1
  */
 class TraitTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\ClassProxy
+     * @var  SomeTrait&\bovigo\callmap\ClassProxy
      */
     private $proxy;
 

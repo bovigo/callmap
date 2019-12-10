@@ -31,7 +31,7 @@ use function bovigo\assert\predicate\isNull;
 class ReturnSelfTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\ClassProxy
+     * @var  Extended<mixed>&\bovigo\callmap\ClassProxy
      */
     private $proxy;
 

@@ -25,4 +25,9 @@ class ClassWithConstructor
     {
         return $this->foo->bar;
     }
+
+    public function otherAction(int $value): void
+    {
+        // intentionally empty
+    }
 }

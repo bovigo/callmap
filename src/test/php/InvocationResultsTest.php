@@ -21,7 +21,7 @@ use function bovigo\assert\predicate\isNull;
 class InvocationResultsTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\ClassProxy
+     * @var  \ReflectionObject&\bovigo\callmap\ClassProxy
      */
     private $proxy;
 
