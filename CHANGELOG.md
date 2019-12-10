@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.0 (2019-12-10)
+
+* added phpstan annotations so instances created with `bovigo\callmap\NewInstance::of()` and `bovigo\callmap\NewInstance::stub()` have the proper intersection type
+
 ## 5.1.0 (2019-11-19)
 
 * added `bovigo\callmap\ClassProxy::stub(string ...$methods)` to allow stubbing of methods
