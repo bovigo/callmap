@@ -40,7 +40,9 @@ class NewCallable
      */
     public static function stub(string $function): FunctionProxy
     {
-        return self::of($function)->preventParentCalls();
+        $proxy = self::of($function);
+        $proxy->preventParentCalls();
+        return $proxy;
     }
 
     /**
@@ -123,11 +125,6 @@ class NewCallable
         $code  = sprintf(
                     "class %sCallMapProxy extends \bovigo\callmap\FunctionProxy{\n"
                     . "    protected \$paramNames = %s;\n"
-                    . "    public function preventParentCalls(): self\n"
-                    . "    {\n"
-                    . "        \$this->parentCallsAllowed = false;\n"
-                    . "        return \$this;\n"
-                    . "    }\n"
                     . "    public function __invoke(%s)%s {\n"
                     . "        %s\$this->handleFunctionCall(func_get_args());\n"
                     . "    }\n"

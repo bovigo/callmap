@@ -40,12 +40,11 @@ trait ClassProxyMethodHandler
     /**
      * disable passing calls to parent class
      *
-     * @return  ClassProxy
+     * @internal
      */
-    public function preventParentCalls(): ClassProxy
+    public function preventParentCalls(): void
     {
         $this->parentCallsAllowed = false;
-        return $this;
     }
 
     /**

@@ -63,6 +63,16 @@ abstract class FunctionProxy implements Proxy
     }
 
     /**
+     * turns this into a stub which doesn't forward method calls to the original function
+     *
+     * @internal
+     */
+    public function preventParentCalls(): void
+    {
+        $this->parentCallsAllowed = false;
+    }
+
+    /**
      * sets the call map to use
      *
      * @api

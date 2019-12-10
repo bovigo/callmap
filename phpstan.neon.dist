@@ -8,8 +8,6 @@ parameters:
       # Those files contain explicit wrong doc comments for test purposes.
       - src/test/php/helper
   ignoreErrors:
-    # Generated instances always contain this method
-    - '#Call to an undefined method bovigo\\callmap\\FunctionProxy::preventParentCalls\(\)#'
     # Instances of FunctionProxy are a callable, but __invoke() is not defined in FunctionProxy itself due to
     # that each instance has a different method signature and this would yield a
     # Fatal error: "must be compatible" otherwise.
