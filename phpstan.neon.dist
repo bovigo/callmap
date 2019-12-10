@@ -1,3 +1,5 @@
+includes:
+  - vendor/bovigo/assert/src/main/resources/phpstan/bovigo-assert.neon
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
   level: max
