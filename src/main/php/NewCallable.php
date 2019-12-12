@@ -15,7 +15,7 @@ class NewCallable
     /**
      * map of already evaluated functions
      *
-     * @var  array<string,\ReflectionClass<FunctionProxy>>
+     * @var  array<string,\ReflectionClass<callable&FunctionProxy>>
      */
     private static $functions = [];
 
@@ -24,7 +24,7 @@ class NewCallable
      *
      * @api
      * @param   string  $function  function to create a new callable of
-     * @return  \bovigo\callmap\FunctionProxy
+     * @return  callable&\bovigo\callmap\FunctionProxy
      */
     public static function of(string $function): FunctionProxy
     {
@@ -36,7 +36,7 @@ class NewCallable
      *
      * @api
      * @param   string  $function  function to create a new callable of
-     * @return  \bovigo\callmap\FunctionProxy
+     * @return  callable&\bovigo\callmap\FunctionProxy
      */
     public static function stub(string $function): FunctionProxy
     {
@@ -61,7 +61,7 @@ class NewCallable
      * returns the proxy class for given function
      *
      * @param   string  $function
-     * @return  \ReflectionClass<FunctionProxy>
+     * @return  \ReflectionClass<callable&FunctionProxy>
      */
     private static function callMapClass(string $function): \ReflectionClass
     {
@@ -86,7 +86,7 @@ class NewCallable
      * creates a new class from the given function which uses the CallMap trait
      *
      * @param   \ReflectionFunction  $function
-     * @return  \ReflectionClass<FunctionProxy>
+     * @return  \ReflectionClass<callable&FunctionProxy>
      * @throws  ProxyCreationFailure
      */
     private static function forkCallMapClass(\ReflectionFunction $function): \ReflectionClass

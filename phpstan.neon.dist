@@ -10,10 +10,6 @@ parameters:
       # Those files contain explicit wrong doc comments for test purposes.
       - src/test/php/helper
   ignoreErrors:
-    # Instances of FunctionProxy are a callable, but __invoke() is not defined in FunctionProxy itself due to
-    # that each instance has a different method signature and this would yield a
-    # Fatal error: "must be compatible" otherwise.
-    - '#Trying to invoke bovigo\\callmap\\FunctionProxy but it might not be a callable.#'
     # can't annotate the property properly
     - '#Call to protected method evaluateWithPhpUnit\(\) of class bovigo\\callmap\\Verification#'
     - '#Call to protected method evaluateWithXpFrameworkCore\(\) of class bovigo\\callmap\\Verification#'

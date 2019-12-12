@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.1 (2019-12-12)
+
+* changed return type hint of `NewCallable::of()`  and `NewCallable::stub()` to `callable&\bovigo\callmap\FunctionProxy`
+
 ## 5.2.0 (2019-12-10)
 
 * added phpstan annotations so instances created with `bovigo\callmap\NewInstance::of()` and `bovigo\callmap\NewInstance::stub()` have the proper intersection type
