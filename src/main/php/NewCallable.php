@@ -102,9 +102,11 @@ class NewCallable
             );
         }
 
+        /** @var  class-string<FunctionProxy&callable> $functionProxy */
         $functionProxy = $function->getName() . 'CallMapProxy';
-        /** @var  class-string<FunctionProxy> $functionProxy */
-        return new \ReflectionClass($functionProxy);
+        $refClass = new \ReflectionClass($functionProxy);
+        /** @var  \ReflectionClass<callable&FunctionProxy> $refClass */
+        return $refClass;
     }
 
     /**
