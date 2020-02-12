@@ -325,11 +325,22 @@ class Verification
     protected function evaluateWithPhpUnit($constraint, $received, string $description): bool
     {
         if ($constraint instanceof \PHPUnit\Framework\Constraint\Constraint) {
-            return $constraint->evaluate($received, $description);
+            $result = $constraint->evaluate($received, $description);
+        } else {
+            $result = (new \PHPUnit\Framework\Constraint\IsEqual($constraint))
+                ->evaluate($received, $description);
         }
 
-        return (new \PHPUnit\Framework\Constraint\IsEqual($constraint))
-                ->evaluate($received, $description);
+        // PHPUnit constraints return null when no return value is requested with third
+        // parameter, but return value can't be requested when you want the constraint
+        // to throw on failure like we do
+        // Therefore, if the evaluate() method doesn't throw and returns we can assume
+        // success, even if the result value is null.
+        if (null === $result) {
+            $result = true;
+        }
+
+        return $result;
     }
 
     /**

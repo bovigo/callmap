@@ -6,6 +6,10 @@
 
 * raised minimum required PHP version to 7.3.0
 
+### Other changes
+
+* fixed handling of return values from PHPUnit constraints in argument verification
+
 ## 5.2.1 (2019-12-12)
 
 * changed return type hint of `NewCallable::of()`  and `NewCallable::stub()` to `callable&\bovigo\callmap\FunctionProxy`
