@@ -104,8 +104,8 @@ class NewCallable
 
         /** @var  class-string<FunctionProxy&callable> $functionProxy */
         $functionProxy = $function->getName() . 'CallMapProxy';
+        /** @var  \ReflectionClass<FunctionProxy&callable> $refClass */
         $refClass = new \ReflectionClass($functionProxy);
-        /** @var  \ReflectionClass<callable&FunctionProxy> $refClass */
         return $refClass;
     }
 
