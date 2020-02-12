@@ -3,7 +3,7 @@
     "description": "Allows to stub and mock method calls by applying a callmap.",
     "license": "BSD-3-Clause",
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "bovigo/assert": "^5.1"
     },
     "require-dev": {
@@ -29,7 +29,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.2.x-dev"
+            "dev-master": "6.0.x-dev"
         }
     },
     "minimum-stability": "dev",

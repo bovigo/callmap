@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af76c8210cc59686f276d3bc841566bb",
+    "content-hash": "d0cd35b2e2e4af946cb5e9c364f224a5",
     "packages": [
         {
             "name": "bovigo/assert",
@@ -1699,7 +1699,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2"
+        "php": "^7.3"
     },
     "platform-dev": []
 }

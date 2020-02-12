@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.0.0 (2020-02-12)
+
+### HEADS UP
+
+* raised minimum required PHP version to 7.3.0
+
 ## 5.2.1 (2019-12-12)
 
 * changed return type hint of `NewCallable::of()`  and `NewCallable::stub()` to `callable&\bovigo\callmap\FunctionProxy`
