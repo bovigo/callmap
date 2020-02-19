@@ -24,6 +24,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: mbstring
+        ini-values: date.timezone=Europe/Berlin
         tools: cs2pr, phpstan:0.12.2
 
     - name: Validate composer.json and composer.lock
