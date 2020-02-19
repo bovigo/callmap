@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dde919b836e5f8d5f66668ee3dfb22de",
+    "content-hash": "e7bbedb30162df60445526d78fdb6672",
     "packages": [
         {
             "name": "bovigo/assert",
@@ -1027,16 +1027,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.0.0",
+            "version": "9.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a5be9621b19ee19dca5f150a5b159f48b5389547"
+                "reference": "68d7e5b17a6b9461e17c00446caa409863154f76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a5be9621b19ee19dca5f150a5b159f48b5389547",
-                "reference": "a5be9621b19ee19dca5f150a5b159f48b5389547",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/68d7e5b17a6b9461e17c00446caa409863154f76",
+                "reference": "68d7e5b17a6b9461e17c00446caa409863154f76",
                 "shasum": ""
             },
             "require": {
@@ -1109,7 +1109,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-02-07T06:56:17+00:00"
+            "time": "2020-02-13T07:30:12+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1491,16 +1491,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.13.1",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
+                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
+                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
                 "shasum": ""
             },
             "require": {
@@ -1512,7 +1512,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -1545,7 +1545,7 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2019-11-27T13:56:44+00:00"
+            "time": "2020-01-13T11:15:53+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -1589,16 +1589,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925"
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/573381c0a64f155a0d9a23f4b0c797194805b925",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
                 "shasum": ""
             },
             "require": {
@@ -1633,27 +1633,27 @@
                 "check",
                 "validate"
             ],
-            "time": "2019-11-24T13:36:37+00:00"
+            "time": "2020-02-14T12:15:55+00:00"
         },
         {
             "name": "xp-framework/core",
-            "version": "v9.10.0",
+            "version": "v10.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xp-framework/core.git",
-                "reference": "ff3d06223e16a8b72fe1c0523092775b43ebf18d"
+                "reference": "602dcbece4787fd4e874b4b9109494f48c4c663c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/core/zipball/ff3d06223e16a8b72fe1c0523092775b43ebf18d",
-                "reference": "ff3d06223e16a8b72fe1c0523092775b43ebf18d",
+                "url": "https://api.github.com/repos/xp-framework/core/zipball/602dcbece4787fd4e874b4b9109494f48c4c663c",
+                "reference": "602dcbece4787fd4e874b4b9109494f48c4c663c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0.0"
             },
             "suggest": {
-                "php": ">=7.1.0"
+                "php": ">=7.3.0"
             },
             "type": "library",
             "autoload": {
@@ -1672,25 +1672,25 @@
                 "framework",
                 "xp"
             ],
-            "time": "2019-10-04T09:02:22+00:00"
+            "time": "2019-12-01T22:11:03+00:00"
         },
         {
             "name": "xp-framework/unittest",
-            "version": "v9.7.1",
+            "version": "v11.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xp-framework/unittest.git",
-                "reference": "70bdc4bdd801b8b4d8bb8eb43589d90fc797d78e"
+                "reference": "ba157269c7bec6bf713f6e0fbd88e93e6133a59f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/unittest/zipball/70bdc4bdd801b8b4d8bb8eb43589d90fc797d78e",
-                "reference": "70bdc4bdd801b8b4d8bb8eb43589d90fc797d78e",
+                "url": "https://api.github.com/repos/xp-framework/unittest/zipball/ba157269c7bec6bf713f6e0fbd88e93e6133a59f",
+                "reference": "ba157269c7bec6bf713f6e0fbd88e93e6133a59f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0",
-                "xp-framework/core": "^9.0 | ^8.0 | ^7.0 | ^6.10"
+                "php": ">=7.0.0",
+                "xp-framework/core": "^10.0 | ^9.0 | ^8.0 | ^7.0"
             },
             "bin": [
                 "bin/xp.xp-framework.unittest.test"
@@ -1711,7 +1711,7 @@
                 "module",
                 "xp"
             ],
-            "time": "2019-08-22T16:33:01+00:00"
+            "time": "2019-11-30T09:54:06+00:00"
         }
     ],
     "aliases": [],
