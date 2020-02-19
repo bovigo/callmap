@@ -10,12 +10,24 @@ parameters:
       # Those files contain explicit wrong doc comments for test purposes.
       - src/test/php/helper
   ignoreErrors:
-    # can't annotate the property properly
-    - '#Call to protected method evaluateWithPhpUnit\(\) of class bovigo\\callmap\\Verification#'
-    - '#Call to protected method evaluateWithXpFrameworkCore\(\) of class bovigo\\callmap\\Verification#'
+    # method made public with anonymous class extending from bovigo\callmap\Verification
+    -
+          message: '#Call to protected method evaluateWithPhpUnit\(\) of class bovigo\\callmap\\Verification#'
+          path: src/test/php/VerificationWithPhpUnitTest.php
+    -
+          message: '#Call to protected method evaluateWithXpFrameworkCore\(\) of class bovigo\\callmap\\Verification#'
+          path: src/test/php/VerificationWithXpFrameworkCoreTest.php
     # Explicit tests
-    - '#Unable to resolve the template type T in call to method static method bovigo\\callmap\\NewInstance::of\(\)#'
-    - '#static method bovigo\\callmap\\NewInstance<mixed>::of\(\) expects class-string<object>|object, int given#'
-    - '#static method bovigo\\callmap\\NewInstance<mixed>::of\(\) expects class-string<DoesNotExist>|DoesNotExist, string given#'
+    -
+          message: '#Unable to resolve the template type T in call to method static method bovigo\\callmap\\NewInstance::of\(\)#'
+          path: src/test/php/NewInstanceTest.php
+    -
+          message: '#static method bovigo\\callmap\\NewInstance<mixed>::of\(\) expects class-string<object>|object, int given#'
+          path: src/test/php/NewInstanceTest.php
+    -
+          message: '#static method bovigo\\callmap\\NewInstance<mixed>::of\(\) expects class-string<DoesNotExist>|DoesNotExist, string given#'
+          path: src/test/php/NewInstanceTest.php
     # We can create instances of a trait, but phpstan can't know as it's not a "correct" PHP type
-    - '#Property bovigo\\callmap\\TraitTest::\$proxy has invalid type bovigo\\callmap\\helper\\SomeTrait#'
+    -
+          message: '#Property bovigo\\callmap\\TraitTest::\$proxy has invalid type bovigo\\callmap\\helper\\SomeTrait#'
+          path: src/test/php/TraitTest.php
