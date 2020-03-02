@@ -61,7 +61,6 @@ class TraitTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
@@ -70,7 +69,6 @@ class TraitTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod(): void
     {
@@ -90,7 +88,6 @@ class TraitTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed(): void
     {

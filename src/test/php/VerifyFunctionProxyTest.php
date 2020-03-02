@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
@@ -23,6 +24,39 @@ use function bovigo\callmap\helper\say;
  */
 class VerifyFunctionProxyTest extends TestCase
 {
+
+    /**
+     * @return  array<string,\Closure[]>
+     */
+    public static function verificationMethods(): array
+    {
+        return [
+            'wasNeverCalled' => [function(Verification $v, callable $function) { $v->wasNeverCalled(); }],
+            'wasCalledAtMost' => [function(Verification $v, callable $function) { $function(); $v->wasCalledAtMost(1); }],
+            'wasCalledAtLeastOnce' => [function(Verification $v, callable $function) { $function(); $v->wasCalledAtLeastOnce(); }],
+            'wasCalledAtLeast' => [function(Verification $v, callable $function) { $function(); $v->wasCalledAtLeast(1); }],
+            'wasCalledOnce' => [function(Verification $v, callable $function) { $function(); $v->wasCalledOnce(); }],
+            'wasCalled' => [function(Verification $v, callable $function) { $function(); $v->wasCalled(1); }],
+            'receivedNothing' => [function(Verification $v, callable $function) { $function(); $v->receivedNothing(); }],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  verificationMethods
+     * @since  6.1.0
+     */
+    public function assertionCounterIsIncreased(\Closure $execute): void
+    {
+        $countBeforeAssertion = \PHPUnit\Framework\Assert::getCount();
+        $function = NewCallable::of('bovigo\callmap\helper\doSomething');
+        $execute(verify($function), $function);
+        assertThat(
+                \PHPUnit\Framework\Assert::getCount(),
+                equals($countBeforeAssertion + 1)
+        );
+    }
+
     /**
      * @return  array<string[]>
      */
@@ -38,7 +72,7 @@ class VerifyFunctionProxyTest extends TestCase
     public function wasNeverCalledReturnsTrueWhenNeverCalled(string $functionName): void
     {
         $function = NewCallable::of($functionName);
-        assertTrue(verify($function)->wasNeverCalled());
+        verify($function)->wasNeverCalled();
     }
 
     /**
@@ -66,7 +100,7 @@ class VerifyFunctionProxyTest extends TestCase
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
-        assertTrue(verify($function)->wasCalled(2));
+        verify($function)->wasCalled(2);
     }
 
     /**
@@ -111,7 +145,7 @@ class VerifyFunctionProxyTest extends TestCase
     {
         $function = NewCallable::of($functionName);
         $function('world');
-        assertTrue(verify($function)->wasCalledOnce());
+        verify($function)->wasCalledOnce();
     }
 
     /**
@@ -155,7 +189,7 @@ class VerifyFunctionProxyTest extends TestCase
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
-        assertTrue(verify($function)->wasCalledAtLeast(2));
+        verify($function)->wasCalledAtLeast(2);
     }
 
     /**
@@ -168,7 +202,7 @@ class VerifyFunctionProxyTest extends TestCase
         $function('world');
         $function('world');
         $function('world');
-        assertTrue(verify($function)->wasCalledAtLeast(2));
+        verify($function)->wasCalledAtLeast(2);
     }
 
     /**
@@ -195,7 +229,7 @@ class VerifyFunctionProxyTest extends TestCase
     {
         $function = NewCallable::of($functionName);
         $function('world');
-        assertTrue(verify($function)->wasCalledAtLeastOnce());
+        verify($function)->wasCalledAtLeastOnce();
     }
 
     /**
@@ -207,7 +241,7 @@ class VerifyFunctionProxyTest extends TestCase
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
-        assertTrue(verify($function)->wasCalledAtLeastOnce());
+        verify($function)->wasCalledAtLeastOnce();
     }
 
     /**
@@ -234,7 +268,7 @@ class VerifyFunctionProxyTest extends TestCase
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
-        assertTrue(verify($function)->wasCalledAtMost(2));
+        verify($function)->wasCalledAtMost(2);
     }
 
     /**
@@ -245,7 +279,7 @@ class VerifyFunctionProxyTest extends TestCase
     {
         $function = NewCallable::of($functionName);
         $function('world');
-        assertTrue(verify($function)->wasCalledAtMost(2));
+        verify($function)->wasCalledAtMost(2);
     }
 
     /**

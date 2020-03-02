@@ -30,6 +30,29 @@ class Verification
         $this->invocations = $invocations;
     }
 
+
+    /**
+     * adds predicate count as constraint count to PHPUnit if present
+     *
+     * This is definitely a hack and might break with future PHPUnit releases.
+     *
+     * @internal
+     * @staticvar  \ReflectionProperty  $property
+     */
+    private function increaseAssertionCounter(): void
+    {
+        static $property = null;
+        if (null === $property && class_exists('\PHPUnit\Framework\Assert')) {
+            $assertClass = new \ReflectionClass(\PHPUnit\Framework\Assert::class);
+            $property = $assertClass->getProperty('count');
+            $property->setAccessible(true);
+        }
+
+        if (null !== $property) {
+            $property->setValue(null, $property->getValue() + 1);
+        }
+    }
+
     /**
      * verifies that the method on the class was not called more than $times
      *
@@ -40,6 +63,7 @@ class Verification
      */
     public function wasCalledAtMost(int $times): bool
     {
+        $this->increaseAssertionCounter();
         if (count($this->invocations) > $times) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called at most %d time(s),'
@@ -62,6 +86,7 @@ class Verification
      */
     public function wasCalledAtLeastOnce(): bool
     {
+        $this->increaseAssertionCounter();
         if (count($this->invocations) < 1) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called at least once,'
@@ -83,6 +108,7 @@ class Verification
      */
     public function wasCalledAtLeast(int $times): bool
     {
+        $this->increaseAssertionCounter();
         if (count($this->invocations) < $times) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called at least %d time(s),'
@@ -105,6 +131,7 @@ class Verification
      */
     public function wasCalledOnce(): bool
     {
+        $this->increaseAssertionCounter();
         $callsReceived = count($this->invocations);
         if (1 !== $callsReceived) {
             throw new CallAmountViolation(sprintf(
@@ -130,6 +157,7 @@ class Verification
      */
     public function wasCalled(int $times): bool
     {
+        $this->increaseAssertionCounter();
         if (count($this->invocations) != $times) {
             throw new CallAmountViolation(sprintf(
                     '%s was expected to be called %d time(s),'
@@ -152,6 +180,7 @@ class Verification
      */
     public function wasNeverCalled(): bool
     {
+        $this->increaseAssertionCounter();
         if (count($this->invocations) > 0) {
             throw new CallAmountViolation(sprintf(
                     '%s was not expected to be called,'
@@ -174,6 +203,7 @@ class Verification
      */
     public function receivedNothing(int $invocation = 1): bool
     {
+        $this->increaseAssertionCounter();
         $received = $this->invocations->argumentsOf($invocation);
         if  (count($received) === 0) {
             return true;

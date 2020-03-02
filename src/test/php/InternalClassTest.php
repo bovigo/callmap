@@ -68,7 +68,6 @@ class InternalClassTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
@@ -77,7 +76,6 @@ class InternalClassTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod(): void
     {

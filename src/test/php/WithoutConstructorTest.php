@@ -60,7 +60,6 @@ class WithoutConstructorTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
@@ -69,7 +68,6 @@ class WithoutConstructorTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod(): void
     {

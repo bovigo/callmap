@@ -57,7 +57,6 @@ class InternalInterfaceTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
@@ -66,7 +65,6 @@ class InternalInterfaceTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod(): void
     {
@@ -77,7 +75,6 @@ class InternalInterfaceTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function canVerifyThatMethodDidNotReveiveArguments(): void
     {

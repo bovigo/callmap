@@ -67,7 +67,6 @@ class SelfDefinedClassTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
@@ -76,7 +75,6 @@ class SelfDefinedClassTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function recordsAmountOfCallsToMethod(): void
     {

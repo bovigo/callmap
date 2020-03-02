@@ -12,6 +12,7 @@ namespace bovigo\callmap;
 use bovigo\callmap\helper\Verified;
 use PHPUnit\Framework\TestCase;
 
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
@@ -37,6 +38,41 @@ class VerifyClassProxyTest extends TestCase
     }
 
     /**
+     * @return  array<string,\Closure[]>
+     */
+    public static function verificationMethods(): array
+    {
+        return [
+            'wasNeverCalled' => [function(Verification $v, Verified $proxy) { $v->wasNeverCalled(); }],
+            'wasCalledAtMost' => [function(Verification $v, Verified $proxy) { $proxy->aMethod(); $v->wasCalledAtMost(1); }],
+            'wasCalledAtLeastOnce' => [function(Verification $v, Verified $proxy) { $proxy->aMethod(); $v->wasCalledAtLeastOnce(); }],
+            'wasCalledAtLeast' => [function(Verification $v, Verified $proxy) { $proxy->aMethod(); $v->wasCalledAtLeast(1); }],
+            'wasCalledOnce' => [function(Verification $v, Verified $proxy) { $proxy->aMethod(); $v->wasCalledOnce(); }],
+            'wasCalled' => [function(Verification $v, Verified $proxy) { $proxy->aMethod(); $v->wasCalled(1); }],
+            'receivedNothing' => [function(Verification $v, Verified $proxy) { $proxy->aMethod(); $v->receivedNothing(); }],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  verificationMethods
+     * @since  6.1.0
+     */
+    public function assertionCounterIsIncreased(\Closure $execute): void
+    {
+        if (!class_exists('\PHPUnit\Framework\Assert')) {
+            $this->markTestSkipped('Can not test this without PHPUnit');
+        }
+
+        $countBeforeAssertion = \PHPUnit\Framework\Assert::getCount();
+        $execute(verify($this->proxy, 'aMethod'), $this->proxy);
+        assertThat(
+                \PHPUnit\Framework\Assert::getCount(),
+                equals($countBeforeAssertion + 1)
+        );
+    }
+
+    /**
      * @test
      * @since  3.1.0
      */
@@ -52,7 +88,7 @@ class VerifyClassProxyTest extends TestCase
      */
     public function wasNeverCalledReturnsTrueWhenNeverCalled(): void
     {
-        assertTrue(verify($this->proxy, 'aMethod')->wasNeverCalled());
+        verify($this->proxy, 'aMethod')->wasNeverCalled();
     }
 
     /**
@@ -76,7 +112,7 @@ class VerifyClassProxyTest extends TestCase
     {
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalled(2));
+        verify($this->proxy, 'aMethod')->wasCalled(2);
     }
 
     /**
@@ -115,7 +151,7 @@ class VerifyClassProxyTest extends TestCase
     public function wasCalledOnceReturnsTrueWhenCalledExactlyOnce(): void
     {
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledOnce());
+        verify($this->proxy, 'aMethod')->wasCalledOnce();
     }
 
     /**
@@ -153,7 +189,7 @@ class VerifyClassProxyTest extends TestCase
     {
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtLeast(2));
+        verify($this->proxy, 'aMethod')->wasCalledAtLeast(2);
     }
 
     /**
@@ -164,7 +200,7 @@ class VerifyClassProxyTest extends TestCase
         $this->proxy->aMethod();
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtLeast(2));
+        verify($this->proxy, 'aMethod')->wasCalledAtLeast(2);
     }
 
     /**
@@ -187,7 +223,7 @@ class VerifyClassProxyTest extends TestCase
     public function wasCalledAtLeastOnceReturnsTrueWhenCalledExactlyOnce(): void
     {
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce());
+        verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce();
     }
 
     /**
@@ -197,7 +233,7 @@ class VerifyClassProxyTest extends TestCase
     {
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce());
+        verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce();
     }
 
     /**
@@ -220,7 +256,7 @@ class VerifyClassProxyTest extends TestCase
     {
         $this->proxy->aMethod();
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtMost(2));
+        verify($this->proxy, 'aMethod')->wasCalledAtMost(2);
     }
 
     /**
@@ -229,7 +265,7 @@ class VerifyClassProxyTest extends TestCase
     public function wasCalledAtMostOnceReturnsTrueWhenCalledLessThanMaximumAmount(): void
     {
         $this->proxy->aMethod();
-        assertTrue(verify($this->proxy, 'aMethod')->wasCalledAtMost(2));
+        verify($this->proxy, 'aMethod')->wasCalledAtMost(2);
     }
 
     /**
