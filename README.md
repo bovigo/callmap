@@ -294,12 +294,7 @@ verify($yourClass, 'aMethod')->wasCalledOnce();
 ```
 
 In case it was not called exactly once, this will throw a `CallAmountViolation`.
-Otherwise, it will simply return true. This allows you to use it in an assertion
-in case the test method doesn't have any other assertion and you want to have one:
-
-```php
-$this->assertTrue(verify($yourClass, 'aMethod')->wasCalledOnce());
-```
+Otherwise, it will simply return true.
 
 Of course you can verify the call amount even if you didn't specify the method
 in the callmap.
@@ -369,16 +364,9 @@ Please not that each method has its own invocation count (whereas in PHPUnit the
 invocation count is for the whole mock object). Also, invocation count starts at
 1 for the first invocation, not at 0.
 
-If the verification succeeds, it will simply return true. This allows you to use
-it in an assertion in case the test method doesn't have any other assertion and
-you want to have one:
-
-```php
-$this->assertTrue(verify($yourClass, 'aMethod')->receivedNothing());
-```
-
-In case the verification fails an exception will be thrown. Which exactly
-depends on the available assertion framework.
+If the verification succeeds, it will simply return true. In case the
+verification fails an exception will be thrown. Which exactly depends on the
+available assertion framework.
 
 #### Verification details for bovigo/assert
 
