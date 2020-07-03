@@ -21,12 +21,12 @@ use function bovigo\assert\expect;
  */
 class NewInstanceParseErrorTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         NewInstance::$compile = function() { throw new \ParseError('failed to evaluate'); };
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         NewInstance::$compile = __NAMESPACE__ . '\compile';
     }

@@ -31,7 +31,7 @@ class ReturnSelfPhp7Test extends TestCase
      */
     private $proxy;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->proxy = NewInstance::stub(Extended7::class);
     }
