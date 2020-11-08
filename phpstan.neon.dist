@@ -9,6 +9,8 @@ parameters:
   excludes_analyse:
       # Those files contain explicit wrong doc comments for test purposes.
       - src/test/php/helper
+  scanDirectories:
+      - src/test/php/helper
   ignoreErrors:
     # method made public with anonymous class extending from bovigo\callmap\verification\Verification
     -
@@ -27,7 +29,3 @@ parameters:
     -
           message: '#static method bovigo\\callmap\\NewInstance<mixed>::of\(\) expects class-string<DoesNotExist>|DoesNotExist, string given#'
           path: src/test/php/NewInstanceTest.php
-    # We can create instances of a trait, but phpstan can't know as it's not a "correct" PHP type
-    -
-          message: '#Property bovigo\\callmap\\TraitTest::\$proxy has invalid type bovigo\\callmap\\helper\\SomeTrait#'
-          path: src/test/php/TraitTest.php

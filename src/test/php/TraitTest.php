@@ -24,13 +24,15 @@ use function bovigo\assert\predicate\isOfType;
 class TraitTest extends TestCase
 {
     /**
-     * @var  SomeTrait&\bovigo\callmap\ClassProxy
+     * @var  \bovigo\callmap\helper\TraitIncludingClass&\bovigo\callmap\ClassProxy
      */
     private $proxy;
 
     protected function setUp(): void
     {
-        $this->proxy = NewInstance::of(SomeTrait::class);
+        /** @var \bovigo\callmap\helper\TraitIncludingClass&\bovigo\callmap\ClassProxy $proxy */
+        $proxy = NewInstance::of(SomeTrait::class);
+        $this->proxy = $proxy;
     }
 
     /**
