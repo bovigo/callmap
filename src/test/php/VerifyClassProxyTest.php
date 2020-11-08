@@ -9,11 +9,13 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use \bovigo\callmap\verification\ArgumentMismatch;
+use \bovigo\callmap\verification\CallAmountViolation;
+use \bovigo\callmap\verification\Verification;
 use bovigo\callmap\helper\Verified;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
-use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**

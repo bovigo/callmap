@@ -6,9 +6,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace bovigo\callmap;
+namespace bovigo\callmap\verification;
+use \bovigo\callmap\Invocations;
+
 /**
  * Provides methods to verify that a method or function was called an exact amount of times.
+ *
+ * This class is in a separate namespace so that it can be safely excluded from PHPUnit
+ * error stacks. Unfortunately, the exclude feature of PHPUnit allows for adding hole
+ * directories only.
  *
  * @since  0.5.0
  */
@@ -59,7 +65,7 @@ class Verification
      * @api
      * @param   int  $times
      * @return  bool
-     * @throws  \bovigo\callmap\CallAmountViolation
+     * @throws  CallAmountViolation
      */
     public function wasCalledAtMost(int $times): bool
     {
@@ -82,7 +88,7 @@ class Verification
      *
      * @api
      * @return  bool
-     * @throws  \bovigo\callmap\CallAmountViolation
+     * @throws  CallAmountViolation
      */
     public function wasCalledAtLeastOnce(): bool
     {
@@ -104,7 +110,7 @@ class Verification
      * @api
      * @param   int  $times
      * @return  bool
-     * @throws  \bovigo\callmap\CallAmountViolation
+     * @throws  CallAmountViolation
      */
     public function wasCalledAtLeast(int $times): bool
     {
@@ -127,7 +133,7 @@ class Verification
      *
      * @api
      * @return  bool
-     * @throws  \bovigo\callmap\CallAmountViolation
+     * @throws  CallAmountViolation
      */
     public function wasCalledOnce(): bool
     {
@@ -153,7 +159,7 @@ class Verification
      * @api
      * @param   int  $times
      * @return  bool
-     * @throws  \bovigo\callmap\CallAmountViolation
+     * @throws  CallAmountViolation
      */
     public function wasCalled(int $times): bool
     {
@@ -176,7 +182,7 @@ class Verification
      *
      * @api
      * @return  bool
-     * @throws  \bovigo\callmap\CallAmountViolation
+     * @throws  CallAmountViolation
      */
     public function wasNeverCalled(): bool
     {
@@ -199,7 +205,7 @@ class Verification
      * @api
      * @param   int  $invocation  optional  nth invocation to check, defaults to 1 aka first invocation
      * @return  bool
-     * @throws  \bovigo\callmap\ArgumentMismatch
+     * @throws  ArgumentMismatch
      */
     public function receivedNothing(int $invocation = 1): bool
     {
@@ -258,7 +264,7 @@ class Verification
      * @param   int           $invocation  number of invocation to check
      * @param   array<mixed>  $expected    constraints which describe expected parameters
      * @return  bool
-     * @throws  \bovigo\callmap\ArgumentMismatch
+     * @throws  ArgumentMismatch
      */
     private function verifyArgs(int $invocation, array $expected): bool
     {

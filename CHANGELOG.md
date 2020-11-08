@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.3.0 (2020-11-??)
+
+* Ensured compatibility with PHPUnit 9.2 and later
+
 ## 6.1.0 (2020-03-02)
 
 * Verifications (`verify()->wasCalled*()`, `verify()->receivedNothing()`) now increase assertion counter of PHPUnit

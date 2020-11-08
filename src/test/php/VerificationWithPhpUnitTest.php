@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+use \bovigo\callmap\verification\Verification;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertTrue;

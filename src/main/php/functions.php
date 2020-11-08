@@ -55,12 +55,12 @@ namespace bovigo\callmap {
      * @api
      * @param   \bovigo\callmap\Proxy  $proxy   callmap to verify
      * @param   string                 $method  optional  actual method to verify
-     * @return  \bovigo\callmap\Verification
+     * @return  \bovigo\callmap\verification\Verification
      * @since   0.5.0
      */
-    function verify(Proxy $proxy, string $method = ''): Verification
+    function verify(Proxy $proxy, string $method = ''): \bovigo\callmap\verification\Verification
     {
-        return new Verification($proxy->invocations($method));
+        return new \bovigo\callmap\verification\Verification($proxy->invocations($method));
     }
 
     /**
@@ -161,12 +161,9 @@ namespace bovigo\callmap {
     }
 
     /**
-     * blacklist our own classes from being displayed in PHPUnit error stacks
+     * exclude some of our own classes from being displayed in PHPUnit error stacks
      */
-    if (class_exists('\PHPUnit\Util\Blacklist')) {
-        \PHPUnit\Util\Blacklist::$blacklistedClassNames = array_merge(
-                \PHPUnit\Util\Blacklist::$blacklistedClassNames,
-                [Verification::class => 1]
-        );
+    if (class_exists(\PHPUnit\Util\ExcludeList::class)) {
+        \PHPUnit\Util\ExcludeList::addDirectory(__DIR__ . DIRECTORY_SEPARATOR);
     }
 }
