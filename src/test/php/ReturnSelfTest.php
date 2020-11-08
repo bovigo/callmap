@@ -35,7 +35,7 @@ class ReturnSelfTest extends TestCase
      */
     private $proxy;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->proxy = NewInstance::stub(Extended::class);
     }

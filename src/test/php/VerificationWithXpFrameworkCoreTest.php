@@ -27,7 +27,7 @@ class VerificationWithXpFrameworkCoreTest extends TestCase
      */
     private $xpFrameworkCoreVerification;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->xpFrameworkCoreVerification = new class(new Invocations('', [])) extends Verification
         {

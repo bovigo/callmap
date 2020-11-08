@@ -28,7 +28,7 @@ class WithoutConstructorTest extends TestCase
     /**
      * set up test environment
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->proxy = NewInstance::stub(ClassWithConstructor::class);
     }

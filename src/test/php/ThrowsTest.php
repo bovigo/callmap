@@ -25,7 +25,7 @@ class ThrowsTest extends TestCase
      */
     private $proxy;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->proxy = NewInstance::of(\ReflectionObject::class, [$this]);
     }

@@ -25,7 +25,7 @@ class VerificationWithPhpUnitTest extends TestCase
      */
     private $phpUnitVerification;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->phpUnitVerification = new class(new Invocations('', [])) extends Verification
         {

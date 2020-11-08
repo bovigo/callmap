@@ -34,7 +34,7 @@ class VerifyClassProxyTest extends TestCase
     /**
      * set up test environment
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->proxy = NewInstance::of(Verified::class);
     }
