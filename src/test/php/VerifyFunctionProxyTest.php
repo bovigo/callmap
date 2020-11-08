@@ -64,7 +64,9 @@ class VerifyFunctionProxyTest extends TestCase
      */
     public function functionNames(): array
     {
-        return [['strlen', '$str '], ['bovigo\callmap\helper\say', '$whom ']];
+        return [
+            ['strlen', PHP_MAJOR_VERSION === 8 ? '$string ' : '$str '],
+            ['bovigo\callmap\helper\say', '$whom ']];
     }
 
     /**
