@@ -12,10 +12,10 @@ parameters:
   ignoreErrors:
     # method made public with anonymous class extending from bovigo\callmap\Verification
     -
-          message: '#Call to protected method evaluateWithPhpUnit\(\) of class bovigo\\callmap\\Verification#'
+          message: '#Call to protected method evaluateWithPhpUnit\(\) of class bovigo\\callmap\\verification\\Verification#'
           path: src/test/php/VerificationWithPhpUnitTest.php
     -
-          message: '#Call to protected method evaluateWithXpFrameworkCore\(\) of class bovigo\\callmap\\Verification#'
+          message: '#Call to protected method evaluateWithXpFrameworkCore\(\) of class bovigo\\callmap\\verification\\Verification#'
           path: src/test/php/VerificationWithXpFrameworkCoreTest.php
     # Explicit tests
     -
