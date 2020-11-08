@@ -33,5 +33,9 @@ parameters:
     -
           message: '#message of class unittest\\AssertionFailedError constructor expects string, unittest\\ComparisonFailedMessage given.#'
           path: src/main/php/verification/Verification.php
+    # There's no way to specify an array of instances of \ReflectionClass but each instance reflecting another class?
+    -
+          message: '#Property bovigo\\callmap\\NewInstance::\$classes with generic class ReflectionClass does not specify its types: T#'
+          path: src/main/php/NewInstance.php
 
     

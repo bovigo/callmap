@@ -15,8 +15,7 @@ class NewInstance
     /**
      * map of already evaluated classes
      *
-     * @template T of object
-     * @var  array<\ReflectionClass<T&ClassProxy>>
+     * @var  array<class-string,\ReflectionClass>
      */
     private static $classes = [];
 
@@ -85,11 +84,12 @@ class NewInstance
         }
 
         $class = new \ReflectionClass($target);
-        if (!isset(self::$classes[$class->getName()])) {
-            self::$classes[$class->getName()] = self::forkCallMapClass($class);
+        $className = $class->getName();
+        if (!isset(self::$classes[$className])) {
+            self::$classes[$className] = self::forkCallMapClass($class);
         }
 
-        return self::$classes[$class->getName()];
+        return self::$classes[$className];
     }
 
     /**
