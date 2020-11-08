@@ -10,7 +10,7 @@ parameters:
       # Those files contain explicit wrong doc comments for test purposes.
       - src/test/php/helper
   ignoreErrors:
-    # method made public with anonymous class extending from bovigo\callmap\Verification
+    # method made public with anonymous class extending from bovigo\callmap\verification\Verification
     -
           message: '#Call to protected method evaluateWithPhpUnit\(\) of class bovigo\\callmap\\verification\\Verification#'
           path: src/test/php/VerificationWithPhpUnitTest.php
