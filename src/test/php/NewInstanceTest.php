@@ -35,8 +35,9 @@ class NewInstanceTest extends TestCase
      */
     public function callWithNonObjectOrClassNameThrowsReflectionException(): void
     {
+
         expect(function() { NewInstance::of(313); })
-            ->throws(\ReflectionException::class);
+            ->throws(PHP_MAJOR_VERSION === 8 ? \TypeError::class : \ReflectionException::class);
     }
 
     /**
