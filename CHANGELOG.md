@@ -1,6 +1,6 @@
 # Changelog
 
-## 6.3.0 (2020-11-??)
+## 6.2.0 (2020-11-??)
 
 * Ensured compatibility with PHPUnit 9.2 and later
 
