@@ -85,7 +85,7 @@ class NewCallableTest extends TestCase
      */
     public function functionNames(): array
     {
-        return [['strlen', 5], ['bovigo\callmap\helper\greet', 'Hello world']];
+        return [['strtoupper', 'WORLD'], ['bovigo\callmap\helper\greet', 'Hello world']];
     }
 
     /**
@@ -102,21 +102,19 @@ class NewCallableTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
      */
-    public function stubsDoNotCallOriginalFunctionWhenNotMapped(string $functionName): void
+    public function stubsDoNotCallOriginalFunctionWhenNotMapped(): void
     {
-        $function = NewCallable::stub($functionName);
+        $function = NewCallable::stub('bovigo\callmap\helper\greet');
         assertNull($function('world'));
     }
 
     /**
      * @test
-     * @dataProvider  functionNames
      */
-    public function mapReturnValueToNullShouldNotCallOriginalFunction(string $functionName): void
+    public function mapReturnValueToNullShouldNotCallOriginalFunction(): void
     {
-        $function = NewCallable::of($functionName)->returns(null);
+        $function = NewCallable::of('bovigo\callmap\helper\greet')->returns(null);
         assertNull($function('world'));
     }
 
