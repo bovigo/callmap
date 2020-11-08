@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f474b756ba8df920e813c761831e6d6",
+    "content-hash": "0722dd793b63c4d058d2f3d6acaa4d6f",
     "packages": [
         {
             "name": "bovigo/assert",
@@ -2012,23 +2012,23 @@
         },
         {
             "name": "xp-framework/core",
-            "version": "v10.0.2",
+            "version": "v10.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xp-framework/core.git",
-                "reference": "602dcbece4787fd4e874b4b9109494f48c4c663c"
+                "reference": "32dd27cecfe10e286db887ccd66dad851a76a857"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/core/zipball/602dcbece4787fd4e874b4b9109494f48c4c663c",
-                "reference": "602dcbece4787fd4e874b4b9109494f48c4c663c",
+                "url": "https://api.github.com/repos/xp-framework/core/zipball/32dd27cecfe10e286db887ccd66dad851a76a857",
+                "reference": "32dd27cecfe10e286db887ccd66dad851a76a857",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0.0"
             },
             "suggest": {
-                "php": ">=7.3.0"
+                "php": ">=7.4.0"
             },
             "type": "library",
             "autoload": {
@@ -2047,7 +2047,7 @@
                 "framework",
                 "xp"
             ],
-            "time": "2019-12-01T22:11:03+00:00"
+            "time": "2020-10-06T21:11:10+00:00"
         },
         {
             "name": "xp-framework/unittest",
