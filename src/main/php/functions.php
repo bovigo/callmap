@@ -85,7 +85,7 @@ namespace bovigo\callmap {
 
         /** @var \ReflectionNamedType $returnType */
         if ($returnType->isBuiltin()) {
-            return ': ' . ($returnType->allowsNull() ? '?' : '') . $returnType->getName();
+            return ': ' . ($returnType->allowsNull() && $returnType->getName() !== 'mixed' ? '?' : '') . $returnType->getName();
         }
 
         if ('self' == $returnType->getName()) {

@@ -4,6 +4,7 @@
 
 * Ensured compatibility with PHP 8
   * Added support for union types
+  * Added support for mixed type hint
 * Ensured compatibility with PHPUnit 9.2 and later
 
 ## 6.1.0 (2020-03-02)
