@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
     assertThat,
-    expect,
-    predicate\contains,
     predicate\equals,
-    predicate\isSameAs
 };
 use function bovigo\callmap\verify;
 /**
