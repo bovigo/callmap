@@ -29,6 +29,9 @@ parameters:
     -
           message: '#static method bovigo\\callmap\\NewInstance<mixed>::of\(\) expects class-string<DoesNotExist>|DoesNotExist, string given#'
           path: src/test/php/NewInstanceTest.php
+    -
+          message: '#something of method bovigo\\callmap\\helper\\ClassWithUnionTypeHints::accept\(\) expects bovigo\\callmap\\helper\\AnotherTestHelperClass\|string, float given#'
+          path: src/test/php/UnionTypeHintTest.php
     # PHPStan doesn't understand dot notation for fully qualified class names from XP Framework
     -
           message: '#message of class unittest\\AssertionFailedError constructor expects string, unittest\\ComparisonFailedMessage given.#'
