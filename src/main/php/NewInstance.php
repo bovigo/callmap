@@ -235,13 +235,13 @@ class NewInstance
         $voidMethods = [];
         foreach (self::methodsOf($class) as $method) {
             $return = true;
-            $returnType = determineReturnTypeOf($method);
+            $returnType = determineReturnTypeOf($method, $class);
             if ($returnType === ': void') {
                 $voidMethods[$method->getName()] = $method->getName();
                 $return = false;
             }
 
-            $param = paramsOf($method);
+            $param = paramsOf($method, $class);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
                     "    %s function %s(%s)%s {\n"

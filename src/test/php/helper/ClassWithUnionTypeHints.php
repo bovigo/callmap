@@ -35,6 +35,26 @@ class ClassWithUnionTypeHints
     {
         return 1;
     }
+
+    /**
+     * Example method containing self.
+     *
+     * @param string|self $self
+     */
+    public function methodWithSelfParam(string|self $self): void
+    {
+        // intentionally empty
+    }
+
+    /**
+     * Example method returning self.
+     *
+     * @return self|false
+     */
+    public function methodReturningSelf(): self|false
+    {
+        return $this;
+    }
 }
 
 /**

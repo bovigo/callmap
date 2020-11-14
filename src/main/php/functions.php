@@ -67,10 +67,12 @@ namespace bovigo\callmap {
      * determines return type
      *
      * @internal
+     * @template T of object
      * @param   \ReflectionFunctionAbstract  $function
+     * @param   \ReflectionClass<T>|null     $containingClass
      * @return  string
      */
-    function determineReturnTypeOf(\ReflectionFunctionAbstract $function): string
+    function determineReturnTypeOf(\ReflectionFunctionAbstract $function, \ReflectionClass $containingClass = null): string
     {
         $returnType = $function->getReturnType();
         if (null === $returnType) {
@@ -78,7 +80,7 @@ namespace bovigo\callmap {
         }
 
         if ($returnType instanceof \ReflectionUnionType) {
-            return ': ' . (string) $returnType;
+            return ': ' . resolveUnionTypes($returnType, $containingClass);
         }
 
         /** @var \ReflectionNamedType $returnType */
@@ -101,10 +103,12 @@ namespace bovigo\callmap {
      * returns correct representation of parameters for given method
      *
      * @internal
+     * @template T of object
      * @param   \ReflectionFunctionAbstract  $function
+     * @param   \ReflectionClass<T>|null     $containingClass
      * @return  array<string,mixed>
      */
-    function paramsOf(\ReflectionFunctionAbstract $function): array
+    function paramsOf(\ReflectionFunctionAbstract $function, \ReflectionClass $containingClass = null): array
     {
         $params = [];
         foreach ($function->getParameters() as $parameter) {
@@ -112,17 +116,7 @@ namespace bovigo\callmap {
             $param = '';
             $paramType = $parameter->getType();
             if (null !== $paramType && $paramType instanceof \ReflectionUnionType) {
-                $types = [];
-                foreach ($paramType->getTypes() as $type) {
-                    $type = $type->getName();
-                    if (class_exists($type) || interface_exists($type)) {
-                        $types[] =  '\\' . $type;
-                    } else {
-                        $types[] =  $type;
-                    }
-                }
-
-                $param .= join('|', $types) . ' ';
+                $param .= resolveUnionTypes($paramType, $containingClass) . ' ';
             } elseif ($parameter->isArray()) {
                 $param .= 'array ';
             } elseif ($parameter->getClass() !== null) {
@@ -154,6 +148,33 @@ namespace bovigo\callmap {
         }
 
         return ['names' => array_keys($params), 'string' => join(', ', $params)];
+    }
+
+    /**
+     * Resolves union types so that any generade code is compatible signature wise.
+     *
+     * @internal
+     * @since   6.2.0
+     * @template T of object
+     * @param   \ReflectionUnionType      $unionType
+     * @param   \ReflectionClass<T>|null  $containingClass
+     * @return  string
+     */
+    function resolveUnionTypes(\ReflectionUnionType $unionType, \ReflectionClass $containingClass = null): string
+    {
+        $types = [];
+        foreach ($unionType->getTypes() as $type) {
+            $type = $type->getName();
+            if ('self' === $type && null !== $containingClass) {
+                $types[] = '\\' . $containingClass->getName();
+            } elseif (class_exists($type) || interface_exists($type)) {
+                $types[] =  '\\' . $type;
+            } else {
+                $types[] =  $type;
+            }
+        }
+
+        return join('|', $types);
     }
 
     /**

@@ -40,5 +40,12 @@ parameters:
     -
           message: '#Property bovigo\\callmap\\NewInstance::\$classes with generic class ReflectionClass does not specify its types: T#'
           path: src/main/php/NewInstance.php
+    # PHPStan has problems resolving null?
+    -
+          message: '#Unable to resolve the template type T in call to function bovigo\\callmap\\paramsOf#'
+          path: src/main/php/NewCallable.php
+    -
+          message: '#Unable to resolve the template type T in call to function bovigo\\callmap\\determineReturnTypeOf#'
+          path: src/main/php/NewCallable.php
 
     
