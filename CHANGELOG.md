@@ -2,7 +2,7 @@
 
 ## 6.2.0 (2020-11-??)
 
-* Ensured compatibility with PHP 8
+* Ensured compatibility with PHP 8 (#14)
   * Added support for union types
   * Added support for mixed type hint
   * Added support for static return type hint
