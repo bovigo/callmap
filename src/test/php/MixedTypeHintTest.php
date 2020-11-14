@@ -18,7 +18,7 @@ use function bovigo\assert\{
 };
 use function bovigo\callmap\verify;
 /**
- * Tests for functions which are declared with return type void.
+ * Tests for methods and functions which are declared with type hint mixed.
  *
  * @requires PHP >= 8
  * @since  6.2.0

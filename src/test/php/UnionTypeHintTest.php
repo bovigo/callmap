@@ -22,7 +22,7 @@ use function bovigo\assert\{
 };
 use function bovigo\callmap\verify;
 /**
- * Tests for functions which are declared with return type void.
+ * Tests for method and functions which are declared with union type hints.
  *
  * @requires PHP >= 8
  * @since  6.2.0
