@@ -94,6 +94,8 @@ namespace bovigo\callmap {
             }
 
             throw new \UnexpectedValueException('Function ' . $function->getName() . ' defines return type self but that is not possible.');
+        } elseif ('static' === $returnType->getName()) {
+            return ': static';
         }
 
         return ': ' . ($returnType->allowsNull() ? '?' : '') . '\\' . $returnType->getName();

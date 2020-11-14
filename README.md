@@ -155,10 +155,11 @@ called.
     When instantiated with `NewInstance::stub()` and for abstract methods the
     default return value is `null`, except the return type declaration specifies
     the class itself and is not optional, or the `@return` type hint in the doc
-    comment specifies `$this` or `self`, the short class name or the fully
-    qualified class name of the class or of a parent class or any interface the
-    class implements. Exception to this: if the return type is `\Traversable`
-    and the class implements this interface return value will be `null`.
+    comment specifies `$this`, `self` or `static` (the latter since release 6.2),
+    the short class name or the fully qualified class name of the class or of a
+    parent class or any interface the class implements. Exception to this: if
+    the return type is `\Traversable` and the class implements this interface
+    return value will be `null`.
 
 ### Specify a series of return values
 
@@ -255,9 +256,9 @@ return type specified is the class or interface itself it will return the
 instance instead of null, except when the return type hint allows null.
 
 If no return type is defined and the return type specified in the doc comment is
-one of `$this`, `self`, the short class name or the fully qualified class name
-of the class or of a parent class or any interface the class implements, it will
-return the instance instead of null.
+one of `$this`, `self`, `static` (since release 6.2), the short class name or
+the fully qualified class name of the class or of a parent class or any interface
+the class implements, it will return the instance instead of null.
 
 Exception to this: if the return type is `\Traversable` this doesn't apply, even
 if the class implements this interface.

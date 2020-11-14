@@ -307,7 +307,7 @@ class NewInstance
             return false;
         }
 
-        if (in_array($returnType, ['$this', 'self', $class->getName(), $class->getShortName()])) {
+        if (in_array($returnType, ['$this', 'self', 'static', $class->getName(), $class->getShortName()])) {
             return true;
         }
 
