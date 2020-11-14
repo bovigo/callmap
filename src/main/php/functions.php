@@ -77,6 +77,10 @@ namespace bovigo\callmap {
             return '';
         }
 
+        if ($returnType instanceof \ReflectionUnionType) {
+            return ': ' . (string) $returnType;
+        }
+
         /** @var \ReflectionNamedType $returnType */
         if ($returnType->isBuiltin()) {
             return ': ' . ($returnType->allowsNull() ? '?' : '') . $returnType->getName();
@@ -108,7 +112,17 @@ namespace bovigo\callmap {
             $param = '';
             $paramType = $parameter->getType();
             if (null !== $paramType && $paramType instanceof \ReflectionUnionType) {
-                $param .= (string) $paramType . ' ';
+                $types = [];
+                foreach ($paramType->getTypes() as $type) {
+                    $type = $type->getName();
+                    if (class_exists($type) || interface_exists($type)) {
+                        $types[] =  '\\' . $type;
+                    } else {
+                        $types[] =  $type;
+                    }
+                }
+
+                $param .= join('|', $types) . ' ';
             } elseif ($parameter->isArray()) {
                 $param .= 'array ';
             } elseif ($parameter->getClass() !== null) {

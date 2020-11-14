@@ -346,6 +346,10 @@ class NewInstance
                 return null;
             }
 
+            if ($returnType instanceof \ReflectionUnionType) {
+                return ': ' . (string) $returnType;
+            }
+
             /** @var \ReflectionNamedType $returnType */
             return $returnType->getName();
         }

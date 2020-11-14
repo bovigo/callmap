@@ -3,7 +3,7 @@
 ## 6.2.0 (2020-11-??)
 
 * Ensured compatibility with PHP 8
-  * Added support for union types in parameters
+  * Added support for union types
 * Ensured compatibility with PHPUnit 9.2 and later
 
 ## 6.1.0 (2020-03-02)
