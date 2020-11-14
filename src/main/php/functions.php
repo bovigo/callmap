@@ -112,18 +112,15 @@ namespace bovigo\callmap {
     {
         $params = [];
         foreach ($function->getParameters() as $parameter) {
-            /* @var $parameter \ReflectionParameter */
+            /** @var \ReflectionParameter $parameter */
             $param = '';
             $paramType = $parameter->getType();
             if (null !== $paramType && $paramType instanceof \ReflectionUnionType) {
                 $param .= resolveUnionTypes($paramType, $containingClass) . ' ';
-            } elseif ($parameter->isArray()) {
-                $param .= 'array ';
             } elseif ($parameter->getClass() !== null) {
                 $param .= '\\' . $parameter->getClass()->getName() . ' ';
-            } elseif ($parameter->isCallable()) {
-                $param .= 'callable ';
-            } elseif (null !== $paramType && $paramType instanceof \ReflectionNamedType) {
+            } elseif (null !== $paramType) {
+                /** @var \ReflectionNamedType $paramType */
                 $param .= $paramType->getName() . ' ';
             }
 
