@@ -135,7 +135,7 @@ class NewCallable
                     ucfirst($function->getShortName()),
                     var_export($param['names'], true),
                     $param['string'],
-                    determineReturnTypeOf($function),
+                    $returnType,
                     $return ? 'return ' : '',
                     $return ? 'false' : 'true'
         );
