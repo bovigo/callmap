@@ -40,6 +40,9 @@ class UnionTypeHintTest extends TestCase
         $this->proxy = NewInstance::stub(ClassWithUnionTypeHints::class);
     }
 
+    /**
+     * @return \Generator<array<string|AnotherTestHelperClass>>
+     */
     public static function acceptableParameters(): \Generator
     {
         yield ['string'];
@@ -49,7 +52,7 @@ class UnionTypeHintTest extends TestCase
     /**
      * @test
      * @dataProvider acceptableParameters
-     * @param string|ClassWithUnionTypeHints $acceptable
+     * @param string|AnotherTestHelperClass $acceptable
      */
     public function unionTypeHintedMethodParamReceivesProperValue($acceptable): void
     {
@@ -67,6 +70,9 @@ class UnionTypeHintTest extends TestCase
              ->message(contains('Argument #1 ($something) must be of type bovigo\callmap\helper\AnotherTestHelperClass|string, float given'));
     }
 
+    /**
+     * @return \Generator<array<int|float>>
+     */
     public static function acceptableReturnValues(): \Generator
     {
         yield [1];
@@ -95,6 +101,9 @@ class UnionTypeHintTest extends TestCase
              ->message(contains('Return value must be of type int|float, string returned'));
     }
 
+    /**
+     * @return \Generator<array<mixed>>
+     */
     public static function acceptableFunctionParameters(): \Generator
     {
         yield [[1, 2, 3]];
@@ -114,7 +123,9 @@ class UnionTypeHintTest extends TestCase
         verify($foo)->received($acceptable);
     }
 
-
+    /**
+     * @return \Generator<array<mixed>>
+     */
     public static function acceptableFunctionReturnValues(): \Generator
     {
         yield [false];
