@@ -1,6 +1,6 @@
 # Changelog
 
-## 6.2.0 (2020-11-??)
+## 6.2.0 (2020-11-15)
 
 * Ensured compatibility with PHP 8 (#14)
   * Added support for union types
