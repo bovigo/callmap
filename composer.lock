@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bovigo/assert",
-            "version": "dev-master",
+            "version": "v6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/assert.git",
-                "reference": "a5a512e818d574b77f1a7021b9e86f7b24d9019c"
+                "reference": "f9910721fde3740464712be841ffe47518d14455"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/assert/zipball/a5a512e818d574b77f1a7021b9e86f7b24d9019c",
-                "reference": "a5a512e818d574b77f1a7021b9e86f7b24d9019c",
+                "url": "https://api.github.com/repos/bovigo/assert/zipball/f9910721fde3740464712be841ffe47518d14455",
+                "reference": "f9910721fde3740464712be841ffe47518d14455",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Provides assertions for unit tests.",
-            "time": "2020-11-08T13:01:56+00:00"
+            "time": "2020-11-15T16:37:38+00:00"
         },
         {
             "name": "sebastian/comparator",
