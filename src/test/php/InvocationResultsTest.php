@@ -61,7 +61,7 @@ class InvocationResultsTest extends TestCase
     public function invocationResultIsResultOfOriginalMethodIfCalledMoreOftenThenResultsDefined(): void
     {
         $this->proxy->returns(['getName' => onConsecutiveCalls('foo')]);
-        $this->proxy->getName(); // foo
+        assertThat($this->proxy->getName(), equals('foo'));
         assertThat($this->proxy->getName(), equals(__CLASS__));
     }
 
