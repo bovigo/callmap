@@ -11,8 +11,10 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 use PHPUnit\Framework\TestCase;
 
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for bovigo\callmap\throws()
  *
@@ -37,7 +39,7 @@ class ThrowsTest extends TestCase
     {
         $e = new \ReflectionException('some error');
         $this->proxy->returns(['getName' => throws($e)]);
-        expect(function() { $this->proxy->getName(); })
+        expect(function() { $_ = $this->proxy->getName(); })
             ->throws(\ReflectionException::class)
             ->message(contains('some error'));
 
@@ -52,8 +54,8 @@ class ThrowsTest extends TestCase
         $this->proxy->returns(
                 ['getName' => onConsecutiveCalls('foo', throws($e))]
         );
-        $this->proxy->getName(); // foo
-        expect(function() { $this->proxy->getName(); }) // throws $e
+        assertThat($this->proxy->getName(), equals('foo'));
+        expect(function() { $_ = $this->proxy->getName(); }) // throws $e
             ->throws(\ReflectionException::class)
             ->message(contains('some error'));
     }

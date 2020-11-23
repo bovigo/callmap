@@ -79,9 +79,9 @@ class InternalClassTest extends TestCase
      */
     public function recordsAmountOfCallsToMethod(): void
     {
-        $this->proxy->getName();
-        $this->proxy->getName();
-        $this->proxy->getShortName();
+        $_ = $this->proxy->getName();
+        $_ = $this->proxy->getName();
+        $_ = $this->proxy->getShortName();
         verify($this->proxy,'getName')->wasCalled(2);
         verify($this->proxy, 'getShortName')->wasCalledOnce();
     }
