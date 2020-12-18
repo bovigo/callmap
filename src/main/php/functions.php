@@ -119,11 +119,8 @@ namespace bovigo\callmap {
             $paramType = $parameter->getType();
             if (null !== $paramType && $paramType instanceof \ReflectionUnionType) {
                 $param .= resolveUnionTypes($paramType, $containingClass) . ' ';
-            } elseif ($parameter->getClass() !== null) {
-                $param .= '\\' . $parameter->getClass()->getName() . ' ';
-            } elseif (null !== $paramType) {
-                /** @var \ReflectionNamedType $paramType */
-                $param .= $paramType->getName() . ' ';
+            } elseif ($paramType instanceof \ReflectionNamedType) {
+                $param .= resolveType($paramType->getName(), $containingClass);
             }
 
             if ($parameter->isPassedByReference()) {
@@ -164,16 +161,31 @@ namespace bovigo\callmap {
         $types = [];
         foreach ($unionType->getTypes() as $type) {
             $type = $type->getName();
-            if ('self' === $type && null !== $containingClass) {
-                $types[] = '\\' . $containingClass->getName();
-            } elseif (class_exists($type) || interface_exists($type)) {
-                $types[] =  '\\' . $type;
-            } else {
-                $types[] =  $type;
-            }
+            $types[] = resolveType($type, $containingClass);
         }
 
         return join('|', $types);
+    }
+
+    /**
+     * Converts type string to proper formatted type.
+     *
+     * @internal
+     * @since   6.2.0
+     * @template T of object
+     * @param string $type
+     * @param \ReflectionClass<T>|null $containingClass
+     * @return string
+     */
+    function resolveType(string $type, ?\ReflectionClass $containingClass): string
+    {
+        if ('self' === $type && null !== $containingClass) {
+            return '\\' . $containingClass->getName();
+        } elseif (class_exists($type) || interface_exists($type)) {
+            return '\\' . $type;
+        }
+
+        return $type;
     }
 
     /**
