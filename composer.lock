@@ -2017,12 +2017,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
@@ -2063,16 +2063,16 @@
         },
         {
             "name": "xp-framework/core",
-            "version": "v10.5.3",
+            "version": "v10.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xp-framework/core.git",
-                "reference": "4c4f0cfc2463ef9aca003cdedada0e9c974ff3d0"
+                "reference": "0602f107b6ee8f3abd91f0f314396cc654f2d5cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/core/zipball/4c4f0cfc2463ef9aca003cdedada0e9c974ff3d0",
-                "reference": "4c4f0cfc2463ef9aca003cdedada0e9c974ff3d0",
+                "url": "https://api.github.com/repos/xp-framework/core/zipball/0602f107b6ee8f3abd91f0f314396cc654f2d5cd",
+                "reference": "0602f107b6ee8f3abd91f0f314396cc654f2d5cd",
                 "shasum": ""
             },
             "require": {
@@ -2098,7 +2098,7 @@
                 "framework",
                 "xp"
             ],
-            "time": "2021-01-17T15:52:06+00:00"
+            "time": "2021-01-18T20:21:29+00:00"
         },
         {
             "name": "xp-framework/unittest",
