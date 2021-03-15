@@ -2063,16 +2063,16 @@
         },
         {
             "name": "xp-framework/core",
-            "version": "v10.7.0",
+            "version": "v10.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xp-framework/core.git",
-                "reference": "2dddabe7f3ecb1d8fc4be09fa5632d7d566a6a58"
+                "reference": "24d351c7b2018bf83f15b3184024f12b6cefedfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/core/zipball/2dddabe7f3ecb1d8fc4be09fa5632d7d566a6a58",
-                "reference": "2dddabe7f3ecb1d8fc4be09fa5632d7d566a6a58",
+                "url": "https://api.github.com/repos/xp-framework/core/zipball/24d351c7b2018bf83f15b3184024f12b6cefedfc",
+                "reference": "24d351c7b2018bf83f15b3184024f12b6cefedfc",
                 "shasum": ""
             },
             "require": {
@@ -2098,7 +2098,7 @@
                 "framework",
                 "xp"
             ],
-            "time": "2021-03-06T16:50:20+00:00"
+            "time": "2021-03-14T17:26:39+00:00"
         },
         {
             "name": "xp-framework/unittest",
