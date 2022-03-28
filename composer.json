@@ -8,7 +8,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.4",
-        "xp-framework/core": "^10.3 | ^9.9",
+        "xp-framework/core": "^11.1.2",
         "xp-framework/unittest": "^11.1 | ^10.1 | ^9.7.1",
         "phpstan/phpstan": "^0.12.57"
     },

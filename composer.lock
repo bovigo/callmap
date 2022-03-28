@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f7b0409abccf4ae4c3d27a5c222facf",
+    "content-hash": "fae1a684c93776b53a46bd0a479639fa",
     "packages": [
         {
             "name": "bovigo/assert",
@@ -2075,16 +2075,16 @@
         },
         {
             "name": "xp-framework/core",
-            "version": "v10.15.1",
+            "version": "v11.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xp-framework/core.git",
-                "reference": "9dc5b5310105d19057cd374eb22f9e68a86364ca"
+                "reference": "293a326f94d1f6a082d461a5f3ae4fc4fa289812"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/core/zipball/9dc5b5310105d19057cd374eb22f9e68a86364ca",
-                "reference": "9dc5b5310105d19057cd374eb22f9e68a86364ca",
+                "url": "https://api.github.com/repos/xp-framework/core/zipball/293a326f94d1f6a082d461a5f3ae4fc4fa289812",
+                "reference": "293a326f94d1f6a082d461a5f3ae4fc4fa289812",
                 "shasum": ""
             },
             "require": {
@@ -2110,7 +2110,7 @@
                 "framework",
                 "xp"
             ],
-            "time": "2021-12-24T14:55:23+00:00"
+            "time": "2022-01-22T14:25:39+00:00"
         },
         {
             "name": "xp-framework/unittest",
