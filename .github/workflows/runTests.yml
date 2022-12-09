@@ -45,7 +45,7 @@ jobs:
     - name: Get Composer Cache Directory
       if: runner.os != 'Windows'
       id: composer-cache
-      run: echo "$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      run: echo "value=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Cache dependencies
       if: runner.os != 'Windows'
