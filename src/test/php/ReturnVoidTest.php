@@ -9,16 +9,16 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\SomeClassWithMethodReturningVoid;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
-use function bovigo\callmap\helper\whichReturnsNothing;
 /**
  * Tests for functions which are declared with return type void.
  *
- * @since  4.0.1
- * @group  void
+ * @since 4.0.1
+ * @group void
  */
 class ReturnVoidTest extends TestCase
 {
@@ -27,9 +27,9 @@ class ReturnVoidTest extends TestCase
      */
     public function voidRequiresNoReturnForMethods(): void
     {
-        expect(function() {
-            NewInstance::of(SomeClassWithMethodReturningVoid::class)->returnNothing();
-        })->doesNotThrow();
+        expect(fn() =>
+            NewInstance::of(SomeClassWithMethodReturningVoid::class)->returnNothing()
+        )->doesNotThrow();
     }
 
     /**
@@ -37,9 +37,9 @@ class ReturnVoidTest extends TestCase
      */
     public function voidRequiresNoReturnForFunctions(): void
     {
-        expect(function() {
-            NewCallable::of('bovigo\callmap\helper\whichReturnsNothing')();
-        })->doesNotThrow();
+        expect(fn() =>
+            NewCallable::of('bovigo\callmap\helper\whichReturnsNothing')()
+        )->doesNotThrow();
     }
 
     /**
@@ -47,12 +47,13 @@ class ReturnVoidTest extends TestCase
      */
     public function mapVoidMethodFails(): void
     {
-        expect(function() {
+        expect(fn() =>
             NewInstance::of(SomeClassWithMethodReturningVoid::class)->returns([
                 'returnNothing' => true
-            ]);
-        })->throws(\InvalidArgumentException::class)
-        ->withMessage('Trying to map method ' . SomeClassWithMethodReturningVoid::class . '::returnNothing(), but it is declared as returning void.');
+            ])
+        )
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage('Trying to map method ' . SomeClassWithMethodReturningVoid::class . '::returnNothing(), but it is declared as returning void.');
     }
 
     /**
@@ -60,9 +61,10 @@ class ReturnVoidTest extends TestCase
      */
     public function mapVoidFunctionFails(): void
     {
-        expect(function() {
-            NewCallable::of('bovigo\callmap\helper\whichReturnsNothing')->returns(true);
-        })->throws(\LogicException::class)
-        ->withMessage('Trying to map function bovigo\callmap\helper\whichReturnsNothing(), but it is declared as returning void.');
+        expect(fn() =>
+            NewCallable::of('bovigo\callmap\helper\whichReturnsNothing')->returns(true)
+        )
+            ->throws(\LogicException::class)
+            ->withMessage('Trying to map function bovigo\callmap\helper\whichReturnsNothing(), but it is declared as returning void.');
     }
 }

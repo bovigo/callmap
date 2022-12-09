@@ -9,7 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\FailingTrait;
+use ParseError;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
@@ -23,7 +25,7 @@ class NewInstanceParseErrorTest extends TestCase
 {
     protected function setUp(): void
     {
-        NewInstance::$compile = function() { throw new \ParseError('failed to evaluate'); };
+        NewInstance::$compile = fn() => throw new ParseError('failed to evaluate');
     }
 
     protected function tearDown(): void
@@ -36,7 +38,7 @@ class NewInstanceParseErrorTest extends TestCase
      */
     public function throwsProxyCreationFailureWhenEvalOfCreatedProxyClassFails(): void
     {
-        expect(function() { NewInstance::of(__CLASS__); })
+        expect(fn() => NewInstance::of(__CLASS__))
             ->throws(ProxyCreationFailure::class)
             ->withMessage(
                 'Failure while creating CallMap instance of '
@@ -49,7 +51,7 @@ class NewInstanceParseErrorTest extends TestCase
      */
     public function throwsProxyCreationFailureWhenEvalOfCreatedProxyTraitFails(): void
     {
-        expect(function() { NewInstance::of(FailingTrait::class); })
+        expect(fn() => NewInstance::of(FailingTrait::class))
             ->throws(ProxyCreationFailure::class)
             ->withMessage(
                 'Failure while creating forked trait instance of '

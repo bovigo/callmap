@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
+use Countable;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -20,13 +22,13 @@ use function bovigo\assert\predicate\isNull;
 class InternalInterfaceTest extends TestCase
 {
     /**
-     * @var  \Countable&\bovigo\callmap\ClassProxy
+     * @var Countable&ClassProxy
      */
     private $proxy;
 
     protected function setUp(): void
     {
-        $this->proxy = NewInstance::of(\Countable::class);
+        $this->proxy = NewInstance::of(Countable::class);
     }
 
     /**

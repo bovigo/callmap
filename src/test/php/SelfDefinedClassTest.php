@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\SelfDefined;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +22,7 @@ use function bovigo\assert\predicate\isInstanceOf;
 class SelfDefinedClassTest extends TestCase
 {
     /**
-     * @var  SelfDefined&\bovigo\callmap\ClassProxy
+     * @var  SelfDefined&ClassProxy
      */
     private $proxy;
 
@@ -36,8 +37,8 @@ class SelfDefinedClassTest extends TestCase
     public function callsOriginalMethodIfNoMappingProvided(): void
     {
         assertThat(
-                $this->proxy->action(new SelfDefined(), function() {}),
-                equals('selfdefined')
+            $this->proxy->action(new SelfDefined(), function() {}),
+            equals('selfdefined')
         );
     }
 
@@ -48,8 +49,8 @@ class SelfDefinedClassTest extends TestCase
     {
         $this->proxy->returns(['action' => 'foo']);
         assertThat(
-                $this->proxy->action(new SelfDefined(), function() {}),
-                equals('foo')
+            $this->proxy->action(new SelfDefined(), function() {}),
+            equals('foo')
         );
     }
 
@@ -60,8 +61,8 @@ class SelfDefinedClassTest extends TestCase
     {
         $this->proxy->returns(['action' => function() { return 'foo'; }]);
         assertThat(
-                $this->proxy->action(new SelfDefined(), function() {}),
-                equals('foo')
+            $this->proxy->action(new SelfDefined(), function() {}),
+            equals('foo')
         );
     }
 

@@ -9,7 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\ClassWithMixedTypeHints;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -21,9 +23,9 @@ use function bovigo\callmap\verify;
  * Tests for methods and functions which are declared with type hint mixed.
  *
  * @requires PHP >= 8
- * @since  6.2.0
- * @group  typehint
- * @group  mixed
+ * @since 6.2.0
+ * @group typehint
+ * @group mixed
  */
 class MixedTypeHintTest extends TestCase
 {
@@ -37,10 +39,7 @@ class MixedTypeHintTest extends TestCase
         $this->proxy = NewInstance::stub(ClassWithMixedTypeHints::class);
     }
 
-    /**
-     * @return \Generator<array<mixed>>
-     */
-    public static function acceptableParameters(): \Generator
+    public static function acceptableParameters(): Generator
     {
         yield ['string'];
         yield [null];
@@ -49,7 +48,6 @@ class MixedTypeHintTest extends TestCase
     /**
      * @test
      * @dataProvider acceptableParameters
-     * @param mixed $acceptable
      */
     public function unionTypeHintedMethodParamReceivesProperValue(mixed $acceptable): void
     {
@@ -57,10 +55,7 @@ class MixedTypeHintTest extends TestCase
         verify($this->proxy, 'accept')->received($acceptable);
     }
 
-    /**
-     * @return \Generator<array<mixed>>
-     */
-    public static function acceptableFunctionParameters(): \Generator
+    public static function acceptableFunctionParameters(): Generator
     {
         yield [[1, 2, 3]];
         yield ['strpos'];
@@ -70,19 +65,15 @@ class MixedTypeHintTest extends TestCase
     /**
      * @test
      * @dataProvider acceptableFunctionParameters
-     * @param mixed $acceptable
      */
-    public function mixedTypeHintedFunctionParamReceivesProperValue($acceptable): void
+    public function mixedTypeHintedFunctionParamReceivesProperValue(mixed $acceptable): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\acceptMixed');
         $foo($acceptable);
         verify($foo)->received($acceptable);
     }
 
-    /**
-     * @return \Generator<array<mixed>>
-     */
-    public static function acceptableFunctionReturnValues(): \Generator
+    public static function acceptableFunctionReturnValues(): Generator
     {
         yield [false];
         yield ['example'];
@@ -92,9 +83,8 @@ class MixedTypeHintTest extends TestCase
     /**
      * @test
      * @dataProvider acceptableFunctionReturnValues
-     * @param false|string $acceptable
      */
-    public function mixedTypeHintedFunctionReturnsProperValue($acceptable): void
+    public function mixedTypeHintedFunctionReturnsProperValue(mixed $acceptable): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\returnMixed');
         $foo->returns($acceptable);

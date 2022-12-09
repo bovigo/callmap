@@ -14,9 +14,9 @@ namespace bovigo\callmap\helper;
  */
 class Verified
 {
-    public function aMethod(int $roland = 303)
+    public function aMethod(int $roland = 303): bool
     {
-
+        return true;
     }
 
     public function otherMethod(int $roland = 909)

@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -23,7 +25,7 @@ use function bovigo\callmap\helper\{doSomething, greet};
 /**
  * All remaining tests for bovigo\callmap\NewCallable.
  *
- * @since  3.1.0
+ * @since 3.1.0
  */
 class NewCallableTest extends TestCase
 {
@@ -32,7 +34,7 @@ class NewCallableTest extends TestCase
      */
     public function callWithNonExistingFunctionNameThrowsReflectionException(): void
     {
-        expect(function() { NewCallable::of('doesNotExist'); })
+        expect(fn() => NewCallable::of('doesNotExist'))
             ->throws(\ReflectionException::class);
     }
 
@@ -80,22 +82,20 @@ class NewCallableTest extends TestCase
         );
     }
 
-    /**
-     * @return  array<array<string|int>>
-     */
-    public function functionNames(): array
+    public function functionNames(): Generator
     {
-        return [['strtoupper', 'WORLD'], ['bovigo\callmap\helper\greet', 'Hello world']];
+        yield ['strtoupper', 'WORLD'];
+        yield ['bovigo\callmap\helper\greet', 'Hello world'];
     }
 
     /**
-     * @param  string      $functionName
-     * @param  string|int  $expected
      * @test
      * @dataProvider  functionNames
      */
-    public function callsOriginalFunctionWhenNotMapped(string $functionName, $expected): void
-    {
+    public function callsOriginalFunctionWhenNotMapped(
+        string $functionName,
+        string $expected
+    ): void {
         $function = NewCallable::of($functionName);
         assertThat($function('world'), equals($expected));
     }
@@ -129,12 +129,10 @@ class NewCallableTest extends TestCase
     }
 
     /**
-     * @param  string      $functionName
-     * @param  string|int  $expected
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function canMapWithConsecutiveCalls(string $functionName, $expected): void
+    public function canMapWithConsecutiveCalls(string $functionName, string $expected): void
     {
         $function = NewCallable::of($functionName)
             ->returns(onConsecutiveCalls('great', 'stuff'));
@@ -145,21 +143,21 @@ class NewCallableTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
     public function canMapWithThrows(string $functionName): void
     {
         $function = NewCallable::of($functionName)
             ->throws(new \RuntimeException('failure'));
-        expect(function() use ($function) { $function('world'); })
+        expect(fn() => $function('world'))
             ->throws(\RuntimeException::class)
             ->withMessage('failure');
     }
 
     /**
      * @test
-     * @group  optional_return_value
-     * @since  5.0.2
+     * @group optional_return_value
+     * @since 5.0.2
      */
     public function canWorkWithOptionalReturnTypehints(): void
     {
@@ -169,8 +167,8 @@ class NewCallableTest extends TestCase
 
     /**
      * @test
-     * @group  optional_return_value
-     * @since  5.1.0
+     * @group optional_return_value
+     * @since 5.1.0
      */
     public function canWorkWithOptionalBuiltinReturnTypehints(): void
     {
@@ -180,8 +178,8 @@ class NewCallableTest extends TestCase
 
     /**
      * @test
-     * @group  void_return
-     * @since  5.1.0
+     * @group void_return
+     * @since 5.1.0
      */
     public function canWorkWithVoidReturnTypehints(): void
     {

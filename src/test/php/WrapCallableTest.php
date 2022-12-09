@@ -9,14 +9,16 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use PHPUnit\Framework\TestCase;
+use ReflectionObject;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for bovigo\callmap\callable()
  *
- * @since  0.6.0
+ * @since 0.6.0
  */
 class WrapCallableTest extends TestCase
 {
@@ -26,8 +28,8 @@ class WrapCallableTest extends TestCase
     public function wrappedCallableIsReturned(): void
     {
         $callable = function() {};
-        $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
-                ->returns(['getName' => wrap($callable)]);
+        $proxy    = NewInstance::of(ReflectionObject::class, [$this])
+            ->returns(['getName' => wrap($callable)]);
         assertThat($proxy->getName(), isSameAs($callable));
     }
 
@@ -37,8 +39,8 @@ class WrapCallableTest extends TestCase
     public function wrappedCallableIsReturnedFromInvocationResults(): void
     {
         $callable = function() {};
-        $proxy    = NewInstance::of(\ReflectionObject::class, [$this])
-                ->returns(['getName' => onConsecutiveCalls(wrap($callable))]);
+        $proxy    = NewInstance::of(ReflectionObject::class, [$this])
+            ->returns(['getName' => onConsecutiveCalls(wrap($callable))]);
         assertThat($proxy->getName(), isSameAs($callable));
     }
 }

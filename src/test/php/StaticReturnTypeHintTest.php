@@ -9,8 +9,10 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\ClassWithStaticReturnTypeHint;
 use bovigo\callmap\helper\ExtendedClassWithStaticReturnTypeHint;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -21,16 +23,13 @@ use function bovigo\assert\{
  * Tests for methods which are declared with return type static.
  *
  * @requires PHP >= 8
- * @since  6.2.0
- * @group  typehint
- * @group  static
+ * @since 6.2.0
+ * @group typehint
+ * @group static
  */
 class StaticReturnTypeHintTest extends TestCase
 {
-    /**
-     * @return  \Generator<array<class-string>>
-     */
-    public static function classesWithStaticReturnTypes(): \Generator
+    public static function classesWithStaticReturnTypes(): Generator
     {
         yield [ClassWithStaticReturnTypeHint::class];
         yield [ExtendedClassWithStaticReturnTypeHint::class];
@@ -53,8 +52,9 @@ class StaticReturnTypeHintTest extends TestCase
      * @dataProvider  classesWithStaticReturnTypes
      * @param  class-string  $class
      */
-    public function stubReturnsItselfWhenReturnTypeHintIsStaticInDocCommentOnly(string $class): void
-    {
+    public function stubReturnsItselfWhenReturnTypeHintIsStaticInDocCommentOnly(
+        string $class
+    ): void {
         /** @var ClassWithStaticReturnTypeHint&ClassProxy $static */
         $static = NewInstance::stub($class);
         assertThat($static->testWithDocComment(), isSameAs($static));

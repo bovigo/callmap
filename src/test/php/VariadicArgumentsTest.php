@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\Variadic1;
 use bovigo\callmap\helper\VariadicReference;
 use bovigo\callmap\helper\VariadicTypeHint;
@@ -18,8 +19,8 @@ use function bovigo\assert\expect;
 /**
  * Tests for bovigo\callmap\NewInstance regarding variadic arguments.
  *
- * @group  variadic
- * @group  issue_9
+ * @group variadic
+ * @group issue_9
  */
 class VariadicArgumentsTest extends TestCase
 {
@@ -28,7 +29,7 @@ class VariadicArgumentsTest extends TestCase
      */
     public function canCreateProxyForTypeWithVariadicArguments(): void
     {
-        expect(function() { NewInstance::of(Variadic1::class); })
+        expect(fn() => NewInstance::of(Variadic1::class))
             ->doesNotThrow(\ReflectionException::class);
     }
 
@@ -37,7 +38,7 @@ class VariadicArgumentsTest extends TestCase
      */
     public function canCreateProxyForTypeWithVariadicReference(): void
     {
-        expect(function() { NewInstance::of(VariadicReference::class); })
+        expect(fn() => NewInstance::of(VariadicReference::class))
             ->doesNotThrow(\ReflectionException::class);
     }
 
@@ -46,7 +47,7 @@ class VariadicArgumentsTest extends TestCase
      */
     public function canCreateProxyForTypeWithVariadicTypehint(): void
     {
-        expect(function() { NewInstance::of(VariadicTypeHint::class); })
+        expect(fn() => NewInstance::of(VariadicTypeHint::class))
             ->doesNotThrow(\ReflectionException::class);
     }
 }

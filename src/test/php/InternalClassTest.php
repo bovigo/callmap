@@ -9,7 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use PHPUnit\Framework\TestCase;
+use ReflectionObject;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
@@ -19,13 +21,13 @@ use function bovigo\assert\predicate\equals;
 class InternalClassTest extends TestCase
 {
     /**
-     * @var  \ReflectionObject&\bovigo\callmap\ClassProxy
+     * @var ReflectionObject&ClassProxy
      */
     private $proxy;
 
     protected function setUp(): void
     {
-        $this->proxy = NewInstance::of(\ReflectionObject::class, [$this]);
+        $this->proxy = NewInstance::of(ReflectionObject::class, [$this]);
     }
 
     /**
@@ -60,7 +62,7 @@ class InternalClassTest extends TestCase
      */
     public function mapToCallableReturnsCallableReturnValueOnMethodCall(): void
     {
-        // doesn't make much sense with \ReflectionObject, but too lazy create
+        // doesn't make much sense with ReflectionObject, but too lazy create
         // a proper example
         $this->proxy->returns(['getStaticPropertyValue' => 'strtoupper']);
         assertThat($this->proxy->getStaticPropertyValue('foo'), equals('FOO'));

@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\Extended7;
 use bovigo\callmap\helper\Bar7;
-use bovigo\callmap\helper\Base7;
 use bovigo\callmap\helper\OneMoreThing7;
 use PHPUnit\Framework\TestCase;
 
@@ -22,12 +22,12 @@ use function bovigo\assert\predicate\isNull;
 /**
  * Tests for automated return self.
  *
- * @since  2.0.0
+ * @since 2.0.0
  */
 class ReturnSelfPhp7Test extends TestCase
 {
     /**
-     * @var  Extended7<mixed>&\bovigo\callmap\ClassProxy
+     * @var  Extended7<mixed>&ClassProxy
      */
     private $proxy;
 
@@ -46,8 +46,8 @@ class ReturnSelfPhp7Test extends TestCase
 
     /**
      * @test
-     * @group  optional_return_value
-     * @since  5.0.2
+     * @group optional_return_value
+     * @since 5.0.2
      */
     public function returnsNullIfMethodCallNotMappedWhenReturnTypeIsOptional(): void
     {

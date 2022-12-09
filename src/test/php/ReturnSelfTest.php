@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\Extended;
 use bovigo\callmap\helper\Bar;
-use bovigo\callmap\helper\Base;
 use bovigo\callmap\helper\Fump;
 use bovigo\callmap\helper\OneMoreThing;
 use bovigo\callmap\helper\Really;
@@ -26,12 +26,12 @@ use function bovigo\assert\predicate\isNull;
 /**
  * Tests for automated return self.
  *
- * @since  0.3.0
+ * @since 0.3.0
  */
 class ReturnSelfTest extends TestCase
 {
     /**
-     * @var  Extended<mixed>&\bovigo\callmap\ClassProxy
+     * @var  Extended<mixed>&ClassProxy
      */
     private $proxy;
 
@@ -139,7 +139,7 @@ class ReturnSelfTest extends TestCase
 
     /**
      * @test
-     * @since  3.0.0
+     * @since 3.0.0
      */
     public function doesNotReturnSelfWhenNoReturnTypeHintInDocComment(): void
     {
@@ -148,8 +148,8 @@ class ReturnSelfTest extends TestCase
 
     /**
      * @test
-     * @since  3.0.2
-     * @group  self_type_hint
+     * @since 3.0.2
+     * @group self_type_hint
      */
     public function canWorkWithSelfReturnTypeHintForInterfaceDirectly(): void
     {
@@ -161,8 +161,8 @@ class ReturnSelfTest extends TestCase
 
     /**
      * @test
-     * @since  3.0.2
-     * @group  self_type_hint
+     * @since 3.0.2
+     * @group self_type_hint
      */
     public function canWorkWithSelfReturnTypeHintForImplementingClass(): void
     {
@@ -174,8 +174,8 @@ class ReturnSelfTest extends TestCase
 
     /**
      * @test
-     * @since  3.0.2
-     * @group  self_type_hint
+     * @since 3.0.2
+     * @group self_type_hint
      */
     public function canWorkWithSelfReturnTypeHintForClassDirectly(): void
     {

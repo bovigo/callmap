@@ -9,7 +9,10 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use PHPUnit\Framework\TestCase;
+use ReflectionException;
+use ReflectionObject;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
@@ -18,18 +21,18 @@ use function bovigo\assert\predicate\equals;
 /**
  * Test for bovigo\callmap\throws()
  *
- * @since  0.2.0
+ * @since 0.2.0
  */
 class ThrowsTest extends TestCase
 {
     /**
-     * @var  \ReflectionObject&\bovigo\callmap\ClassProxy
+     * @var ReflectionObject&ClassProxy
      */
     private $proxy;
 
     protected function setUp(): void
     {
-        $this->proxy = NewInstance::of(\ReflectionObject::class, [$this]);
+        $this->proxy = NewInstance::of(ReflectionObject::class, [$this]);
     }
 
     /**
@@ -37,10 +40,10 @@ class ThrowsTest extends TestCase
      */
     public function throwsExceptionPassedViaThrows(): void
     {
-        $e = new \ReflectionException('some error');
+        $e = new ReflectionException('some error');
         $this->proxy->returns(['getName' => throws($e)]);
-        expect(function() { $_ = $this->proxy->getName(); })
-            ->throws(\ReflectionException::class)
+        expect(fn() => $_ = $this->proxy->getName())
+            ->throws(ReflectionException::class)
             ->message(contains('some error'));
 
     }
@@ -50,13 +53,13 @@ class ThrowsTest extends TestCase
      */
     public function throwsExceptionPassedViaInvocationResults(): void
     {
-        $e = new \ReflectionException('some error');
+        $e = new ReflectionException('some error');
         $this->proxy->returns(
-                ['getName' => onConsecutiveCalls('foo', throws($e))]
+            ['getName' => onConsecutiveCalls('foo', throws($e))]
         );
         assertThat($this->proxy->getName(), equals('foo'));
-        expect(function() { $_ = $this->proxy->getName(); }) // throws $e
-            ->throws(\ReflectionException::class)
+        expect(fn() => $_ = $this->proxy->getName()) // throws $e
+            ->throws(ReflectionException::class)
             ->message(contains('some error'));
     }
 }

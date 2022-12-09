@@ -9,7 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\Instrument;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -21,7 +23,7 @@ use function bovigo\assert\predicate\isNull;
 class AbstractMethodTest extends TestCase
 {
     /**
-     * @var  Instrument&\bovigo\callmap\ClassProxy
+     * @var Instrument&ClassProxy
      */
     private $proxy;
 
@@ -56,25 +58,24 @@ class AbstractMethodTest extends TestCase
         assertThat($this->proxy->play(808), equals('foo'));
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function arguments(): array
+    public function arguments(): Generator
     {
-        return [[null, 'blubber'], [808, 'ba-dummz!'], [909, 'foo']];
+        yield [null, 'blubber'];
+        yield [808, 'ba-dummz!'];
+        yield [909, 'foo'];
     }
 
     /**
-     * @param  int|null  $argument
-     * @param  string    $expectedResult
      * @test
-     * @dataProvider  arguments
-     * @since  0.2.0
+     * @dataProvider arguments
+     * @since 0.2.0
      */
-    public function givenArgumentsArePassedToClosure($argument, string $expectedResult): void
-    {
+    public function givenArgumentsArePassedToClosure(
+        ?int $argument,
+        string $expectedResult
+    ): void {
         $this->proxy->returns([
-            'play' => function($roland = 303)
+            'play' => function(int $roland = 303)
                       {
                           if (303 === $roland) {
                               return 'blubber';

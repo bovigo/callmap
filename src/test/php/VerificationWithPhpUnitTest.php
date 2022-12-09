@@ -9,19 +9,21 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use \bovigo\callmap\verification\Verification;
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertTrue;
  /**
   * Test for bovigo\callmap\verify() using PHPUnit constraints.
   *
-  * @since  3.0.0
+  * @since 3.0.0
   */
 class VerificationWithPhpUnitTest extends TestCase
 {
     /**
-     * @var  Verification
+     * @var Verification
      */
     private $phpUnitVerification;
 
@@ -29,8 +31,11 @@ class VerificationWithPhpUnitTest extends TestCase
     {
         $this->phpUnitVerification = new class(new Invocations('', [])) extends Verification
         {
-            public function evaluateWithPhpUnit($constraint, $received, string $description): bool
-            {
+            public function evaluateWithPhpUnit(
+                mixed $constraint,
+                mixed $received,
+                string $description
+            ): bool {
                 return parent::evaluateWithPhpUnit($constraint, $received, $description);
             }
         };
@@ -49,7 +54,7 @@ class VerificationWithPhpUnitTest extends TestCase
      */
     public function usingConstraintEvaluatesWithThisConstraint(): void
     {
-        $constraint = NewInstance::of(\PHPUnit\Framework\Constraint\Constraint::class)
+        $constraint = NewInstance::of(Constraint::class)
                 ->returns(['evaluate' => true]);
         assertTrue($this->phpUnitVerification->evaluateWithPhpUnit(
             $constraint,

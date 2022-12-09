@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\SomeTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -19,20 +20,18 @@ use function bovigo\assert\predicate\isOfType;
 /**
  * Tests that mocks of traits can be created.
  *
- * @group  issue_1
+ * @group issue_1
  */
 class TraitTest extends TestCase
 {
     /**
-     * @var  \bovigo\callmap\helper\TraitIncludingClass&\bovigo\callmap\ClassProxy
+     * @var \bovigo\callmap\helper\TraitIncludingClass&ClassProxy
      */
     private $proxy;
 
     protected function setUp(): void
     {
-        /** @var \bovigo\callmap\helper\TraitIncludingClass&\bovigo\callmap\ClassProxy $proxy */
-        $proxy = NewInstance::of(SomeTrait::class);
-        $this->proxy = $proxy;
+        $this->proxy = NewInstance::of(SomeTrait::class);
     }
 
     /**

@@ -9,8 +9,10 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use \bovigo\callmap\verification\Verification;
 use PHPUnit\Framework\TestCase;
+use unittest\AssertionFailedError;
 
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
@@ -31,9 +33,16 @@ class VerificationWithXpFrameworkCoreTest extends TestCase
     {
         $this->xpFrameworkCoreVerification = new class(new Invocations('', [])) extends Verification
         {
-            public function evaluateWithXpFrameworkCore($constraint, $received, string $description): bool
-            {
-                return parent::evaluateWithXpFrameworkCore($constraint, $received, $description);
+            public function evaluateWithXpFrameworkCore(
+                mixed $constraint,
+                mixed $received,
+                string $description
+            ): bool {
+                return parent::evaluateWithXpFrameworkCore(
+                    $constraint,
+                    $received,
+                    $description
+                );
             }
         };
     }
@@ -57,14 +66,14 @@ class VerificationWithXpFrameworkCoreTest extends TestCase
      */
     public function throwsAssertionFailedErrorWhenWhenBothValueAreNotEqual(): void
     {
-        expect(function() {
+        expect(fn() =>
             $this->xpFrameworkCoreVerification->evaluateWithXpFrameworkCore(
                 'foo',
                 'bar',
                 'some description'
-            );
-        })
-            ->throws(\unittest\AssertionFailedError::class)
+            )
+        )
+            ->throws(AssertionFailedError::class)
             ->message(contains('some description'));
     }
 }

@@ -9,9 +9,13 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use \bovigo\callmap\verification\ArgumentMismatch;
 use \bovigo\callmap\verification\CallAmountViolation;
 use \bovigo\callmap\verification\Verification;
+use Generator;
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -21,57 +25,47 @@ use function bovigo\callmap\helper\say;
 /**
  * Test for bovigo\callmap\verify() with function proxy.
  *
- * @since  3.1.0
- * @group  verify
+ * @since 3.1.0
+ * @group verify
  */
 class VerifyFunctionProxyTest extends TestCase
 {
-
-    /**
-     * @return  array<string,\Closure[]>
-     */
-    public static function verificationMethods(): array
+    public static function verificationMethods(): Generator
     {
-        return [
-            'wasNeverCalled' => [function(Verification $v, callable $function) { $v->wasNeverCalled(); }],
-            'wasCalledAtMost' => [function(Verification $v, callable $function) { $function(); $v->wasCalledAtMost(1); }],
-            'wasCalledAtLeastOnce' => [function(Verification $v, callable $function) { $function(); $v->wasCalledAtLeastOnce(); }],
-            'wasCalledAtLeast' => [function(Verification $v, callable $function) { $function(); $v->wasCalledAtLeast(1); }],
-            'wasCalledOnce' => [function(Verification $v, callable $function) { $function(); $v->wasCalledOnce(); }],
-            'wasCalled' => [function(Verification $v, callable $function) { $function(); $v->wasCalled(1); }],
-            'receivedNothing' => [function(Verification $v, callable $function) { $function(); $v->receivedNothing(); }],
-        ];
+        yield 'wasNeverCalled' => [fn(Verification $v, callable $function) => $v->wasNeverCalled()];
+        yield 'wasCalledAtMost' => [fn(Verification $v, callable $function) => $function() && $v->wasCalledAtMost(1)];
+        yield 'wasCalledAtLeastOnce' => [fn(Verification $v, callable $function) => $function() && $v->wasCalledAtLeastOnce()];
+        yield 'wasCalledAtLeast' => [fn(Verification $v, callable $function) => $function() && $v->wasCalledAtLeast(1)];
+        yield 'wasCalledOnce' => [fn(Verification $v, callable $function) => $function() && $v->wasCalledOnce()];
+        yield 'wasCalled' => [fn(Verification $v, callable $function) => $function() && $v->wasCalled(1)];
+        yield 'receivedNothing' => [fn(Verification $v, callable $function) => $function() && $v->receivedNothing()];
     }
 
     /**
      * @test
-     * @dataProvider  verificationMethods
-     * @since  6.1.0
+     * @dataProvider verificationMethods
+     * @since 6.1.0
      */
-    public function assertionCounterIsIncreased(\Closure $execute): void
+    public function assertionCounterIsIncreased(callable $execute): void
     {
         $countBeforeAssertion = \PHPUnit\Framework\Assert::getCount();
         $function = NewCallable::of('bovigo\callmap\helper\doSomething');
         $execute(verify($function), $function);
         assertThat(
-                \PHPUnit\Framework\Assert::getCount(),
-                equals($countBeforeAssertion + 1)
+            \PHPUnit\Framework\Assert::getCount(),
+            equals($countBeforeAssertion + 1)
         );
     }
 
-    /**
-     * @return  array<string[]>
-     */
-    public function functionNames(): array
+    public function functionNames(): Generator
     {
-        return [
-            ['strlen', PHP_MAJOR_VERSION === 8 ? '$string ' : '$str '],
-            ['bovigo\callmap\helper\say', '$whom ']];
+        yield ['strlen', '$string '];
+        yield ['bovigo\callmap\helper\say', '$whom '];
     }
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
     public function wasNeverCalledReturnsTrueWhenNeverCalled(string $functionName): void
     {
@@ -81,13 +75,13 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
     public function wasNeverCalledThrowsCallAmountViolationWhenFunctionWasCalled(string $functionName): void
     {
         $function = NewCallable::of($functionName);
         $function('world');
-        expect(function() use ($function) { verify($function)->wasNeverCalled(); })
+        expect(fn() => verify($function)->wasNeverCalled())
             ->throws(CallAmountViolation::class)
             ->withMessage(
                 $functionName . ' was not expected to be called, but'
@@ -97,10 +91,11 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledReturnsTrueWhenCalledExactlyWithGivenAmount(string $functionName): void
-    {
+    public function wasCalledReturnsTrueWhenCalledExactlyWithGivenAmount(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
@@ -109,13 +104,14 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledThrowsCallAmountViolationWhenCalledTooSeldom(string $functionName): void
-    {
+    public function wasCalledThrowsCallAmountViolationWhenCalledTooSeldom(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
-        expect(function() use ($function) { verify($function)->wasCalled(2); })
+        expect(fn() => verify($function)->wasCalled(2))
             ->throws(CallAmountViolation::class)
             ->withMessage(
                 $functionName . ' was expected to be called 2 time(s),'
@@ -125,15 +121,16 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledThrowsCallAmountViolationWhenCalledTooOften(string $functionName): void
-    {
+    public function wasCalledThrowsCallAmountViolationWhenCalledTooOften(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
         $function('world');
-        expect(function() use ($function) { verify($function)->wasCalled(2); })
+        expect(fn() => verify($function)->wasCalled(2))
             ->throws(CallAmountViolation::class)
             ->withMessage(
                 $functionName . ' was expected to be called 2 time(s),'
@@ -143,10 +140,11 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledOnceReturnsTrueWhenCalledExactlyOnce(string $functionName): void
-    {
+    public function wasCalledOnceReturnsTrueWhenCalledExactlyOnce(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         verify($function)->wasCalledOnce();
@@ -154,12 +152,13 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledOnceThrowsCallAmountViolationWhenCalledLessThanOnce(string $functionName): void
-    {
+    public function wasCalledOnceThrowsCallAmountViolationWhenCalledLessThanOnce(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
-        expect(function() use ($function) { verify($function)->wasCalledOnce(); })
+        expect(fn() => verify($function)->wasCalledOnce())
             ->throws(CallAmountViolation::class)
             ->withMessage(
                 $functionName . ' was expected to be called once'
@@ -169,14 +168,15 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledOnceThrowsCallAmountViolationWhenCalledMoreThanOnce(string $functionName): void
-    {
+    public function wasCalledOnceThrowsCallAmountViolationWhenCalledMoreThanOnce(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
-        expect(function() use ($function) { verify($function)->wasCalledOnce(); })
+        expect(fn() => verify($function)->wasCalledOnce())
             ->throws(CallAmountViolation::class)
             ->withMessage(
                 $functionName . ' was expected to be called once,'
@@ -186,10 +186,11 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtLeastReturnsTrueWhenCalledExactlyMinimumAmount(string $functionName): void
-    {
+    public function wasCalledAtLeastReturnsTrueWhenCalledExactlyMinimumAmount(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
@@ -198,10 +199,11 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtLeastReturnsTrueWhenCalledMoreThanMinimumAmount(string $functionName): void
-    {
+    public function wasCalledAtLeastReturnsTrueWhenCalledMoreThanMinimumAmount(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
@@ -211,13 +213,14 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtLeastThrowsCallAmountViolationWhenCalledLessThanMinimumAmount(string $functionName): void
-    {
+    public function wasCalledAtLeastThrowsCallAmountViolationWhenCalledLessThanMinimumAmount(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
-        expect(function() use ($function) { verify($function)->wasCalledAtLeast(2); })
+        expect(fn() => verify($function)->wasCalledAtLeast(2))
             ->throws(CallAmountViolation::class)
             ->withMessage(
                 $functionName . ' was expected to be called at least 2'
@@ -227,10 +230,11 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtLeastOnceReturnsTrueWhenCalledExactlyOnce(string $functionName): void
-    {
+    public function wasCalledAtLeastOnceReturnsTrueWhenCalledExactlyOnce(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         verify($function)->wasCalledAtLeastOnce();
@@ -238,10 +242,11 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtLeastOnceReturnsTrueWhenCalledMoreThanOnce(string $functionName): void
-    {
+    public function wasCalledAtLeastOnceReturnsTrueWhenCalledMoreThanOnce(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
@@ -250,12 +255,13 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtLeastOnceThrowsCallAmountViolationWhenCalledLessThanOnce(string $functionName): void
-    {
+    public function wasCalledAtLeastOnceThrowsCallAmountViolationWhenCalledLessThanOnce(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
-        expect(function() use ($function) { verify($function)->wasCalledAtLeastOnce(); })
+        expect(fn() => verify($function)->wasCalledAtLeastOnce())
             ->throws(CallAmountViolation::class)
             ->withMessage(
                 $functionName . ' was expected to be called at least'
@@ -265,10 +271,11 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtMostReturnsTrueWhenCalledExactlyMaximumAmount(string $functionName): void
-    {
+    public function wasCalledAtMostReturnsTrueWhenCalledExactlyMaximumAmount(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
@@ -277,10 +284,11 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtMostOnceReturnsTrueWhenCalledLessThanMaximumAmount(string $functionName): void
-    {
+    public function wasCalledAtMostOnceReturnsTrueWhenCalledLessThanMaximumAmount(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         verify($function)->wasCalledAtMost(2);
@@ -288,15 +296,16 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function wasCalledAtMostOnceThrowsCallAmountViolationWhenCalledMoreThanMaximumAmount(string $functionName): void
-    {
+    public function wasCalledAtMostOnceThrowsCallAmountViolationWhenCalledMoreThanMaximumAmount(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
         $function('world');
-        expect(function() use ($function) { verify($function)->wasCalledAtMost(2); })
+        expect(fn() => verify($function)->wasCalledAtMost(2))
             ->throws(CallAmountViolation::class)
             ->withMessage(
                 $functionName . ' was expected to be called at most'
@@ -306,12 +315,13 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function verifyArgumentsForMethodNotCalledThrowsMissingInvocation(string $functionName): void
-    {
+    public function verifyArgumentsForMethodNotCalledThrowsMissingInvocation(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
-        expect(function() use ($function) { verify($function)->receivedNothing(); })
+        expect(fn() => verify($function)->receivedNothing())
             ->throws(MissingInvocation::class)
             ->withMessage(
                 'Missing invocation #1 for ' . $functionName
@@ -321,30 +331,32 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation6(string $functionName): void
-    {
+    public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation6(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
-        expect(function()  use ($function) { verify($function)->receivedOn(2, 808); })
-          ->throws(MissingInvocation::class)
-          ->withMessage(
-              'Missing invocation #2 for ' . $functionName
-              . ', was only called once.'
-          );
+        expect(fn() => verify($function)->receivedOn(2, 808))
+            ->throws(MissingInvocation::class)
+            ->withMessage(
+                'Missing invocation #2 for ' . $functionName
+                . ', was only called once.'
+            );
     }
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation(string $functionName): void
-    {
+    public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
         $function('world');
-        expect(function()  use ($function) { verify($function)->receivedOn(3, 808); })
+        expect(fn() => verify($function)->receivedOn(3, 808))
             ->throws(MissingInvocation::class)
             ->withMessage(
                 'Missing invocation #3 for ' . $functionName
@@ -354,13 +366,14 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function verifyReceivedNothingThrowsArgumentMismatchWhenArgumentsReceived(string $functionName): void
-    {
+    public function verifyReceivedNothingThrowsArgumentMismatchWhenArgumentsReceived(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
-        expect(function() use ($function) { verify($function)->receivedNothing(); })
+        expect(fn() => verify($function)->receivedNothing())
             ->throws(ArgumentMismatch::class)
             ->withMessage(
                 'Argument count for invocation #1 of ' . $functionName
@@ -370,13 +383,14 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function verifyReceivedThrowsArgumentMismatchWhenLessArgumentsReceivedThanExpected(string $functionName): void
-    {
+    public function verifyReceivedThrowsArgumentMismatchWhenLessArgumentsReceivedThanExpected(
+        string $functionName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
-        expect(function() use ($function) { verify($function)->received('world', 808); })
+        expect(fn() => verify($function)->received('world', 808))
             ->throws(ArgumentMismatch::class)
             ->withMessage(
                 'Argument count for invocation #1 of ' . $functionName
@@ -386,14 +400,16 @@ class VerifyFunctionProxyTest extends TestCase
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
-    public function verifyReceivedPassesExceptionThrownByConstraint(string $functionName, string $parameterName): void
-    {
+    public function verifyReceivedPassesExceptionThrownByConstraint(
+        string $functionName,
+        string $parameterName
+    ): void {
         $function = NewCallable::of($functionName);
         $function('world');
-        expect(function() use ($function) { verify($function)->received(808); })
-            ->throws(\PHPUnit\Framework\AssertionFailedError::class)
+        expect(fn() => verify($function)->received(808))
+            ->throws(AssertionFailedError::class)
             ->withMessage(
                 'Failed asserting that \'world\' is equal to 808.
 Parameter ' . $parameterName . 'at position 0 for invocation #1 of ' . $functionName
@@ -403,7 +419,7 @@ Parameter ' . $parameterName . 'at position 0 for invocation #1 of ' . $function
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
     public function verifyWithPredicate(string $functionName): void
     {
@@ -414,14 +430,12 @@ Parameter ' . $parameterName . 'at position 0 for invocation #1 of ' . $function
 
     /**
      * @test
-     * @dataProvider  functionNames
+     * @dataProvider functionNames
      */
     public function verifyWithPhpUnitConstraint(string $functionName): void
     {
         $function = NewCallable::of($functionName);
         $function('world');
-        verify($function)->received(
-            new \PHPUnit\Framework\Constraint\IsEqual('world')
-        );
+        verify($function)->received(new IsEqual('world'));
     }
 }

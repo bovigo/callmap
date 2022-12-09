@@ -9,9 +9,12 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\AnotherTestHelperClass;
 use bovigo\callmap\helper\ClassWithUnionTypeHints;
+use Generator;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 use function bovigo\assert\{
     assertThat,
@@ -25,14 +28,14 @@ use function bovigo\callmap\verify;
  * Tests for method and functions which are declared with union type hints.
  *
  * @requires PHP >= 8
- * @since  6.2.0
- * @group  typehint
- * @group  union
+ * @since 6.2.0
+ * @group typehint
+ * @group union
  */
 class UnionTypeHintTest extends TestCase
 {
     /**
-     * @var  ClassWithUnionTypeHints&\bovigo\callmap\ClassProxy
+     * @var ClassWithUnionTypeHints&ClassProxy
      */
     private $proxy;
 
@@ -41,10 +44,7 @@ class UnionTypeHintTest extends TestCase
         $this->proxy = NewInstance::stub(ClassWithUnionTypeHints::class);
     }
 
-    /**
-     * @return \Generator<array<string|AnotherTestHelperClass>>
-     */
-    public static function acceptableParameters(): \Generator
+    public static function acceptableParameters(): Generator
     {
         yield ['string'];
         yield [new AnotherTestHelperClass()];
@@ -55,8 +55,9 @@ class UnionTypeHintTest extends TestCase
      * @dataProvider acceptableParameters
      * @param string|AnotherTestHelperClass $acceptable
      */
-    public function unionTypeHintedMethodParamReceivesProperValue($acceptable): void
-    {
+    public function unionTypeHintedMethodParamReceivesProperValue(
+        string|AnotherTestHelperClass $acceptable
+    ): void {
         $this->proxy->accept($acceptable);
         verify($this->proxy, 'accept')->received($acceptable);
     }
@@ -66,8 +67,8 @@ class UnionTypeHintTest extends TestCase
      */
     public function unionTypeHintedMethodParamThrowsTypeErrorWhenWrongTypeReceived(): void
     {
-        expect(function() { $this->proxy->accept(3.03); })
-             ->throws(\TypeError::class)
+        expect(fn() => $this->proxy->accept(3.03))
+             ->throws(TypeError::class)
              ->message(contains('Argument #1 ($something) must be of type bovigo\callmap\helper\AnotherTestHelperClass|string, float given'));
     }
 
@@ -135,15 +136,12 @@ class UnionTypeHintTest extends TestCase
     public function unionTypeHintedMethodThrowsTypeErrorWithInvalidReturnValue(): void
     {
         $this->proxy->returns(['doReturn' => 'something invalid']);
-        expect(function() { $this->proxy->doReturn(); })
-             ->throws(\TypeError::class)
+        expect(fn() => $this->proxy->doReturn())
+             ->throws(TypeError::class)
              ->message(contains('Return value must be of type int|float, string returned'));
     }
 
-    /**
-     * @return \Generator<array<mixed>>
-     */
-    public static function acceptableFunctionParameters(): \Generator
+    public static function acceptableFunctionParameters(): Generator
     {
         yield [[1, 2, 3]];
         yield ['strpos'];
@@ -153,19 +151,15 @@ class UnionTypeHintTest extends TestCase
     /**
      * @test
      * @dataProvider acceptableFunctionParameters
-     * @param string|ClassWithUnionTypeHints $acceptable
      */
-    public function unionTypeHintedFunctionParamReceivesProperValue($acceptable): void
+    public function unionTypeHintedFunctionParamReceivesProperValue(mixed $acceptable): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\exampleFunctionWithUnionTypeHints');
         $foo($acceptable);
         verify($foo)->received($acceptable);
     }
 
-    /**
-     * @return \Generator<array<mixed>>
-     */
-    public static function acceptableFunctionReturnValues(): \Generator
+    public static function acceptableFunctionReturnValues(): Generator
     {
         yield [false];
         yield ['example'];
@@ -175,9 +169,8 @@ class UnionTypeHintTest extends TestCase
     /**
      * @test
      * @dataProvider acceptableFunctionReturnValues
-     * @param false|string $acceptable
      */
-    public function unionTypeHintedFunctionReturnsProperValue($acceptable): void
+    public function unionTypeHintedFunctionReturnsProperValue(mixed $acceptable): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\exampleFunctionWithUnionTypeHints');
         $foo->returns($acceptable);

@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\ClassWithConstructor;
 use PHPUnit\Framework\TestCase;
 
@@ -21,17 +22,15 @@ use function bovigo\assert\predicate\isNull;
 class WithoutConstructorTest extends TestCase
 {
     /**
-     * @var  ClassWithConstructor&\bovigo\callmap\ClassProxy
+     * @var  ClassWithConstructor&ClassProxy
      */
     private $proxy;
 
-    /**
-     * set up test environment
-     */
     protected function setUp(): void
     {
         $this->proxy = NewInstance::stub(ClassWithConstructor::class);
     }
+
     /**
      * @test
      */
@@ -54,7 +53,7 @@ class WithoutConstructorTest extends TestCase
      */
     public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
-        $this->proxy->returns(['action' => function() { return 42; }]);
+        $this->proxy->returns(['action' => fn() => 42]);
         assertThat($this->proxy->action(), equals(42));
     }
 

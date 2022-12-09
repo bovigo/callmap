@@ -9,8 +9,11 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
 use bovigo\callmap\helper\OneMoreSelfDefined;
+use Countable;
 use PHPUnit\Framework\TestCase;
+use ReflectionObject;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
@@ -21,13 +24,13 @@ use function bovigo\assert\predicate\isNull;
 class InvocationResultsTest extends TestCase
 {
     /**
-     * @var  \ReflectionObject&\bovigo\callmap\ClassProxy
+     * @var ReflectionObject&ClassProxy
      */
     private $proxy;
 
     protected function setUp(): void
     {
-        $this->proxy = NewInstance::of(\ReflectionObject::class, [$this]);
+        $this->proxy = NewInstance::of(ReflectionObject::class, [$this]);
     }
 
     /**
@@ -45,7 +48,7 @@ class InvocationResultsTest extends TestCase
 
     /**
      * @test
-     * @since  0.6.0
+     * @since 0.6.0
      */
     public function mapToInvocationResultsWithCallableReturnsResultOfCallable(): void
     {
@@ -67,7 +70,7 @@ class InvocationResultsTest extends TestCase
 
     /**
      * @test
-     * @since  0.6.0
+     * @since 0.6.0
      */
     public function invocationResultIsNullForStubIfCalledMoreOftenThenResultsDefined(): void
     {
@@ -79,11 +82,11 @@ class InvocationResultsTest extends TestCase
 
     /**
      * @test
-     * @since  0.6.0
+     * @since 0.6.0
      */
     public function invocationResultIsNullForInterfaceIfCalledMoreOftenThenResultsDefined(): void
     {
-        $proxy = NewInstance::stub(\Countable::class);
+        $proxy = NewInstance::stub(Countable::class);
         $proxy->returns(['count' => onConsecutiveCalls(303)]);
         $proxy->count(); // 303
         assertThat($proxy->count(), isNull());

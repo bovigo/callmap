@@ -9,6 +9,8 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap;
+
+use ParseError;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
@@ -22,7 +24,7 @@ class NewCallableParseErrorTest extends TestCase
 {
     protected function setUp(): void
     {
-        NewCallable::$compile = function() { throw new \ParseError('failed to evaluate'); };
+        NewCallable::$compile = fn() => throw new ParseError('failed to evaluate');
     }
 
     protected function tearDown(): void
@@ -35,11 +37,11 @@ class NewCallableParseErrorTest extends TestCase
      */
     public function throwsProxyCreationFailureWhenEvalOfCreatedProxyClassFails(): void
     {
-        expect(function() { NewCallable::of('strlen'); })
-                ->throws(ProxyCreationFailure::class)
-                ->withMessage(
-                        'Failure while creating callable CallMap instance of '
-                        . 'strlen(): failed to evaluate'
-                );
+        expect(fn() => NewCallable::of('strlen'))
+            ->throws(ProxyCreationFailure::class)
+            ->withMessage(
+                'Failure while creating callable CallMap instance of '
+                . 'strlen(): failed to evaluate'
+            );
     }
 }
