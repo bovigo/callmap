@@ -3,14 +3,14 @@
     "description": "Allows to stub and mock method calls by applying a callmap.",
     "license": "BSD-3-Clause",
     "require": {
-        "php": "^7.3||^8.0",
-        "bovigo/assert": "^6.1"
+        "php": "^8.0",
+        "bovigo/assert": "^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.4",
+        "phpunit/phpunit": "^9.5",
         "xp-framework/core": "^11.2.0",
         "xp-framework/unittest": "^11.1 | ^10.1 | ^9.7.1",
-        "phpstan/phpstan": "^0.12.57"
+        "phpstan/phpstan": "^1.9"
     },
     "suggest": {
         "bovigo/assert": "To use argument verification",
@@ -31,7 +31,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.2.x-dev"
+            "dev-master": "7.0.x-dev"
         }
     },
     "minimum-stability": "dev",

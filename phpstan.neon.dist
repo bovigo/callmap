@@ -6,7 +6,7 @@ parameters:
   paths:
     - ./src/main/php
     - ./src/test/php
-  excludes_analyse:
+  excludePaths:
       # Those files contain explicit wrong doc comments for test purposes.
       - src/test/php/helper
   scanDirectories:
