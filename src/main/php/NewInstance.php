@@ -7,6 +7,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace bovigo\callmap;
+
+use ArrayIterator;
+use CallbackFilterIterator;
+use InvalidArgumentException;
+use Iterator;
+use ParseError;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionUnionType;
 /**
  * Allows to create new instances of given class or interface.
  */
@@ -15,9 +24,9 @@ class NewInstance
     /**
      * map of already evaluated classes
      *
-     * @var  array<class-string,\ReflectionClass>
+     * @var array<class-string,ReflectionClass>
      */
-    private static $classes = [];
+    private static array $classes = [];
 
     /**
      * returns a new instance of the given class or interface
@@ -28,12 +37,14 @@ class NewInstance
      *
      * @api
      * @template T of object
-     * @param   class-string<T>|T  $target           interface or class to create a new instance of
-     * @param   mixed[]            $constructorArgs  optional  list of arguments for the constructor
-     * @return  T&ClassProxy
+     * @param  class-string<T>|T $target          interface or class to create a new instance of
+     * @param  mixed[]           $constructorArgs optional  list of arguments for the constructor
+     * @return T&ClassProxy
      */
-    public static function of($target, array $constructorArgs = []): ClassProxy
-    {
+    public static function of(
+        string|object $target,
+        array $constructorArgs = []
+    ): ClassProxy {
         return self::callMapClass($target)->newInstanceArgs($constructorArgs);
     }
 
@@ -46,10 +57,10 @@ class NewInstance
      *
      * @api
      * @template T of object
-     * @param   class-string<T>|T  $target  interface or class to create a new instance of
-     * @return  T&ClassProxy
+     * @param  class-string<T>|T $target interface or class to create a new instance of
+     * @return T&ClassProxy
      */
-    public static function stub($target): ClassProxy
+    public static function stub(string|object $target): ClassProxy
     {
         $proxy = self::callMapClass($target)->newInstanceWithoutConstructor();
         $proxy->preventParentCalls();
@@ -65,7 +76,7 @@ class NewInstance
      * @return  class-string<T&ClassProxy>
      * @since   0.2.0
      */
-    public static function classname($target): string
+    public static function classname(string|object $target): string
     {
         return self::callMapClass($target)->getName();
     }
@@ -75,15 +86,15 @@ class NewInstance
      *
      * @template T of object
      * @param   class-string<T>|T  $target
-     * @return  \ReflectionClass<T&ClassProxy>
+     * @return  ReflectionClass<T&ClassProxy>
      */
-    private static function callMapClass($target): \ReflectionClass
+    private static function callMapClass(string|object $target): ReflectionClass
     {
         if (is_object($target)) {
             $target = \get_class($target);
         }
 
-        $class = new \ReflectionClass($target);
+        $class = new ReflectionClass($target);
         $className = $class->getName();
         if (!isset(self::$classes[$className])) {
             self::$classes[$className] = self::forkCallMapClass($class);
@@ -104,12 +115,13 @@ class NewInstance
      * creates a new class from the given class which uses the CallMap trait
      *
      * @template T of object
-     * @param   \ReflectionClass<T>  $class
-     * @return  \ReflectionClass<T&ClassProxy>
-     * @throws  ProxyCreationFailure
+     * @param  ReflectionClass<T> $class
+     * @return ReflectionClass<T&ClassProxy>
+     * @throws ProxyCreationFailure
      */
-    private static function forkCallMapClass(\ReflectionClass $class): \ReflectionClass
-    {
+    private static function forkCallMapClass(
+        ReflectionClass $class
+    ): ReflectionClass {
         if ($class->isTrait()) {
             $class = self::forkTrait($class);
         }
@@ -119,15 +131,15 @@ class NewInstance
             $compile(self::createCallmapProxyCode($class));
         } catch (\ParseError $pe) {
             throw new ProxyCreationFailure(
-                    'Failure while creating CallMap instance of '
-                    . $class->getName() . ': ' . $pe->getMessage(),
-                    $pe
+                'Failure while creating CallMap instance of '
+                . $class->getName() . ': ' . $pe->getMessage(),
+                $pe
             );
         }
 
         $classProxy = $class->getName() . 'CallMapProxy';
         /** @var class-string<T&ClassProxy> $classProxy */
-        return new \ReflectionClass($classProxy);
+        return new ReflectionClass($classProxy);
     }
 
     /**
@@ -135,34 +147,34 @@ class NewInstance
      * trait become callable as parent
      *
      * @template T of object
-     * @param   \ReflectionClass<T>  $class
-     * @return  \ReflectionClass<T>
+     * @param   ReflectionClass<T> $class
+     * @return  ReflectionClass<T>
      * @throws  ProxyCreationFailure
      */
-    private static function forkTrait(\ReflectionClass $class): \ReflectionClass
+    private static function forkTrait(ReflectionClass $class): ReflectionClass
     {
         $code = sprintf(
-                "abstract class %sCallMapFork {\n"
-                . "    use \%s;\n}",
-                $class->getShortName(),
-                $class->getName()
+            "abstract class %sCallMapFork {\n"
+            . "    use \%s;\n}",
+            $class->getShortName(),
+            $class->getName()
         );
         if ($class->inNamespace()) {
             $code = sprintf(
-                    "namespace %s {\n%s}\n",
-                    $class->getNamespaceName(),
-                    $code
+                "namespace %s {\n%s}\n",
+                $class->getNamespaceName(),
+                $code
             );
         }
 
         try {
             $compile = self::$compile;
             $compile($code);
-        } catch (\ParseError $pe) {
+        } catch (ParseError $pe) {
             throw new ProxyCreationFailure(
-                    'Failure while creating forked trait instance of '
-                    . $class->getName() . ': ' . $pe->getMessage(),
-                    $pe
+                'Failure while creating forked trait instance of '
+                . $class->getName() . ': ' . $pe->getMessage(),
+                $pe
             );
         }
 
@@ -175,26 +187,28 @@ class NewInstance
      * creates code for new class
      *
      * @template T of object
-     * @param   \ReflectionClass<T>  $class
-     * @return  string
+     * @param  ReflectionClass<T> $class
+     * @return string
+     * @throws InvalidArgumentException
      */
-    private static function createCallmapProxyCode(\ReflectionClass $class): string
-    {
+    private static function createCallmapProxyCode(
+        ReflectionClass $class
+    ): string {
         if ($class->isFinal()) {
-            throw new \InvalidArgumentException(
-                    'Can not create mapping proxy for final class '
-                    . $class->getName()
+            throw new InvalidArgumentException(
+                'Can not create mapping proxy for final class '
+                . $class->getName()
             );
         }
 
         $code = self::createClassDefinition($class)
-                . self::createMethods($class)
-                . "}\n";
+            . self::createMethods($class)
+            . "}\n";
         if ($class->inNamespace()) {
             return sprintf(
-                    "namespace %s {\n%s}\n",
-                    $class->getNamespaceName(),
-                    $code
+                "namespace %s {\n%s}\n",
+                $class->getNamespaceName(),
+                $code
             );
         }
 
@@ -205,18 +219,18 @@ class NewInstance
      * creates class definition for the proxy
      *
      * @template T of object
-     * @param   \ReflectionClass<T> $class
-     * @return  string
+     * @param  ReflectionClass<T> $class
+     * @return string
      */
-    private static function createClassDefinition(\ReflectionClass $class): string
+    private static function createClassDefinition(ReflectionClass $class): string
     {
         return sprintf(
-                "class %sCallMapProxy %s \\%s %s\bovigo\callmap\ClassProxy {\n"
-                . "    use \bovigo\callmap\ClassProxyMethodHandler;\n",
-                $class->getShortName(),
-                $class->isInterface() ? 'implements ' : 'extends ',
-                $class->getName(),
-                $class->isInterface() ? ',' : ' implements '
+            "class %sCallMapProxy %s \\%s %s\bovigo\callmap\ClassProxy {\n"
+            . "    use \bovigo\callmap\ClassProxyMethodHandler;\n",
+            $class->getShortName(),
+            $class->isInterface() ? 'implements ' : 'extends ',
+            $class->getName(),
+            $class->isInterface() ? ',' : ' implements '
         );
     }
 
@@ -224,10 +238,10 @@ class NewInstance
      * creates methods for the proxy
      *
      * @template T of object
-     * @param  \ReflectionClass<T>  $class
-     * @return  string
+     * @param  ReflectionClass<T>  $class
+     * @return string
      */
-    private static function createMethods(\ReflectionClass $class): string
+    private static function createMethods(ReflectionClass $class): string
     {
         $code    = '';
         $methods = [];
@@ -244,29 +258,29 @@ class NewInstance
             $param = paramsOf($method, $class);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
-                    "    %s function %s(%s)%s {\n"
-                  . "        %s\$this->handleMethodCall('%s', func_get_args(), %s);\n"
-                  . "    }\n",
-                    ($method->isPublic() ? 'public' : 'protected'),
-                    $method->getName(),
-                    $param['string'],
-                    $returnType,
-                    $return ? 'return ' : '',
-                    $method->getName(),
-                    self::shouldReturnSelf($class, $method) ? 'true' : 'false'
+                "    %s function %s(%s)%s {\n"
+                . "        %s\$this->handleMethodCall('%s', func_get_args(), %s);\n"
+                . "    }\n",
+                ($method->isPublic() ? 'public' : 'protected'),
+                $method->getName(),
+                $param['string'],
+                $returnType,
+                $return ? 'return ' : '',
+                $method->getName(),
+                self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
             $methods[] = "'" . $method->getName() . "' => '" . $method->getName() . "'";
             $params[$method->getName()] = $param['names'];
         }
         return $code . sprintf(
-                "\n    private \$_allowedMethods = [%s];\n",
-                join(', ', $methods)
+            "\n    private \$_allowedMethods = [%s];\n",
+            join(', ', $methods)
         ) . sprintf(
-                "\n    private \$_methodParams = %s;\n",
-                var_export($params, true)
+            "\n    private \$_methodParams = %s;\n",
+            var_export($params, true)
         ) . sprintf(
-                "\n    private \$_voidMethods = %s;\n",
-                var_export($voidMethods, true)
+            "\n    private \$_voidMethods = %s;\n",
+            var_export($voidMethods, true)
         );
     }
 
@@ -274,21 +288,19 @@ class NewInstance
      * returns applicable methods for given class
      *
      * @template T of object
-     * @param   \ReflectionClass<T>  $class
-     * @return  \Iterator<\ReflectionMethod>
+     * @param  ReflectionClass<T>  $class
+     * @return Iterator<ReflectionMethod>
      */
-    private static function methodsOf(\ReflectionClass $class): \Iterator
+    private static function methodsOf(ReflectionClass $class): Iterator
     {
-        return new \CallbackFilterIterator(
-                new \ArrayIterator($class->getMethods()),
-                function(\ReflectionMethod $method): bool
-                {
-                    return !$method->isPrivate()
-                            && !$method->isFinal()
-                            && !$method->isStatic()
-                            && !$method->isConstructor()
-                            && !$method->isDestructor();
-                }
+        return new CallbackFilterIterator(
+            new ArrayIterator($class->getMethods()),
+            fn(ReflectionMethod $method) =>
+                !$method->isPrivate()
+                && !$method->isFinal()
+                && !$method->isStatic()
+                && !$method->isConstructor()
+                && !$method->isDestructor()
         );
     }
 
@@ -296,12 +308,14 @@ class NewInstance
      * detects whether a method should return the instance or null
      *
      * @template T of object
-     * @param   \ReflectionClass<T> $class
-     * @param   \ReflectionMethod $method
-     * @return  bool
+     * @param  ReflectionClass<T> $class
+     * @param  ReflectionMethod   $method
+     * @return bool
      */
-    private static function shouldReturnSelf(\ReflectionClass $class, \ReflectionMethod $method): bool
-    {
+    private static function shouldReturnSelf(
+        ReflectionClass $class,
+        ReflectionMethod $method
+    ): bool {
         $returnType = self::detectReturnType($method);
         if (null === $returnType) {
             return false;
@@ -335,10 +349,10 @@ class NewInstance
      * does not yield a result the doc comment will be parsed for the return
      * annotation.
      *
-     * @param   \ReflectionMethod  $method
-     * @return  string|null
+     * @param  ReflectionMethod $method
+     * @return string|null
      */
-    private static function detectReturnType(\ReflectionMethod $method): ?string
+    private static function detectReturnType(ReflectionMethod $method): ?string
     {
         $returnType = $method->getReturnType();
         if (null !== $returnType) {
@@ -346,7 +360,7 @@ class NewInstance
                 return null;
             }
 
-            if ($returnType instanceof \ReflectionUnionType) {
+            if ($returnType instanceof ReflectionUnionType) {
                 return ': ' . (string) $returnType;
             }
 

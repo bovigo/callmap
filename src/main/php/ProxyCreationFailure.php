@@ -7,14 +7,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace bovigo\callmap;
+
+use Exception;
+use Throwable;
 /**
  * Exception when creation of proxy for a class fails.
  *
  * @since  3.0.0
  */
-class ProxyCreationFailure extends \Exception
+class ProxyCreationFailure extends Exception
 {
-    public function __construct(string $message, \Throwable $cause)
+    public function __construct(string $message, Throwable $cause)
     {
         parent::__construct($message, $cause->getCode(), $cause);
     }

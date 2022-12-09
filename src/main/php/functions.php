@@ -7,15 +7,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace bovigo\callmap {
+    use bovigo\callmap\verification\Verification;
+    use Closure;
+    use ReflectionClass;
+    use ReflectionFunctionAbstract;
+    use ReflectionMethod;
+    use ReflectionNamedType;
+    use ReflectionUnionType;
+    use Throwable;
+    use UnexpectedValueException;
+
     /**
      * creates a closure which throws the given exception when invoked
      *
      * @api
-     * @param   \Throwable  $e
-     * @return  \Closure
-     * @since   0.2.0
+     * @since 0.2.0
      */
-    function throws(\Throwable $e): \Closure
+    function throws(Throwable $e): Closure
     {
         return function() use ($e) { throw $e; };
     }
@@ -24,11 +32,9 @@ namespace bovigo\callmap {
      * wraps given callable into a closure so that the given callable is returned and not executed
      *
      * @api
-     * @param   callable  $callable
-     * @return  \Closure
-     * @since   0.6.0
+     * @since 0.6.0
      */
-    function wrap(callable $callable): \Closure
+    function wrap(callable $callable): Closure
     {
         return function() use ($callable) { return $callable; };
     }
@@ -37,11 +43,9 @@ namespace bovigo\callmap {
      * creates a list of invocation results
      *
      * @api
-     * @param   mixed  ...$values
-     * @return  \bovigo\callmap\InvocationResults
-     * @since   0.2.0
+     * @since 0.2.0
      */
-    function onConsecutiveCalls(...$values): InvocationResults
+    function onConsecutiveCalls(mixed ...$values): InvocationResults
     {
         return new InvocationResults($values);
     }
@@ -53,14 +57,11 @@ namespace bovigo\callmap {
      * function proxy. For a class proxy the parameter is required.
      *
      * @api
-     * @param   \bovigo\callmap\Proxy  $proxy   callmap to verify
-     * @param   string                 $method  optional  actual method to verify
-     * @return  \bovigo\callmap\verification\Verification
-     * @since   0.5.0
+     * @since 0.5.0
      */
-    function verify(Proxy $proxy, string $method = ''): \bovigo\callmap\verification\Verification
+    function verify(Proxy $proxy, string $method = ''): Verification
     {
-        return new \bovigo\callmap\verification\Verification($proxy->invocations($method));
+        return new Verification($proxy->invocations($method));
     }
 
     /**
@@ -68,18 +69,21 @@ namespace bovigo\callmap {
      *
      * @internal
      * @template T of object
-     * @param   \ReflectionFunctionAbstract  $function
-     * @param   \ReflectionClass<T>|null     $containingClass
-     * @return  string
+     * @param  ReflectionFunctionAbstract $function
+     * @param  ReflectionClass<T>|null    $containingClass
+     * @return string
+     * @throws UnexpectedValueException
      */
-    function determineReturnTypeOf(\ReflectionFunctionAbstract $function, \ReflectionClass $containingClass = null): string
-    {
+    function determineReturnTypeOf(
+        ReflectionFunctionAbstract $function,
+        ?ReflectionClass $containingClass = null
+    ): string {
         $returnType = $function->getReturnType();
         if (null === $returnType) {
             return '';
         }
 
-        if ($returnType instanceof \ReflectionUnionType) {
+        if ($returnType instanceof ReflectionUnionType) {
             return ': ' . resolveUnionTypes($returnType, $containingClass);
         }
 
@@ -89,11 +93,11 @@ namespace bovigo\callmap {
         }
 
         if ('self' == $returnType->getName()) {
-            if ($function instanceof \ReflectionMethod) {
+            if ($function instanceof ReflectionMethod) {
                 return ': ' . ($returnType->allowsNull() ? '?' : '') . '\\' . $function->getDeclaringClass()->getName();
             }
 
-            throw new \UnexpectedValueException('Function ' . $function->getName() . ' defines return type self but that is not possible.');
+            throw new UnexpectedValueException('Function ' . $function->getName() . ' defines return type self but that is not possible.');
         } elseif ('static' === $returnType->getName()) {
             return ': static';
         }
@@ -106,20 +110,22 @@ namespace bovigo\callmap {
      *
      * @internal
      * @template T of object
-     * @param   \ReflectionFunctionAbstract  $function
-     * @param   \ReflectionClass<T>|null     $containingClass
-     * @return  array<string,mixed>
+     * @param ReflectionFunctionAbstract $function
+     * @param ReflectionClass<T>|null    $containingClass
+     * @return array<string,mixed>
      */
-    function paramsOf(\ReflectionFunctionAbstract $function, \ReflectionClass $containingClass = null): array
-    {
+    function paramsOf(
+        ReflectionFunctionAbstract $function,
+        ?ReflectionClass $containingClass = null
+    ): array {
         $params = [];
         foreach ($function->getParameters() as $parameter) {
             /** @var \ReflectionParameter $parameter */
             $param = '';
             $paramType = $parameter->getType();
-            if (null !== $paramType && $paramType instanceof \ReflectionUnionType) {
+            if (null !== $paramType && $paramType instanceof ReflectionUnionType) {
                 $param .= resolveUnionTypes($paramType, $containingClass) . ' ';
-            } elseif ($paramType instanceof \ReflectionNamedType) {
+            } elseif ($paramType instanceof ReflectionNamedType) {
                 $param .= resolveType($paramType->getName(), $containingClass);
             }
 
@@ -152,12 +158,14 @@ namespace bovigo\callmap {
      * @internal
      * @since   6.2.0
      * @template T of object
-     * @param   \ReflectionUnionType      $unionType
-     * @param   \ReflectionClass<T>|null  $containingClass
-     * @return  string
+     * @param ReflectionUnionType     $unionType
+     * @param ReflectionClass<T>|null $containingClass
+     * @return string
      */
-    function resolveUnionTypes(\ReflectionUnionType $unionType, \ReflectionClass $containingClass = null): string
-    {
+    function resolveUnionTypes(
+        ReflectionUnionType $unionType,
+        ?ReflectionClass $containingClass = null
+    ): string {
         $types = [];
         foreach ($unionType->getTypes() as $type) {
             $type = $type->getName();
@@ -174,10 +182,10 @@ namespace bovigo\callmap {
      * @since   6.2.0
      * @template T of object
      * @param string $type
-     * @param \ReflectionClass<T>|null $containingClass
+     * @param ReflectionClass<T>|null $containingClass
      * @return string
      */
-    function resolveType(string $type, ?\ReflectionClass $containingClass): string
+    function resolveType(string $type, ?ReflectionClass $containingClass): string
     {
         if ('self' === $type && null !== $containingClass) {
             return '\\' . $containingClass->getName();
@@ -195,9 +203,7 @@ namespace bovigo\callmap {
      * mock it when testing dynamic code creation we wrap it into our own
      * function.
      *
-     * @param   string  $code
-     * @return  bool
-     * @since   3.0.0
+     * @since 3.0.0
      * @internal
      */
     function compile(string $code)

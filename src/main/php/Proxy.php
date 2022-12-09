@@ -15,11 +15,9 @@ interface Proxy
     /**
      * returns recorded invocations for given method
      *
-     * @internal  use verify($proxy, $method)->*() instead
-     * @param   string  $method
-     * @return  Invocations
-     * @throws  \InvalidArgumentException  in case the method does not exist or is not applicable
-     * @since   3.1.0
+     * @internal use verify($proxy, $method)->*() instead
+     * @throws \InvalidArgumentException in case the method does not exist or is not applicable
+     * @since  3.1.0
      */
     public function invocations(string $method): Invocations;
 }

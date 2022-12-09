@@ -15,21 +15,9 @@ namespace bovigo\callmap;
 class InvocationResults
 {
     /**
-     * list of invocation results
-     *
-     * @type  mixed[]
+     * @param mixed[] $results list of invocation results
      */
-    private $results;
-
-    /**
-     * constructor
-     *
-     * @param  mixed[]  $results  list of invocation results
-     */
-    public function __construct(array $results)
-    {
-        $this->results = $results;
-    }
+    public function __construct(private array $results) { }
 
     /**
      * checks whether a result for the invocation with the given number exists

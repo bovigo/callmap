@@ -15,28 +15,16 @@ namespace bovigo\callmap;
 class CallMap
 {
     /**
-     * map of method with results for their invocation
-     *
-     * @var  array<string,mixed>
-     */
-    private $callMap = [];
-
-    /**
      * constructor
      *
-     * @param  array<string,mixed>  $callMap  map of method with results for their invocation
+     * @param array<string,mixed> $callMap  map of method with results for their invocation
      */
-    public function __construct(array $callMap)
-    {
-        $this->callMap = $callMap;
-    }
+    public function __construct(private array $callMap) { }
 
     /**
      * checks whether callmap has any result
      *
-     * @since   5.1.0
-     * @param   string  $method  name of invoked method
-     * @return  bool
+     * @since 5.1.0
      */
     public function hasResult(string $method): bool
     {
@@ -45,10 +33,6 @@ class CallMap
 
     /**
      * checks whether callmap has a result for the invocation of method
-     *
-     * @param   string  $method           name of invoked method
-     * @param   int     $invocationCount  denotes which nth invocation of the method this is
-     * @return  bool
      */
     public function hasResultFor(string $method, int $invocationCount): bool
     {
@@ -66,13 +50,12 @@ class CallMap
     /**
      * returns the result for the method invocation done with given arguments
      *
-     * @param   string   $method           name of invoked method
-     * @param   mixed[]  $arguments        arguments passed for the method call
-     * @param   int      $invocationCount  denotes which nth invocation of the method this is
-     * @return  mixed
-     * @throws  \Exception
+     * @param  string  $method          name of invoked method
+     * @param  mixed[] $arguments       arguments passed for the method call
+     * @param  int     $invocationCount denotes which nth invocation of the method this is
+     * @return mixed
      */
-    public function resultFor(string $method, array $arguments, int $invocationCount)
+    public function resultFor(string $method, array $arguments, int $invocationCount): mixed
     {
         if (!isset($this->callMap[$method])) {
             return null;

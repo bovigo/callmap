@@ -16,34 +16,20 @@ namespace bovigo\callmap;
 class Invocations implements \Countable
 {
     /**
-     * @var  string
+     * @var array<array<mixed>>
      */
-    private $name;
-    /**
-     * @var  string[]
-     */
-    private $paramNames;
-    /**
-     * @var  array<array<mixed>>
-     */
-    private $callHistory = [];
+    private array $callHistory = [];
 
     /**
      * constructor
      *
-     * @param  string    $name        name of method or function the call history is recorded for
-     * @param  string[]  $paramNames  list of parameter names
+     * @param string   $name       name of method or function the call history is recorded for
+     * @param string[] $paramNames list of parameter names
      */
-    public function __construct(string $name, array $paramNames)
-    {
-        $this->name       = $name;
-        $this->paramNames = $paramNames;
-    }
+    public function __construct(private string $name, private array $paramNames) { }
 
     /**
      * returns name of method or function these invocations are from
-     *
-     * @return  string
      */
     public function name(): string
     {
@@ -53,8 +39,8 @@ class Invocations implements \Countable
     /**
      * records method/function call
      *
-     * @param   mixed[]   $arguments   list of passed arguments
-     * @return  int  amount of calls for given method
+     * @param  mixed[] $arguments list of passed arguments
+     * @return int amount of calls for given method
      */
     public function recordCall(array $arguments): int
     {
@@ -64,8 +50,6 @@ class Invocations implements \Countable
 
     /**
      * returns amount of calls received
-     *
-     * @return  int
      */
     public function count(): int
     {
@@ -78,9 +62,9 @@ class Invocations implements \Countable
      * Returns null if there is no argument at requested position or the name
      * of that argument is unknown.
      *
-     * @param   int     $argumentPosition
-     * @param   string  $suffix            optional  string to append after argument name
-     * @return  string|null
+     * @param  int    $argumentPosition
+     * @param  string $suffix optional string to append after argument name
+     * @return string|null
      */
     public function argumentName(int $argumentPosition, string $suffix = ''): ?string
     {
@@ -94,9 +78,7 @@ class Invocations implements \Countable
     /**
      * returns the arguments received for a specific invocation
      *
-     * @param   int     $invocation  nth invocation to check, defaults to 1 aka first invocation
-     * @return  mixed[]
-     * @throws  \bovigo\callmap\MissingInvocation  in case no such invocation was received
+     * @throws MissingInvocation in case no such invocation was received
      */
     public function argumentsOf(int $invocation = 1): array
     {
@@ -106,15 +88,15 @@ class Invocations implements \Countable
 
         $totalInvocations = $this->count();
         throw new MissingInvocation(sprintf(
-                'Missing invocation #%d for %s, was %s.',
-                $invocation,
-                $this->name,
-                ($totalInvocations === 0 ?
-                        'never called' :
-                        ('only called ' . ($totalInvocations === 1 ?
-                            'once' : $totalInvocations . ' times')
-                        )
+            'Missing invocation #%d for %s, was %s.',
+            $invocation,
+            $this->name,
+            ($totalInvocations === 0 ?
+                'never called' :
+                ('only called ' . ($totalInvocations === 1 ?
+                    'once' : $totalInvocations . ' times')
                 )
+            )
         ));
     }
 }
