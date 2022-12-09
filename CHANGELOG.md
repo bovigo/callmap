@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.0 (2022-??-??)
+
+* Raised minimum required PHP version to 8.0.0
+
 ## 6.2.1 (2020-12-18)
 
 * Replace `ReflectionParameter::getClass()` by `::getType()` (#22) PHP 8 deprecates the usage of ::getClass. So switch to an implementation using getType equal to the existing resolveUnionTypes function.
