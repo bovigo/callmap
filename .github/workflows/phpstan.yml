@@ -3,7 +3,7 @@ name: PHPStan
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
@@ -27,12 +27,12 @@ jobs:
 
     - name: Get Composer Cache Directory
       id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      run: echo "value=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Cache dependencies
       uses: actions/cache@v3.0.11
       with:
-        path: ${{ steps.composer-cache.outputs.dir }}
+        path: ${{ steps.composer-cache.outputs.value }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
 
