@@ -1893,16 +1893,16 @@
         },
         {
             "name": "xp-framework/unittest",
-            "version": "v11.3.2",
+            "version": "v11.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xp-framework/unittest.git",
-                "reference": "63fe5c8278031572d5bdf382eb01108efc12b81e"
+                "reference": "781e8a6d3584397c461aad087ed5632dcf32e274"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/unittest/zipball/63fe5c8278031572d5bdf382eb01108efc12b81e",
-                "reference": "63fe5c8278031572d5bdf382eb01108efc12b81e",
+                "url": "https://api.github.com/repos/xp-framework/unittest/zipball/781e8a6d3584397c461aad087ed5632dcf32e274",
+                "reference": "781e8a6d3584397c461aad087ed5632dcf32e274",
                 "shasum": ""
             },
             "require": {
@@ -1930,9 +1930,9 @@
             ],
             "support": {
                 "issues": "https://github.com/xp-framework/unittest/issues",
-                "source": "https://github.com/xp-framework/unittest/tree/v11.3.2"
+                "source": "https://github.com/xp-framework/unittest/tree/v11.4.0"
             },
-            "time": "2021-10-21T11:58:15+00:00"
+            "time": "2022-12-20T10:24:57+00:00"
         }
     ],
     "aliases": [],
