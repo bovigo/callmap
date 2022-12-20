@@ -11,6 +11,7 @@ namespace bovigo\callmap {
     use Closure;
     use ReflectionClass;
     use ReflectionFunctionAbstract;
+    use ReflectionIntersectionType;
     use ReflectionMethod;
     use ReflectionNamedType;
     use ReflectionUnionType;
@@ -83,8 +84,11 @@ namespace bovigo\callmap {
             return '';
         }
 
-        if ($returnType instanceof ReflectionUnionType) {
-            return ': ' . resolveUnionTypes($returnType, $containingClass);
+        if (
+            $returnType instanceof ReflectionUnionType
+            || $returnType instanceof ReflectionIntersectionType
+        ) {
+            return ': ' . resolveCombinedTypes($returnType, $containingClass);
         }
 
         /** @var \ReflectionNamedType $returnType */
@@ -123,8 +127,12 @@ namespace bovigo\callmap {
             /** @var \ReflectionParameter $parameter */
             $param = '';
             $paramType = $parameter->getType();
-            if (null !== $paramType && $paramType instanceof ReflectionUnionType) {
-                $param .= resolveUnionTypes($paramType, $containingClass) . ' ';
+            if (
+                null !== $paramType
+                && ($paramType instanceof ReflectionUnionType
+                || $paramType instanceof ReflectionIntersectionType)
+            ) {
+                $param .= resolveCombinedTypes($paramType, $containingClass) . ' ';
             } elseif ($paramType instanceof ReflectionNamedType) {
                 $param .= resolveType($paramType->getName(), $containingClass);
             }
@@ -162,8 +170,8 @@ namespace bovigo\callmap {
      * @param ReflectionClass<T>|null $containingClass
      * @return string
      */
-    function resolveUnionTypes(
-        ReflectionUnionType $unionType,
+    function resolveCombinedTypes(
+        ReflectionUnionType|ReflectionIntersectionType $unionType,
         ?ReflectionClass $containingClass = null
     ): string {
         $types = [];
@@ -172,7 +180,10 @@ namespace bovigo\callmap {
             $types[] = resolveType($type, $containingClass);
         }
 
-        return join('|', $types);
+        return join(
+            $unionType instanceof ReflectionUnionType ? '|' : '&',
+            $types
+        );
     }
 
     /**

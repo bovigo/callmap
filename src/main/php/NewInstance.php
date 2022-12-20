@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use Iterator;
 use ParseError;
 use ReflectionClass;
+use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionUnionType;
 /**
@@ -360,7 +361,10 @@ class NewInstance
                 return null;
             }
 
-            if ($returnType instanceof ReflectionUnionType) {
+            if (
+                $returnType instanceof ReflectionUnionType
+                || $returnType instanceof ReflectionIntersectionType
+            ) {
                 return ': ' . (string) $returnType;
             }
 
