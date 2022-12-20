@@ -4,6 +4,7 @@
 
 * Raised minimum required PHP version to 8.0.0
 * Added support for intersection types
+* Added support for combined union and intersection types
 
 ## 6.2.1 (2020-12-18)
 

@@ -161,12 +161,12 @@ namespace bovigo\callmap {
     }
 
     /**
-     * Resolves union types so that any generade code is compatible signature wise.
+     * Resolves union and intersection types so that any generaded code is compatible signature wise.
      *
      * @internal
      * @since   6.2.0
      * @template T of object
-     * @param ReflectionUnionType     $unionType
+     * @param ReflectionUnionType|ReflectionIntersectionType $unionType
      * @param ReflectionClass<T>|null $containingClass
      * @return string
      */
@@ -176,8 +176,12 @@ namespace bovigo\callmap {
     ): string {
         $types = [];
         foreach ($unionType->getTypes() as $type) {
-            $type = $type->getName();
-            $types[] = resolveType($type, $containingClass);
+            if ($type instanceof ReflectionNamedType) {
+                $type = $type->getName();
+                $types[] = resolveType($type, $containingClass);
+            } else {
+                $types[] = '(' . resolveCombinedTypes($type, $containingClass) . ')';
+            }
         }
 
         return join(
