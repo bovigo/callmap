@@ -117,7 +117,6 @@ class IntersectionTypeHintTest extends TestCase
      */
     public function intersectionReturnTypeHintedMethodThrowsTypeErrorOnWrongReturn(): void
     {
-
         $foo = NewCallable::of('bovigo\callmap\helper\exampleFunctionWithIntersectionTypeHints');
         $foo->returns(3.03);
 
