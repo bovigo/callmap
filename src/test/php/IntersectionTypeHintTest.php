@@ -10,7 +10,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
-use bovigo\callmap\helper\{A, B, ClassWithIntersectionTypeHints};
+use bovigo\callmap\helper\ClassWithIntersectionTypeHints;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
