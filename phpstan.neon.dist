@@ -5,7 +5,6 @@ parameters:
   level: max
   paths:
     - ./src/main/php
-    - ./src/test/php
   excludePaths:
       # Those files contain explicit wrong doc comments for test purposes.
       - src/test/php/helper
@@ -16,36 +15,5 @@ parameters:
     -
           message: '#Call to protected method evaluateWithPhpUnit\(\) of class bovigo\\callmap\\verification\\Verification#'
           path: src/test/php/VerificationWithPhpUnitTest.php
-    -
-          message: '#Call to protected method evaluateWithXpFrameworkCore\(\) of class bovigo\\callmap\\verification\\Verification#'
-          path: src/test/php/VerificationWithXpFrameworkCoreTest.php
-    # Explicit tests
-    -
-          message: '#Unable to resolve the template type T in call to method static method bovigo\\callmap\\NewInstance::of\(\)#'
-          path: src/test/php/NewInstanceTest.php
-    -
-          message: '#static method bovigo\\callmap\\NewInstance<mixed>::of\(\) expects class-string<object>|object, int given#'
-          path: src/test/php/NewInstanceTest.php
-    -
-          message: '#static method bovigo\\callmap\\NewInstance<mixed>::of\(\) expects class-string<DoesNotExist>|DoesNotExist, string given#'
-          path: src/test/php/NewInstanceTest.php
-    -
-          message: '#something of method bovigo\\callmap\\helper\\ClassWithUnionTypeHints::accept\(\) expects bovigo\\callmap\\helper\\AnotherTestHelperClass\|string, float given#'
-          path: src/test/php/UnionTypeHintTest.php
-    # PHPStan doesn't understand dot notation for fully qualified class names from XP Framework
-    -
-          message: '#message of class unittest\\AssertionFailedError constructor expects string, unittest\\ComparisonFailedMessage given.#'
-          path: src/main/php/verification/Verification.php
-    # There's no way to specify an array of instances of \ReflectionClass but each instance reflecting another class?
-    -
-          message: '#Property bovigo\\callmap\\NewInstance::\$classes with generic class ReflectionClass does not specify its types: T#'
-          path: src/main/php/NewInstance.php
-    # PHPStan has problems resolving null?
-    -
-          message: '#Unable to resolve the template type T in call to function bovigo\\callmap\\paramsOf#'
-          path: src/main/php/NewCallable.php
-    -
-          message: '#Unable to resolve the template type T in call to function bovigo\\callmap\\determineReturnTypeOf#'
-          path: src/main/php/NewCallable.php
 
     
