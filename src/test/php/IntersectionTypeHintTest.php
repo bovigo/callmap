@@ -66,7 +66,7 @@ class IntersectionTypeHintTest extends TestCase
     {
         $this->proxy->returns(['doReturn' => $this->proxy]);
 
-        $this->assertSame($this->proxy, $this->proxy->doReturn());
+        assertThat($this->proxy->doReturn(), isSameAs($this->proxy));
     }
 
     /**
