@@ -16,7 +16,7 @@ jobs:
       matrix:
         php-versions: ['8.0', '8.1', '8.2', '8.3']
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        dependencies: ['install', 'update --prefer-lowest', 'update']
+        dependencies: ['install', 'update']
 
     steps:
     - name: Configure git
