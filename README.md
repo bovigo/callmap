@@ -16,18 +16,18 @@ To install it as a development dependency of your package use the following
 command:
 
 ```sh
-composer require --dev bovigo/callmap ^6.0
+composer require --dev bovigo/callmap ^7.0
 ```
 
 To install it as a runtime dependency for your package use the following command:
 
 ```sh
-composer require bovigo/callmap ^6.0
+composer require bovigo/callmap ^7.0
 ```
 
 ## Requirements
 
-_bovigo/callmap_ requires at least PHP 7.3. For PHP 8 the minimum version of _bovigo/callmap_ is 6.2.
+_bovigo/callmap_ requires at least PHP 8.0.
 
 For argument verification one of the following packages is required:
 
