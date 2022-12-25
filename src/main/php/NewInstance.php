@@ -226,12 +226,12 @@ class NewInstance
     private static function createClassDefinition(ReflectionClass $class): string
     {
         return sprintf(
-            "class %sCallMapProxy %s \\%s %s\bovigo\callmap\ClassProxy {\n"
+            "class %sCallMapProxy %s \\%s%s\bovigo\callmap\ClassProxy {\n"
             . "    use \bovigo\callmap\ClassProxyMethodHandler;\n",
             $class->getShortName(),
             $class->isInterface() ? 'implements ' : 'extends ',
             $class->getName(),
-            $class->isInterface() ? ',' : ' implements '
+            $class->isInterface() ? ', ' : ' implements '
         );
     }
 
