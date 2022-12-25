@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bovigo/assert",
-            "version": "dev-master",
+            "version": "v7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/assert.git",
-                "reference": "e4fe5b4e950a79e9be60f59998415450f77aebc7"
+                "reference": "40039a3fa7c73a1eab6d1fbc130910772ea3f230"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/assert/zipball/e4fe5b4e950a79e9be60f59998415450f77aebc7",
-                "reference": "e4fe5b4e950a79e9be60f59998415450f77aebc7",
+                "url": "https://api.github.com/repos/bovigo/assert/zipball/40039a3fa7c73a1eab6d1fbc130910772ea3f230",
+                "reference": "40039a3fa7c73a1eab6d1fbc130910772ea3f230",
                 "shasum": ""
             },
             "require": {
@@ -30,11 +30,10 @@
                 "phpstan/phpstan": "^1.9",
                 "phpunit/phpunit": "^9.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "7.0.x-dev"
+                    "dev-main": "7.0.x-dev"
                 }
             },
             "autoload": {
@@ -53,9 +52,9 @@
             "description": "Provides assertions for unit tests.",
             "support": {
                 "issues": "https://github.com/bovigo/assert/issues",
-                "source": "https://github.com/bovigo/assert/tree/master"
+                "source": "https://github.com/bovigo/assert/tree/v7.0.0"
             },
-            "time": "2022-12-08T23:14:50+00:00"
+            "time": "2022-12-25T13:29:55+00:00"
         },
         {
             "name": "sebastian/comparator",
