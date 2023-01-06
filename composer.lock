@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bovigo/assert",
-            "version": "v7.0.0",
+            "version": "v7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/assert.git",
-                "reference": "40039a3fa7c73a1eab6d1fbc130910772ea3f230"
+                "reference": "9765afcab69abc660918a791d94310bfee3eaf13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/assert/zipball/40039a3fa7c73a1eab6d1fbc130910772ea3f230",
-                "reference": "40039a3fa7c73a1eab6d1fbc130910772ea3f230",
+                "url": "https://api.github.com/repos/bovigo/assert/zipball/9765afcab69abc660918a791d94310bfee3eaf13",
+                "reference": "9765afcab69abc660918a791d94310bfee3eaf13",
                 "shasum": ""
             },
             "require": {
@@ -52,9 +52,9 @@
             "description": "Provides assertions for unit tests.",
             "support": {
                 "issues": "https://github.com/bovigo/assert/issues",
-                "source": "https://github.com/bovigo/assert/tree/v7.0.0"
+                "source": "https://github.com/bovigo/assert/tree/v7.0.1"
             },
-            "time": "2022-12-25T13:29:55+00:00"
+            "time": "2022-12-26T20:03:31+00:00"
         },
         {
             "name": "sebastian/comparator",
