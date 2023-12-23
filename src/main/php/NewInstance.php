@@ -259,7 +259,8 @@ class NewInstance
             $param = paramsOf($method, $class);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
-                "    %s function %s(%s)%s {\n"
+                "    #[\Override]"
+                . "    %s function %s(%s)%s {\n"
                 . "        %s\$this->handleMethodCall('%s', func_get_args(), %s);\n"
                 . "    }\n",
                 ($method->isPublic() ? 'public' : 'protected'),
