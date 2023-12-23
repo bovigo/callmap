@@ -32,8 +32,7 @@ use function bovigo\callmap\verify;
 #[Group('intersection')]
 class IntersectionTypeHintTest extends TestCase
 {
-    /** @var ClassWithIntersectionTypeHints&ClassProxy */
-    private $proxy;
+    private ClassWithIntersectionTypeHints&ClassProxy $proxy;
 
     protected function setUp(): void
     {

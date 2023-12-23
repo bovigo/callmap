@@ -22,10 +22,7 @@ use function bovigo\assert\predicate\isNull;
  */
 class InternalInterfaceTest extends TestCase
 {
-    /**
-     * @var Countable&ClassProxy
-     */
-    private $proxy;
+    private Countable&ClassProxy $proxy;
 
     protected function setUp(): void
     {

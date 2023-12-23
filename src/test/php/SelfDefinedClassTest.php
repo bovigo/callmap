@@ -22,10 +22,7 @@ use function bovigo\assert\predicate\isInstanceOf;
  */
 class SelfDefinedClassTest extends TestCase
 {
-    /**
-     * @var  SelfDefined&ClassProxy
-     */
-    private $proxy;
+    private SelfDefined&ClassProxy $proxy;
 
     protected function setUp(): void
     {

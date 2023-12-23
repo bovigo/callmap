@@ -39,8 +39,7 @@ use function bovigo\callmap\verify;
 #[Group('union')]
 class IntersectionWithUnionTypeHintTest extends TestCase
 {
-    /** @var ClassWithIntersectionAndUnionTypeHints&ClassProxy */
-    private $proxy;
+    private ClassWithIntersectionAndUnionTypeHints&ClassProxy $proxy;
 
     protected function setUp(): void
     {

@@ -21,10 +21,7 @@ use function bovigo\assert\predicate\equals;
  */
 class InternalClassTest extends TestCase
 {
-    /**
-     * @var ReflectionObject&ClassProxy
-     */
-    private $proxy;
+    private ReflectionObject&ClassProxy $proxy;
 
     protected function setUp(): void
     {

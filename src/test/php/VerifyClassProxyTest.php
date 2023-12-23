@@ -32,10 +32,7 @@ use function bovigo\assert\predicate\equals;
 #[Group('verify')]
 class VerifyClassProxyTest extends TestCase
 {
-    /**
-     * @var Verified&ClassProxy
-     */
-    private $proxy;
+    private Verified&ClassProxy $proxy;
 
     protected function setUp(): void
     {

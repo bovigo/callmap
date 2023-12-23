@@ -31,10 +31,7 @@ use function bovigo\callmap\verify;
 #[Group('mixed')]
 class MixedTypeHintTest extends TestCase
 {
-    /**
-     * @var  ClassWithMixedTypeHints&\bovigo\callmap\ClassProxy
-     */
-    private $proxy;
+    private ClassWithMixedTypeHints&ClassProxy $proxy;
 
     protected function setUp(): void
     {

@@ -24,10 +24,7 @@ use function bovigo\assert\predicate\isNull;
  */
 class AbstractMethodTest extends TestCase
 {
-    /**
-     * @var Instrument&ClassProxy
-     */
-    private $proxy;
+    private Instrument&ClassProxy $proxy;
 
     protected function setUp(): void
     {

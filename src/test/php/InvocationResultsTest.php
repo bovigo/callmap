@@ -24,10 +24,7 @@ use function bovigo\assert\predicate\isNull;
  */
 class InvocationResultsTest extends TestCase
 {
-    /**
-     * @var ReflectionObject&ClassProxy
-     */
-    private $proxy;
+    private ReflectionObject&ClassProxy $proxy;
 
     protected function setUp(): void
     {

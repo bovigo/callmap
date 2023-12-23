@@ -22,10 +22,7 @@ use function bovigo\assert\predicate\isNull;
  */
 class WithoutConstructorTest extends TestCase
 {
-    /**
-     * @var  ClassWithConstructor&ClassProxy
-     */
-    private $proxy;
+    private ClassWithConstructor&ClassProxy $proxy;
 
     protected function setUp(): void
     {

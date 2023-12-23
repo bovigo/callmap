@@ -36,10 +36,7 @@ use function bovigo\callmap\verify;
 #[Group('union')]
 class UnionTypeHintTest extends TestCase
 {
-    /**
-     * @var ClassWithUnionTypeHints&ClassProxy
-     */
-    private $proxy;
+    private ClassWithUnionTypeHints&ClassProxy $proxy;
 
     protected function setUp(): void
     {
