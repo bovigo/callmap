@@ -82,7 +82,7 @@ class NewCallableTest extends TestCase
         );
     }
 
-    public function functionNames(): Generator
+    public static function functionNames(): Generator
     {
         yield ['strtoupper', 'WORLD'];
         yield ['bovigo\callmap\helper\greet', 'Hello world'];

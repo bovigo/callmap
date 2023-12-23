@@ -58,7 +58,7 @@ class AbstractMethodTest extends TestCase
         assertThat($this->proxy->play(808), equals('foo'));
     }
 
-    public function arguments(): Generator
+    public static function arguments(): Generator
     {
         yield [null, 'blubber'];
         yield [808, 'ba-dummz!'];

@@ -57,7 +57,7 @@ class VerifyFunctionProxyTest extends TestCase
         );
     }
 
-    public function functionNames(): Generator
+    public static function functionNames(): Generator
     {
         yield ['strlen', '$string '];
         yield ['bovigo\callmap\helper\say', '$whom '];
