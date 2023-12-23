@@ -35,7 +35,7 @@ use function bovigo\callmap\verify;
  * @group intersection
  * @group union
  */
-class ClassWithIntersectionAndUnionTypeHintsTest extends TestCase
+class IntersectionWithUnionTypeHintTest extends TestCase
 {
     /** @var ClassWithIntersectionAndUnionTypeHints&ClassProxy */
     private $proxy;
@@ -45,7 +45,7 @@ class ClassWithIntersectionAndUnionTypeHintsTest extends TestCase
         $this->proxy = NewInstance::stub(ClassWithIntersectionAndUnionTypeHints::class);
     }
 
-    public function acceptableValues(): Generator
+    public static function acceptableValues(): Generator
     {
         yield [null];
         yield [new ClassWithIntersectionTypeHints()];
