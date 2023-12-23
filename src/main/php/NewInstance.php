@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use ArrayIterator;
+use bovigo\callmap\internal\Parameters;
 use CallbackFilterIterator;
 use InvalidArgumentException;
 use Iterator;
@@ -256,7 +257,7 @@ class NewInstance
                 $return = false;
             }
 
-            $param = paramsOf($method, $class);
+            $methodParams = Parameters::of($method, $class);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
                 "    #[\Override]"
@@ -265,14 +266,14 @@ class NewInstance
                 . "    }\n",
                 ($method->isPublic() ? 'public' : 'protected'),
                 $method->getName(),
-                $param['string'],
+                $methodParams->code(),
                 $returnType,
                 $return ? 'return ' : '',
                 $method->getName(),
                 self::shouldReturnSelf($class, $method) ? 'true' : 'false'
             );
             $methods[] = "'" . $method->getName() . "' => '" . $method->getName() . "'";
-            $params[$method->getName()] = $param['names'];
+            $params[$method->getName()] = $methodParams->names();
         }
         return $code . sprintf(
             "\n    private \$_allowedMethods = [%s];\n",

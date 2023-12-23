@@ -8,6 +8,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use bovigo\callmap\internal\Parameters;
 use ParseError;
 use ReflectionClass;
 use ReflectionFunction;
@@ -117,7 +118,7 @@ class NewCallable
      */
     private static function createProxyCode(ReflectionFunction $function): string
     {
-        $param = paramsOf($function);
+        $parameters = Parameters::of($function);
         $return = true;
         $returnType = determineReturnTypeOf($function);
         if (in_array($returnType, [': void', ': never'])) {
@@ -133,8 +134,8 @@ class NewCallable
             . "    protected bool \$returnVoid = %s;"
             . "}\n",
             ucfirst($function->getShortName()),
-            var_export($param['names'], true),
-            $param['string'],
+            var_export($parameters->names(), true),
+            $parameters->code(),
             $returnType,
             $return ? 'return ' : '',
             $return ? 'false' : 'true'

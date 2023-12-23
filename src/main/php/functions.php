@@ -114,57 +114,6 @@ namespace bovigo\callmap {
     }
 
     /**
-     * returns correct representation of parameters for given method
-     *
-     * @internal
-     * @template T of object
-     * @param ReflectionFunctionAbstract $function
-     * @param ReflectionClass<T>|null    $containingClass
-     * @return array<string,mixed>
-     */
-    function paramsOf(
-        ReflectionFunctionAbstract $function,
-        ?ReflectionClass $containingClass = null
-    ): array {
-        $params = [];
-        foreach ($function->getParameters() as $parameter) {
-            /** @var \ReflectionParameter $parameter */
-            $param = '';
-            $paramType = $parameter->getType();
-            if (
-                null !== $paramType
-                && ($paramType instanceof ReflectionUnionType
-                || $paramType instanceof ReflectionIntersectionType)
-            ) {
-                $param .= resolveCombinedTypes($paramType, $containingClass) . ' ';
-            } elseif ($paramType instanceof ReflectionNamedType) {
-                $param .= resolveType($paramType->getName(), $containingClass);
-            }
-
-            if ($parameter->isPassedByReference()) {
-                $param .= '&';
-            }
-
-            if ($parameter->isVariadic()) {
-                $param .= '...';
-            }
-
-            $param .= '$' . $parameter->getName();
-            if (!$parameter->isVariadic() && $parameter->isOptional()) {
-                if ($function->isInternal() || $parameter->allowsNull()) {
-                    $param .= ' = null';
-                } else {
-                    $param .= ' = ' . var_export($parameter->getDefaultValue(), true);
-                }
-            }
-
-            $params[$parameter->getName()] = $param;
-        }
-
-        return ['names' => array_keys($params), 'string' => join(', ', $params)];
-    }
-
-    /**
      * Resolves union and intersection types so that any generaded code is compatible signature wise.
      *
      * @internal

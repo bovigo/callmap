@@ -9,6 +9,9 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
 
+/**
+ * @internal
+ */
 class ReturnType
 {
     public function __construct(private string $typeName) { }
