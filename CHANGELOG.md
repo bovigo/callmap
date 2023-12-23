@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.0.0 (202?-??-??)
+
+* Raised minimum required PHP version to 8.2
+* Added support for return type never
+
 ## 7.0.0 (2022-12-25)
 
 * Raised minimum required PHP version to 8.0
