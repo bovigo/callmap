@@ -47,7 +47,6 @@ class Verification
         if (null === $property && class_exists('\PHPUnit\Framework\Assert')) {
             $assertClass = new ReflectionClass(\PHPUnit\Framework\Assert::class);
             $property = $assertClass->getProperty('count');
-            $property->setAccessible(true);
         }
 
         if (null !== $property) {
