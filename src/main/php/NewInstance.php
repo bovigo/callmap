@@ -16,6 +16,7 @@ use ParseError;
 use ReflectionClass;
 use ReflectionIntersectionType;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionUnionType;
 /**
  * Allows to create new instances of given class or interface.
@@ -358,19 +359,7 @@ class NewInstance
     {
         $returnType = $method->getReturnType();
         if (null !== $returnType) {
-            if ($returnType->allowsNull()) {
-                return null;
-            }
-
-            if (
-                $returnType instanceof ReflectionUnionType
-                || $returnType instanceof ReflectionIntersectionType
-            ) {
-                return ': ' . (string) $returnType;
-            }
-
-            /** @var \ReflectionNamedType $returnType */
-            return $returnType->getName();
+            return self::detectReturnTypeFromDeclaration($returnType);
         }
 
         $docComment = $method->getDocComment();
@@ -378,6 +367,28 @@ class NewInstance
             return null;
         }
 
+        return self::detectReturnTypeFromDocComment($docComment);
+    }
+
+    private static function detectReturnTypeFromDeclaration(
+        ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType $returnType
+    ): ?string {
+        if ($returnType->allowsNull()) {
+            return null;
+        }
+
+        if (
+            $returnType instanceof ReflectionUnionType
+            || $returnType instanceof ReflectionIntersectionType
+        ) {
+            return ': ' . (string) $returnType;
+        }
+
+        return $returnType->getName();
+    }
+
+    private static function detectReturnTypeFromDocComment(string $docComment): ?string
+    {
         $returnPart = strstr($docComment, '@return');
         if (false === $returnPart) {
             return null;
