@@ -14,10 +14,9 @@ use InvalidArgumentException;
 use Iterator;
 use ParseError;
 use ReflectionClass;
-use ReflectionIntersectionType;
 use ReflectionMethod;
-use ReflectionNamedType;
-use ReflectionUnionType;
+use Traversable;
+
 /**
  * Allows to create new instances of given class or interface.
  */
@@ -319,23 +318,23 @@ class NewInstance
         ReflectionClass $class,
         ReflectionMethod $method
     ): bool {
-        $returnType = self::detectReturnType($method);
+        $returnType = ReturnType::detect($method);
         if (null === $returnType) {
             return false;
         }
 
-        if (in_array($returnType, ['$this', 'self', 'static', $class->getName(), $class->getShortName()])) {
+        if ($returnType->isSelf() || $returnType->represents($class)) {
             return true;
         }
 
         foreach ($class->getInterfaces() as $interface) {
-            if ($interface->getName() !== 'Traversable' && ($interface->getName() === $returnType || $interface->getShortName() === $returnType)) {
+            if ($interface->getName() !== Traversable::class && $returnType->represents($interface)) {
                 return true;
             }
         }
 
         while ($parent = $class->getParentClass()) {
-            if ($parent->getName() === $returnType || $parent->getShortName() === $returnType) {
+            if ($returnType->represents($parent)) {
                 return true;
             }
 
@@ -343,63 +342,5 @@ class NewInstance
         }
 
         return false;
-    }
-
-    /**
-     * detects return type of method
-     *
-     * It will make use of reflection to detect the return type. In case this
-     * does not yield a result the doc comment will be parsed for the return
-     * annotation.
-     *
-     * @param  ReflectionMethod $method
-     * @return string|null
-     */
-    private static function detectReturnType(ReflectionMethod $method): ?string
-    {
-        $returnType = $method->getReturnType();
-        if (null !== $returnType) {
-            return self::detectReturnTypeFromDeclaration($returnType);
-        }
-
-        $docComment = $method->getDocComment();
-        if (false === $docComment) {
-            return null;
-        }
-
-        return self::detectReturnTypeFromDocComment($docComment);
-    }
-
-    private static function detectReturnTypeFromDeclaration(
-        ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType $returnType
-    ): ?string {
-        if ($returnType->allowsNull()) {
-            return null;
-        }
-
-        if (
-            $returnType instanceof ReflectionUnionType
-            || $returnType instanceof ReflectionIntersectionType
-        ) {
-            return ': ' . (string) $returnType;
-        }
-
-        return $returnType->getName();
-    }
-
-    private static function detectReturnTypeFromDocComment(string $docComment): ?string
-    {
-        $returnPart = strstr($docComment, '@return');
-        if (false === $returnPart) {
-            return null;
-        }
-
-        $returnParts = explode(' ', trim(str_replace('@return', '', $returnPart)));
-        $returnType  = ltrim(trim($returnParts[0]), '\\');
-        if (empty($returnType) || strpos($returnType, '*') !== false) {
-            return null;
-        }
-
-        return $returnType;
     }
 }
