@@ -251,7 +251,7 @@ class NewInstance
         foreach (self::methodsOf($class) as $method) {
             $return = true;
             $returnType = determineReturnTypeOf($method, $class);
-            if ($returnType === ': void') {
+            if (in_array($returnType, [': void', ': never'])) {
                 $voidMethods[$method->getName()] = $method->getName();
                 $return = false;
             }

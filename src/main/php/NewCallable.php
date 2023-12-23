@@ -120,7 +120,7 @@ class NewCallable
         $param = paramsOf($function);
         $return = true;
         $returnType = determineReturnTypeOf($function);
-        if ($returnType === ': void') {
+        if (in_array($returnType, [': void', ': never'])) {
             $return = false;
         }
 
