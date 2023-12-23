@@ -15,6 +15,9 @@ use \bovigo\callmap\verification\CallAmountViolation;
 use \bovigo\callmap\verification\Verification;
 use Generator;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\TestCase;
 
@@ -26,8 +29,8 @@ use function bovigo\callmap\helper\say;
  * Test for bovigo\callmap\verify() with function proxy.
  *
  * @since 3.1.0
- * @group verify
  */
+#[Group('verify')]
 class VerifyFunctionProxyTest extends TestCase
 {
     public static function verificationMethods(): Generator
@@ -42,10 +45,10 @@ class VerifyFunctionProxyTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider verificationMethods
      * @since 6.1.0
      */
+    #[Test]
+    #[DataProvider('verificationMethods')]
     public function assertionCounterIsIncreased(callable $execute): void
     {
         $countBeforeAssertion = \PHPUnit\Framework\Assert::getCount();
@@ -63,20 +66,16 @@ class VerifyFunctionProxyTest extends TestCase
         yield ['bovigo\callmap\helper\say', '$whom '];
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasNeverCalledReturnsTrueWhenNeverCalled(string $functionName): void
     {
         $function = NewCallable::of($functionName);
         verify($function)->wasNeverCalled();
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasNeverCalledThrowsCallAmountViolationWhenFunctionWasCalled(string $functionName): void
     {
         $function = NewCallable::of($functionName);
@@ -89,10 +88,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledReturnsTrueWhenCalledExactlyWithGivenAmount(
         string $functionName
     ): void {
@@ -102,10 +99,8 @@ class VerifyFunctionProxyTest extends TestCase
         verify($function)->wasCalled(2);
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledThrowsCallAmountViolationWhenCalledTooSeldom(
         string $functionName
     ): void {
@@ -119,10 +114,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledThrowsCallAmountViolationWhenCalledTooOften(
         string $functionName
     ): void {
@@ -138,10 +131,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledOnceReturnsTrueWhenCalledExactlyOnce(
         string $functionName
     ): void {
@@ -150,10 +141,8 @@ class VerifyFunctionProxyTest extends TestCase
         verify($function)->wasCalledOnce();
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledOnceThrowsCallAmountViolationWhenCalledLessThanOnce(
         string $functionName
     ): void {
@@ -166,10 +155,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledOnceThrowsCallAmountViolationWhenCalledMoreThanOnce(
         string $functionName
     ): void {
@@ -184,10 +171,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtLeastReturnsTrueWhenCalledExactlyMinimumAmount(
         string $functionName
     ): void {
@@ -197,10 +182,8 @@ class VerifyFunctionProxyTest extends TestCase
         verify($function)->wasCalledAtLeast(2);
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtLeastReturnsTrueWhenCalledMoreThanMinimumAmount(
         string $functionName
     ): void {
@@ -211,10 +194,8 @@ class VerifyFunctionProxyTest extends TestCase
         verify($function)->wasCalledAtLeast(2);
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtLeastThrowsCallAmountViolationWhenCalledLessThanMinimumAmount(
         string $functionName
     ): void {
@@ -228,10 +209,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtLeastOnceReturnsTrueWhenCalledExactlyOnce(
         string $functionName
     ): void {
@@ -240,10 +219,8 @@ class VerifyFunctionProxyTest extends TestCase
         verify($function)->wasCalledAtLeastOnce();
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtLeastOnceReturnsTrueWhenCalledMoreThanOnce(
         string $functionName
     ): void {
@@ -253,10 +230,8 @@ class VerifyFunctionProxyTest extends TestCase
         verify($function)->wasCalledAtLeastOnce();
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtLeastOnceThrowsCallAmountViolationWhenCalledLessThanOnce(
         string $functionName
     ): void {
@@ -269,10 +244,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtMostReturnsTrueWhenCalledExactlyMaximumAmount(
         string $functionName
     ): void {
@@ -282,10 +255,8 @@ class VerifyFunctionProxyTest extends TestCase
         verify($function)->wasCalledAtMost(2);
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtMostOnceReturnsTrueWhenCalledLessThanMaximumAmount(
         string $functionName
     ): void {
@@ -294,10 +265,8 @@ class VerifyFunctionProxyTest extends TestCase
         verify($function)->wasCalledAtMost(2);
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function wasCalledAtMostOnceThrowsCallAmountViolationWhenCalledMoreThanMaximumAmount(
         string $functionName
     ): void {
@@ -313,10 +282,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function verifyArgumentsForMethodNotCalledThrowsMissingInvocation(
         string $functionName
     ): void {
@@ -329,10 +296,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation6(
         string $functionName
     ): void {
@@ -346,10 +311,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation(
         string $functionName
     ): void {
@@ -364,10 +327,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function verifyReceivedNothingThrowsArgumentMismatchWhenArgumentsReceived(
         string $functionName
     ): void {
@@ -381,10 +342,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function verifyReceivedThrowsArgumentMismatchWhenLessArgumentsReceivedThanExpected(
         string $functionName
     ): void {
@@ -398,10 +357,8 @@ class VerifyFunctionProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function verifyReceivedPassesExceptionThrownByConstraint(
         string $functionName,
         string $parameterName
@@ -417,10 +374,8 @@ Parameter ' . $parameterName . 'at position 0 for invocation #1 of ' . $function
             );
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function verifyWithPredicate(string $functionName): void
     {
         $function = NewCallable::of($functionName);
@@ -428,10 +383,8 @@ Parameter ' . $parameterName . 'at position 0 for invocation #1 of ' . $function
         verify($function)->received(equals('world'));
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function verifyWithPhpUnitConstraint(string $functionName): void
     {
         $function = NewCallable::of($functionName);

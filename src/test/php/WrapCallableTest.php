@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 
@@ -22,9 +23,7 @@ use function bovigo\assert\predicate\isSameAs;
  */
 class WrapCallableTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function wrappedCallableIsReturned(): void
     {
         $callable = function() {};
@@ -33,9 +32,7 @@ class WrapCallableTest extends TestCase
         assertThat($proxy->getName(), isSameAs($callable));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wrappedCallableIsReturnedFromInvocationResults(): void
     {
         $callable = function() {};

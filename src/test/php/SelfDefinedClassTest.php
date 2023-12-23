@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use bovigo\callmap\helper\SelfDefined;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -31,9 +32,7 @@ class SelfDefinedClassTest extends TestCase
         $this->proxy = NewInstance::of(new SelfDefined());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callsOriginalMethodIfNoMappingProvided(): void
     {
         assertThat(
@@ -42,9 +41,7 @@ class SelfDefinedClassTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => 'foo']);
@@ -54,9 +51,7 @@ class SelfDefinedClassTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => function() { return 'foo'; }]);
@@ -66,17 +61,13 @@ class SelfDefinedClassTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'action')->wasNeverCalled();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->action(new SelfDefined(), function() {});
@@ -84,9 +75,7 @@ class SelfDefinedClassTest extends TestCase
         verify($this->proxy, 'action')->wasCalled(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsListOfReceivedArgumentsIfMethodCalled(): void
     {
         $arg1 = new SelfDefined();

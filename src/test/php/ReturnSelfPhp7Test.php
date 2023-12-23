@@ -13,6 +13,8 @@ namespace bovigo\callmap;
 use bovigo\callmap\helper\Extended7;
 use bovigo\callmap\helper\Bar7;
 use bovigo\callmap\helper\OneMoreThing7;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertNull;
@@ -36,108 +38,84 @@ class ReturnSelfPhp7Test extends TestCase
         $this->proxy = NewInstance::stub(Extended7::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsThis(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->yo()));
     }
 
     /**
-     * @test
-     * @group optional_return_value
      * @since 5.0.2
      */
+    #[Test]
+    #[Group('optional_return_value')]
     public function returnsNullIfMethodCallNotMappedWhenReturnTypeIsOptional(): void
     {
         assertNull($this->proxy->actionOptional());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassName(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->action()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassNameWithoutLeadingBackslash(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->moreAction()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsNonFullyQualifiedClassName(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->minorAction()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsImplementedInterface(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->foo()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsInterfaceImplementedByParentClass(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->wow()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsParentClass(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->aha()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsSelf(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->baz()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotReturnSelfWhenReturnTypeHintIsTraversableEvenWhenInTypeHierarchy(): void
     {
         assertThat($this->proxy->getIterator(), isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotReturnSelfWhenReturnTypeHintIsNotInTypeHierarchy(): void
     {
         assertThat($this->proxy->other(), isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfForInterfacesWhenCreatedWithInstanceOfAndAccordingReturnType(): void
     {
         $proxy = NewInstance::of(OneMoreThing7::class);
         assertThat($proxy, isSameAs($proxy->wow()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotReturnSelfWhenReturnTypeHintEmpty(): void
     {
         assertThat(NewInstance::of(Bar7::class)->foo(), isNull());

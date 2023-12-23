@@ -16,6 +16,9 @@ use bovigo\callmap\verification\Verification;
 use bovigo\callmap\helper\Verified;
 use Generator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -25,8 +28,8 @@ use function bovigo\assert\predicate\equals;
  * Test for bovigo\callmap\verify() with class proxy.
  *
  * @since 0.5.0
- * @group verify
  */
+#[Group('verify')]
 class VerifyClassProxyTest extends TestCase
 {
     /**
@@ -51,10 +54,10 @@ class VerifyClassProxyTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider verificationMethods
      * @since 6.1.0
      */
+    #[Test]
+    #[DataProvider('verificationMethods')]
     public function assertionCounterIsIncreased(callable $execute): void
     {
         if (!class_exists('\PHPUnit\Framework\Assert')) {
@@ -70,9 +73,9 @@ class VerifyClassProxyTest extends TestCase
     }
 
     /**
-     * @test
      * @since 3.1.0
      */
+    #[Test]
     public function verifyWithoutMethodNameThrowsInvalidArgumentException(): void
     {
         expect(fn() => verify($this->proxy))
@@ -80,17 +83,13 @@ class VerifyClassProxyTest extends TestCase
             ->withMessage('Please provide a method name to retrieve invocations for.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasNeverCalledReturnsTrueWhenNeverCalled(): void
     {
         verify($this->proxy, 'aMethod')->wasNeverCalled();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasNeverCalledThrowsCallAmountViolationWhenMethodWasCalled(): void
     {
         $this->proxy->aMethod();
@@ -102,9 +101,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledReturnsTrueWhenCalledExactlyWithGivenAmount(): void
     {
         $this->proxy->aMethod();
@@ -112,9 +109,7 @@ class VerifyClassProxyTest extends TestCase
         verify($this->proxy, 'aMethod')->wasCalled(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledThrowsCallAmountViolationWhenCalledTooSeldom(): void
     {
         $this->proxy->aMethod();
@@ -126,9 +121,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledThrowsCallAmountViolationWhenCalledTooOften(): void
     {
         $this->proxy->aMethod();
@@ -142,18 +135,14 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledOnceReturnsTrueWhenCalledExactlyOnce(): void
     {
         $this->proxy->aMethod();
         verify($this->proxy, 'aMethod')->wasCalledOnce();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledOnceThrowsCallAmountViolationWhenCalledLessThanOnce(): void
     {
         expect(fn() => verify($this->proxy, 'aMethod')->wasCalledOnce())
@@ -164,9 +153,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledOnceThrowsCallAmountViolationWhenCalledMoreThanOnce(): void
     {
         $this->proxy->aMethod();
@@ -179,9 +166,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtLeastReturnsTrueWhenCalledExactlyMinimumAmount(): void
     {
         $this->proxy->aMethod();
@@ -189,9 +174,7 @@ class VerifyClassProxyTest extends TestCase
         verify($this->proxy, 'aMethod')->wasCalledAtLeast(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtLeastReturnsTrueWhenCalledMoreThanMinimumAmount(): void
     {
         $this->proxy->aMethod();
@@ -200,9 +183,7 @@ class VerifyClassProxyTest extends TestCase
         verify($this->proxy, 'aMethod')->wasCalledAtLeast(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtLeastThrowsCallAmountViolationWhenCalledLessThanMinimumAmount(): void
     {
         $this->proxy->aMethod();
@@ -214,18 +195,14 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtLeastOnceReturnsTrueWhenCalledExactlyOnce(): void
     {
         $this->proxy->aMethod();
         verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtLeastOnceReturnsTrueWhenCalledMoreThanOnce(): void
     {
         $this->proxy->aMethod();
@@ -233,9 +210,7 @@ class VerifyClassProxyTest extends TestCase
         verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtLeastOnceThrowsCallAmountViolationWhenCalledLessThanOnce(): void
     {
         expect(fn() => verify($this->proxy, 'aMethod')->wasCalledAtLeastOnce())
@@ -246,9 +221,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtMostReturnsTrueWhenCalledExactlyMaximumAmount(): void
     {
         $this->proxy->aMethod();
@@ -256,18 +229,14 @@ class VerifyClassProxyTest extends TestCase
         verify($this->proxy, 'aMethod')->wasCalledAtMost(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtMostOnceReturnsTrueWhenCalledLessThanMaximumAmount(): void
     {
         $this->proxy->aMethod();
         verify($this->proxy, 'aMethod')->wasCalledAtMost(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wasCalledAtMostOnceThrowsCallAmountViolationWhenCalledMoreThanMaximumAmount(): void
     {
         $this->proxy->aMethod();
@@ -281,9 +250,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyArgumentsForMethodNotCalledThrowsMissingInvocation(): void
     {
         expect(fn() => verify($this->proxy, 'aMethod')->receivedNothing())
@@ -294,9 +261,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation6(): void
     {
         $this->proxy->aMethod(808);
@@ -308,9 +273,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyArgumentsForMethodNotCalledThatManyTimesThrowsMissingInvocation(): void
     {
         $this->proxy->aMethod(808);
@@ -323,9 +286,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyReceivedNothingThrowsArgumentMismatchWhenArgumentsReceived(): void
     {
         $this->proxy->aMethod(808);
@@ -337,9 +298,7 @@ class VerifyClassProxyTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifyReceivedThrowsArgumentMismatchWhenLessArgumentsReceivedThanExpected(): void
     {
         $this->proxy->aMethod();
@@ -352,9 +311,9 @@ class VerifyClassProxyTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.6.0
      */
+    #[Test]
     public function verifyReceivedPassesExceptionThrownByConstraint(): void
     {
         $this->proxy->aMethod(303);
@@ -368,9 +327,9 @@ Parameter $roland at position 0 for invocation #1 of ' . Verified::class . '::aM
     }
 
     /**
-     * @test
      * @since 2.0.0
      */
+    #[Test]
     public function verifyWithPredicate(): void
     {
         $this->proxy->aMethod(303);
@@ -378,9 +337,9 @@ Parameter $roland at position 0 for invocation #1 of ' . Verified::class . '::aM
     }
 
     /**
-     * @test
      * @since 3.0.0
      */
+    #[Test]
     public function verifyWithPhpUnitConstraint(): void
     {
         $this->proxy->aMethod(303);
@@ -389,9 +348,9 @@ Parameter $roland at position 0 for invocation #1 of ' . Verified::class . '::aM
     }
 
     /**
-     * @test
      * @since 3.0.0
      */
+    #[Test]
     public function canVerifyArgumentsForNonMappedMethod(): void
     {
         $this->proxy->returns(['aMethod' => 'hello']);

@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 
@@ -30,26 +31,20 @@ class InternalClassTest extends TestCase
         $this->proxy = NewInstance::of(ReflectionObject::class, [$this]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callsOriginalMethodIfNoMappingProvided(): void
     {
         assertThat($this->proxy->getName(), equals(__CLASS__));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['getName' => 'foo']);
         assertThat($this->proxy->getName(), equals('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['getName' => function() { return 'foo'; }]);
@@ -57,9 +52,9 @@ class InternalClassTest extends TestCase
     }
 
     /**
-     * @test
      * @since  0.4.0
      */
+    #[Test]
     public function mapToCallableReturnsCallableReturnValueOnMethodCall(): void
     {
         // doesn't make much sense with ReflectionObject, but too lazy create
@@ -68,17 +63,13 @@ class InternalClassTest extends TestCase
         assertThat($this->proxy->getStaticPropertyValue('foo'), equals('FOO'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'getNamespaceName')->wasNeverCalled();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsAmountOfCallsToMethod(): void
     {
         $_ = $this->proxy->getName();
@@ -88,18 +79,14 @@ class InternalClassTest extends TestCase
         verify($this->proxy, 'getShortName')->wasCalledOnce();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canVerifyReceivedArguments(): void
     {
         $this->proxy->implementsInterface(Proxy::class);
         verify($this->proxy, 'implementsInterface')->received(Proxy::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canVerifyReceivedArgumentsOfSpecificInvocation(): void
     {
         $this->proxy->hasProperty('foo');

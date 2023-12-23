@@ -12,6 +12,7 @@ namespace bovigo\callmap;
 
 use bovigo\callmap\helper\OneMoreSelfDefined;
 use Countable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 
@@ -33,9 +34,7 @@ class InvocationResultsTest extends TestCase
         $this->proxy = NewInstance::of(ReflectionObject::class, [$this]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToInvocationResultsReturnsResultOnMethodCall(): void
     {
         $this->proxy->returns(
@@ -47,9 +46,9 @@ class InvocationResultsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.6.0
      */
+    #[Test]
     public function mapToInvocationResultsWithCallableReturnsResultOfCallable(): void
     {
         $this->proxy->returns([
@@ -58,9 +57,7 @@ class InvocationResultsTest extends TestCase
         assertThat($this->proxy->getName(), equals('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invocationResultIsResultOfOriginalMethodIfCalledMoreOftenThenResultsDefined(): void
     {
         $this->proxy->returns(['getName' => onConsecutiveCalls('foo')]);
@@ -69,9 +66,9 @@ class InvocationResultsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.6.0
      */
+    #[Test]
     public function invocationResultIsNullForStubIfCalledMoreOftenThenResultsDefined(): void
     {
         $proxy = NewInstance::stub(OneMoreSelfDefined::class);
@@ -81,9 +78,9 @@ class InvocationResultsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.6.0
      */
+    #[Test]
     public function invocationResultIsNullForInterfaceIfCalledMoreOftenThenResultsDefined(): void
     {
         $proxy = NewInstance::stub(Countable::class);

@@ -9,6 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap\helper;
+
+use Exception;
+
 /**
  * Helper function for the test.
  */
@@ -50,6 +53,13 @@ function withOptionalReturnValue(): ?Fump
 function returnsVoid(): void
 {
     // intentionally empty
+}
+/**
+ * Helper function for the test.
+ */
+function returnsNever(): never
+{
+    throw new Exception('exception so this function never returns');
 }
 /**
  * Helper function for the test.

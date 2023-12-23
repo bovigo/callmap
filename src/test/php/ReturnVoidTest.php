@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use bovigo\callmap\helper\SomeClassWithMethodReturningVoid;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
@@ -18,13 +20,11 @@ use function bovigo\assert\expect;
  * Tests for functions which are declared with return type void.
  *
  * @since 4.0.1
- * @group void
  */
+#[Group('void')]
 class ReturnVoidTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function voidRequiresNoReturnForMethods(): void
     {
         expect(fn() =>
@@ -32,9 +32,7 @@ class ReturnVoidTest extends TestCase
         )->doesNotThrow();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function voidRequiresNoReturnForFunctions(): void
     {
         expect(fn() =>
@@ -42,9 +40,7 @@ class ReturnVoidTest extends TestCase
         )->doesNotThrow();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapVoidMethodFails(): void
     {
         expect(fn() =>
@@ -53,12 +49,14 @@ class ReturnVoidTest extends TestCase
             ])
         )
             ->throws(\InvalidArgumentException::class)
-            ->withMessage('Trying to map method ' . SomeClassWithMethodReturningVoid::class . '::returnNothing(), but it is declared as returning void.');
+            ->withMessage(
+                'Trying to map method '
+                . SomeClassWithMethodReturningVoid::class
+                . '::returnNothing(), but it is declared as returning void.'
+            );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapVoidFunctionFails(): void
     {
         expect(fn() =>

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use \bovigo\callmap\verification\Verification;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use unittest\AssertionFailedError;
 
@@ -24,10 +25,7 @@ use function bovigo\assert\predicate\contains;
   */
 class VerificationWithXpFrameworkCoreTest extends TestCase
 {
-    /**
-     * @var  Verification
-     */
-    private $xpFrameworkCoreVerification;
+    private Verification $xpFrameworkCoreVerification;
 
     protected function setUp(): void
     {
@@ -47,9 +45,7 @@ class VerificationWithXpFrameworkCoreTest extends TestCase
         };
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsTrueWhenBothValueAreEqual(): void
     {
         assertTrue(
@@ -61,9 +57,7 @@ class VerificationWithXpFrameworkCoreTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsAssertionFailedErrorWhenWhenBothValueAreNotEqual(): void
     {
         expect(fn() =>

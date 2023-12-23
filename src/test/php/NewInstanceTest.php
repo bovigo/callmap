@@ -15,6 +15,8 @@ use bovigo\callmap\helper\Extended7;
 use bovigo\callmap\helper\ReturnTypeHints;
 use bovigo\callmap\helper\ThisIsNotPossible;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
 use ReflectionObject;
@@ -34,9 +36,7 @@ use function bovigo\assert\{
  */
 class NewInstanceTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function callWithNonExistingClassNameThrowsReflectionException(): void
     {
         expect(fn() => NewInstance::of('DoesNotExist'))
@@ -45,9 +45,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.4.0
      */
+    #[Test]
     public function canNotCreateInstanceOfFinalClass(): void
     {
         expect(fn() => NewInstance::of(ThisIsNotPossible::class))
@@ -56,9 +56,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.4.0
      */
+    #[Test]
     public function canNotCreateStubInstanceOfFinalClass(): void
     {
         expect(fn() => NewInstance::stub(ThisIsNotPossible::class))
@@ -67,9 +67,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.4.0
      */
+    #[Test]
     public function canNotRetrieveMappedClassnameForFinalClass(): void
     {
         expect(fn() => NewInstance::classname(ThisIsNotPossible::class))
@@ -78,9 +78,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.2.0
      */
+    #[Test]
     public function doesNotGenerateClassTwice(): void
     {
         assertThat(
@@ -90,9 +90,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.2.0
      */
+    #[Test]
     public function doesCreateIndependentInstances(): void
     {
         assertThat(
@@ -102,9 +102,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.2.0
      */
+    #[Test]
     public function doesCreateIndependentStubs(): void
     {
         assertThat(
@@ -114,9 +114,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.4.0
      */
+    #[Test]
     public function mapNonExistingMethodThrowsInvalidArgumentException(): void
     {
         expect(fn() =>
@@ -128,9 +128,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.4.0
      */
+    #[Test]
     public function mapExistingMethodWithTypoThrowsInvalidArgumentException(): void
     {
         expect(fn() =>
@@ -142,9 +142,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.4.0
      */
+    #[Test]
     public function mapNonApplicableMethodThrowsInvalidArgumentException(): void
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
@@ -158,9 +158,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.5.0
      */
+    #[Test]
     public function retrieveInvocationsForNonExistingMethodThrowsInvalidArgumentException(): void
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
@@ -174,9 +174,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.5.0
      */
+    #[Test]
     public function retrieveInvocationsForExistingMethodWithTypoThrowsInvalidArgumentException(): void
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
@@ -190,9 +190,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 0.5.0
      */
+    #[Test]
     public function retrieveInvocationsForNonApplicableMethodThrowsInvalidArgumentException(): void
     {
         $proxy = NewInstance::of(AnotherTestHelperClass::class);
@@ -206,9 +206,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 2.0.0
      */
+    #[Test]
     public function canCreateInstanceFromClassWithPhp7ReturnTypeHintOnMethod(): void
     {
         assertThat(
@@ -218,9 +218,9 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
      * @since 2.0.1
      */
+    #[Test]
     public function mapReturnValueToNullShouldNotCallOriginalMethod(): void
     {
         $instance = NewInstance::of(AnotherTestHelperClass::class)
@@ -229,30 +229,30 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
-     * @group optional_return_value
      * @since 5.0.2
      */
+    #[Test]
+    #[Group('optional_return_value')]
     public function canWorkWithOptionalReturnTypehints(): void
     {
         assertNull(NewInstance::of(ReturnTypeHints::class)->fump());
     }
 
     /**
-     * @test
-     * @group optional_return_value
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('optional_return_value')]
     public function canWorkWithOptionalBuiltinReturnTypehints(): void
     {
         assertNull(NewInstance::of(ReturnTypeHints::class)->someString());
     }
 
     /**
-     * @test
-     * @group void_return
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('void_return')]
     public function canWorkWithVoidReturnTypehints(): void
     {
         expect(fn() => NewInstance::of(ReturnTypeHints::class)->returnsVoid())
@@ -260,11 +260,11 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
-     * @group void_return
-     * @group stub
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('void_return')]
+    #[Group('stub')]
     public function voidMethodCanBeStubbed(): void
     {
         $i = NewInstance::of(Extended7::class)->stub('noAction');
@@ -273,10 +273,10 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
-     * @group stub
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('stub')]
     public function methodsWithOptionalReturnValueCanBeStubbed(): void
     {
         $i = NewInstance::of(Extended7::class)->stub('noAction', 'actionOptional');
@@ -285,10 +285,10 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
-     * @group stub
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('stub')]
     public function methodsWithSelfReturnValueCanBeStubbed(): void
     {
         $i = NewInstance::of(Extended7::class)->stub('action');
@@ -297,10 +297,10 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
-     * @group stub
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('stub')]
     public function stubNonExistingMethodThrowsInvalidArgumentException(): void
     {
         expect(fn() => NewInstance::of(Extended7::class)->stub('doesNotExist'))
@@ -313,10 +313,10 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
-     * @group stub
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('stub')]
     public function stubNonApplicableMethodThrowsInvalidArgumentException(): void
     {
         expect(fn() => NewInstance::of(AnotherTestHelperClass::class)->stub('doNotTouchThis'))
@@ -329,10 +329,10 @@ class NewInstanceTest extends TestCase
     }
 
     /**
-     * @test
-     * @group stub
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('stub')]
     public function stubMethodWhichWasAlreadyMappedThrowsInvalidArgumentException(): void
     {
         expect(fn() => 

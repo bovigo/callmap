@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use bovigo\callmap\helper\ClassWithConstructor;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -31,43 +32,33 @@ class WithoutConstructorTest extends TestCase
         $this->proxy = NewInstance::stub(ClassWithConstructor::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfMethodCallNotMapped(): void
     {
         assertThat($this->proxy->action(), isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => 3]);
         assertThat($this->proxy->action(), equals(3));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => fn() => 42]);
         assertThat($this->proxy->action(), equals(42));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'action')->wasNeverCalled();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->action();
@@ -75,9 +66,7 @@ class WithoutConstructorTest extends TestCase
         verify($this->proxy, 'action')->wasCalled(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsListOfReceivedArgumentsIfMethodCalled(): void
     {
         $this->proxy->otherAction(303);

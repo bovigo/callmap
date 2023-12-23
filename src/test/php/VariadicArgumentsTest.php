@@ -13,38 +13,33 @@ namespace bovigo\callmap;
 use bovigo\callmap\helper\Variadic1;
 use bovigo\callmap\helper\VariadicReference;
 use bovigo\callmap\helper\VariadicTypeHint;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
 /**
  * Tests for bovigo\callmap\NewInstance regarding variadic arguments.
- *
- * @group variadic
- * @group issue_9
  */
+#[Group('variadic')]
+#[Group('issue_9')]
 class VariadicArgumentsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateProxyForTypeWithVariadicArguments(): void
     {
         expect(fn() => NewInstance::of(Variadic1::class))
             ->doesNotThrow(\ReflectionException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateProxyForTypeWithVariadicReference(): void
     {
         expect(fn() => NewInstance::of(VariadicReference::class))
             ->doesNotThrow(\ReflectionException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateProxyForTypeWithVariadicTypehint(): void
     {
         expect(fn() => NewInstance::of(VariadicTypeHint::class))

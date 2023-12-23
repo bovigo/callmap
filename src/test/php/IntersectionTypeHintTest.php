@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use bovigo\callmap\helper\ClassWithIntersectionTypeHints;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
@@ -24,11 +26,10 @@ use function bovigo\callmap\verify;
 /**
  * Tests for method and functions which are declared with union type hints.
  *
- * @requires PHP >= 8.1
  * @since 7.0.0
- * @group typehint
- * @group intersection
  */
+#[Group('typehint')]
+#[Group('intersection')]
 class IntersectionTypeHintTest extends TestCase
 {
     /** @var ClassWithIntersectionTypeHints&ClassProxy */
@@ -39,9 +40,7 @@ class IntersectionTypeHintTest extends TestCase
         $this->proxy = NewInstance::stub(ClassWithIntersectionTypeHints::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectionTypeHintedMethodParamReceivesProperValue(): void
     {
         $aWithB = new ClassWithIntersectionTypeHints();
@@ -49,9 +48,7 @@ class IntersectionTypeHintTest extends TestCase
         verify($this->proxy, 'accept')->received($aWithB);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectionTypeHintedMethodParamThrowsTypeErrorWhenWrongTypeReceived(): void
     {
         expect(fn() => $this->proxy->accept(3.03))
@@ -59,9 +56,7 @@ class IntersectionTypeHintTest extends TestCase
              ->message(contains('Argument #1 ($acceptable) must be of type bovigo\callmap\helper\A&bovigo\callmap\helper\B, float given'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectionReturnTypeHintedMethodReturnsProperValue(): void
     {
         $this->proxy->returns(['doReturn' => $this->proxy]);
@@ -69,9 +64,7 @@ class IntersectionTypeHintTest extends TestCase
         assertThat($this->proxy->doReturn(), isSameAs($this->proxy));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectionReturnTypeHintedMethodThrowsTypeErrorOnWrongValue(): void
     {
         $this->proxy->returns(['doReturn' => 3.03]);
@@ -81,9 +74,7 @@ class IntersectionTypeHintTest extends TestCase
              ->message(contains('Return value must be of type bovigo\callmap\helper\A&bovigo\callmap\helper\B, float returned'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectionTypeHintedFunctionParamReceivesProperValue(): void
     {
         $aWithB = new ClassWithIntersectionTypeHints();
@@ -92,9 +83,7 @@ class IntersectionTypeHintTest extends TestCase
         verify($foo)->received($aWithB);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectionTypeHintedFunctionParamThrowsTypeErrorWhenWrongTypeReceived(): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\exampleFunctionWithIntersectionTypeHints');
@@ -112,9 +101,7 @@ class IntersectionTypeHintTest extends TestCase
         assertThat($foo(), isSameAs($aWithB));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectionReturnTypeHintedMethodThrowsTypeErrorOnWrongReturn(): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\exampleFunctionWithIntersectionTypeHints');

@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
 use ReflectionObject;
@@ -35,9 +36,7 @@ class ThrowsTest extends TestCase
         $this->proxy = NewInstance::of(ReflectionObject::class, [$this]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionPassedViaThrows(): void
     {
         $e = new ReflectionException('some error');
@@ -48,9 +47,7 @@ class ThrowsTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionPassedViaInvocationResults(): void
     {
         $e = new ReflectionException('some error');

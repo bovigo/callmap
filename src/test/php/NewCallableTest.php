@@ -10,7 +10,11 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use Exception;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -29,18 +33,14 @@ use function bovigo\callmap\helper\{doSomething, greet};
  */
 class NewCallableTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function callWithNonExistingFunctionNameThrowsReflectionException(): void
     {
         expect(fn() => NewCallable::of('doesNotExist'))
             ->throws(\ReflectionException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotGenerateClassTwice(): void
     {
         assertThat(
@@ -49,9 +49,7 @@ class NewCallableTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesCreateIndependentInstances(): void
     {
         assertThat(
@@ -60,9 +58,7 @@ class NewCallableTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesCreateIndependentStubs(): void
     {
         assertThat(
@@ -71,9 +67,7 @@ class NewCallableTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateInstanceFromFunctionWithPhp7ReturnTypeHint(): void
     {
         assertThat(
@@ -88,10 +82,8 @@ class NewCallableTest extends TestCase
         yield ['bovigo\callmap\helper\greet', 'Hello world'];
     }
 
-    /**
-     * @test
-     * @dataProvider  functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function callsOriginalFunctionWhenNotMapped(
         string $functionName,
         string $expected
@@ -100,38 +92,30 @@ class NewCallableTest extends TestCase
         assertThat($function('world'), equals($expected));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stubsDoNotCallOriginalFunctionWhenNotMapped(): void
     {
         $function = NewCallable::stub('bovigo\callmap\helper\greet');
         assertNull($function('world'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapReturnValueToNullShouldNotCallOriginalFunction(): void
     {
         $function = NewCallable::of('bovigo\callmap\helper\greet')->returns(null);
         assertNull($function('world'));
     }
 
-    /**
-     * @test
-     * @dataProvider  functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function mapReturnValueReturnsMappedValueOnInvocation(string $functionName): void
     {
         $function = NewCallable::of($functionName)->returns('great stuff');
         assertThat($function('world'), equals('great stuff'));
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function canMapWithConsecutiveCalls(string $functionName, string $expected): void
     {
         $function = NewCallable::of($functionName)
@@ -141,10 +125,8 @@ class NewCallableTest extends TestCase
         assertThat($function('world'), equals($expected));
     }
 
-    /**
-     * @test
-     * @dataProvider functionNames
-     */
+    #[Test]
+    #[DataProvider('functionNames')]
     public function canMapWithThrows(string $functionName): void
     {
         $function = NewCallable::of($functionName)
@@ -155,10 +137,10 @@ class NewCallableTest extends TestCase
     }
 
     /**
-     * @test
-     * @group optional_return_value
      * @since 5.0.2
      */
+    #[Test]
+    #[Group('optional_return_value')]
     public function canWorkWithOptionalReturnTypehints(): void
     {
         $function = NewCallable::of('\bovigo\callmap\helper\withOptionalReturnValue');
@@ -166,10 +148,10 @@ class NewCallableTest extends TestCase
     }
 
     /**
-     * @test
-     * @group optional_return_value
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('optional_return_value')]
     public function canWorkWithOptionalBuiltinReturnTypehints(): void
     {
         $function = NewCallable::of('\bovigo\callmap\helper\someOptionalString');
@@ -177,13 +159,27 @@ class NewCallableTest extends TestCase
     }
 
     /**
-     * @test
-     * @group void_return
      * @since 5.1.0
      */
+    #[Test]
+    #[Group('void_return')]
     public function canWorkWithVoidReturnTypehints(): void
     {
         $function = NewCallable::of('\bovigo\callmap\helper\returnsVoid');
         assertNull($function());
+    }
+
+    /**
+     * @since 8.0.0
+     */
+    #[Test]
+    #[Group('never_return')]
+    public function canWorkWithNeverReturnTypehints(): void
+    {
+        $function = NewCallable::of('\bovigo\callmap\helper\returnsNever');
+
+        // force throw, test is mainly to ensure a function with return type
+        // never can be mocked
+        expect($function)->throws(Exception::class);
     }
 }

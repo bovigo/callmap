@@ -12,6 +12,8 @@ namespace bovigo\callmap;
 
 use bovigo\callmap\helper\Instrument;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -32,26 +34,20 @@ class AbstractMethodTest extends TestCase
         $this->proxy = NewInstance::of(Instrument::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfMethodCallNotMapped(): void
     {
         assertThat($this->proxy->play(), isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['play' => 'foo']);
         assertThat($this->proxy->play(), equals('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['play' => function() { return 'foo'; }]);
@@ -66,10 +62,10 @@ class AbstractMethodTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider arguments
      * @since 0.2.0
      */
+    #[Test]
+    #[DataProvider('arguments')]
     public function givenArgumentsArePassedToClosure(
         ?int $argument,
         string $expectedResult
@@ -93,17 +89,13 @@ class AbstractMethodTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'play')->wasNeverCalled();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->play();
@@ -111,27 +103,21 @@ class AbstractMethodTest extends TestCase
         verify($this->proxy, 'play')->wasCalled(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed(): void
     {
         $this->proxy->play();
         verify($this->proxy, 'play')->receivedNothing();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canVerifyReceivedArguments(): void
     {
         $this->proxy->play(808);
         verify($this->proxy, 'play')->received(808);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canVerifyReceivedArgumentsOfSpecificInvocation(): void
     {
         $this->proxy->play(808);

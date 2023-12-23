@@ -12,6 +12,8 @@ namespace bovigo\callmap;
 
 use bovigo\callmap\helper\FailingTrait;
 use ParseError;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
@@ -19,8 +21,8 @@ use function bovigo\assert\expect;
  * Tests for bovigo\callmap\NewInstance regarding parse errors in eval().
  *
  * @since  3.0.0
- * @group  eval
  */
+#[Group('eval')]
 class NewInstanceParseErrorTest extends TestCase
 {
     protected function setUp(): void
@@ -33,9 +35,7 @@ class NewInstanceParseErrorTest extends TestCase
         NewInstance::$compile = __NAMESPACE__ . '\compile';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsProxyCreationFailureWhenEvalOfCreatedProxyClassFails(): void
     {
         expect(fn() => NewInstance::of(__CLASS__))
@@ -46,9 +46,7 @@ class NewInstanceParseErrorTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsProxyCreationFailureWhenEvalOfCreatedProxyTraitFails(): void
     {
         expect(fn() => NewInstance::of(FailingTrait::class))

@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use ParseError;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\expect;
@@ -18,8 +20,8 @@ use function bovigo\assert\expect;
  * Tests for bovigo\callmap\NewCallable regarding parse errors in eval().
  *
  * @since  3.1.0
- * @group  eval
  */
+#[Group('eval')]
 class NewCallableParseErrorTest extends TestCase
 {
     protected function setUp(): void
@@ -32,9 +34,7 @@ class NewCallableParseErrorTest extends TestCase
         NewCallable::$compile = __NAMESPACE__ . '\compile';
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsProxyCreationFailureWhenEvalOfCreatedProxyClassFails(): void
     {
         expect(fn() => NewCallable::of('strlen'))

@@ -13,6 +13,9 @@ namespace bovigo\callmap;
 use bovigo\callmap\helper\ClassWithStaticReturnTypeHint;
 use bovigo\callmap\helper\ExtendedClassWithStaticReturnTypeHint;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -22,11 +25,10 @@ use function bovigo\assert\{
 /**
  * Tests for methods which are declared with return type static.
  *
- * @requires PHP >= 8
  * @since 6.2.0
- * @group typehint
- * @group static
  */
+#[Group('typehint')]
+#[Group('static')]
 class StaticReturnTypeHintTest extends TestCase
 {
     public static function classesWithStaticReturnTypes(): Generator
@@ -36,10 +38,10 @@ class StaticReturnTypeHintTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider  classesWithStaticReturnTypes
      * @param  class-string  $class
      */
+    #[Test]
+    #[DataProvider('classesWithStaticReturnTypes')]
     public function stubReturnsItselfWhenReturnTypeHintIsStatic(string $class): void
     {
         /** @var ClassWithStaticReturnTypeHint&ClassProxy $static */
@@ -48,10 +50,10 @@ class StaticReturnTypeHintTest extends TestCase
     }
     
     /**
-     * @test
-     * @dataProvider  classesWithStaticReturnTypes
      * @param  class-string  $class
      */
+    #[Test]
+    #[DataProvider('classesWithStaticReturnTypes')]
     public function stubReturnsItselfWhenReturnTypeHintIsStaticInDocCommentOnly(
         string $class
     ): void {

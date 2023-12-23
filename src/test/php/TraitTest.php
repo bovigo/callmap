@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use bovigo\callmap\helper\SomeTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -19,9 +21,8 @@ use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isOfType;
 /**
  * Tests that mocks of traits can be created.
- *
- * @group issue_1
  */
+#[Group('issue_1')]
 class TraitTest extends TestCase
 {
     /**
@@ -34,43 +35,33 @@ class TraitTest extends TestCase
         $this->proxy = NewInstance::of(SomeTrait::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callsOriginalMethodIfNoMappingProvided(): void
     {
         assertThat($this->proxy->action(313), equals(313));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => 'foo']);
         assertThat($this->proxy->action(313), equals('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['action' => function() { return 'foo'; }]);
         assertThat($this->proxy->action(313), equals('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'action')->wasNeverCalled();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->action(303);
@@ -78,27 +69,21 @@ class TraitTest extends TestCase
         verify($this->proxy, 'action')->wasCalled(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsListOfReceivedArgumentsIfMethodCalled(): void
     {
         $this->proxy->action(313);
         verify($this->proxy, 'action')->received(313);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionalArgumentsCanNotBeVerifiedWhenNotExplicitlyPassed(): void
     {
         $this->proxy->other();
         verify($this->proxy, 'other')->receivedNothing();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listOfReceivedArgumentsContainsGivenArguments(): void
     {
         $this->proxy->other(['play' => 808]);

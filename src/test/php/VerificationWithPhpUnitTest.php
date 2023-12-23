@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use \bovigo\callmap\verification\Verification;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase;
 
@@ -22,10 +23,7 @@ use function bovigo\assert\assertTrue;
   */
 class VerificationWithPhpUnitTest extends TestCase
 {
-    /**
-     * @var Verification
-     */
-    private $phpUnitVerification;
+    private Verification $phpUnitVerification;
 
     protected function setUp(): void
     {
@@ -41,17 +39,13 @@ class VerificationWithPhpUnitTest extends TestCase
         };
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usingNoConstraintFallsBackToIsEquals(): void
     {
         assertTrue($this->phpUnitVerification->evaluateWithPhpUnit('foo', 'foo', ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usingConstraintEvaluatesWithThisConstraint(): void
     {
         $constraint = NewInstance::of(Constraint::class)

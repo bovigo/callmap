@@ -12,6 +12,9 @@ namespace bovigo\callmap;
 
 use bovigo\callmap\helper\ClassWithMixedTypeHints;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -22,11 +25,10 @@ use function bovigo\callmap\verify;
 /**
  * Tests for methods and functions which are declared with type hint mixed.
  *
- * @requires PHP >= 8
  * @since 6.2.0
- * @group typehint
- * @group mixed
  */
+#[Group('typehint')]
+#[Group('mixed')]
 class MixedTypeHintTest extends TestCase
 {
     /**
@@ -45,10 +47,8 @@ class MixedTypeHintTest extends TestCase
         yield [null];
     }
 
-    /**
-     * @test
-     * @dataProvider acceptableParameters
-     */
+    #[Test]
+    #[DataProvider('acceptableParameters')]
     public function unionTypeHintedMethodParamReceivesProperValue(mixed $acceptable): void
     {
         $this->proxy->accept($acceptable);
@@ -62,10 +62,8 @@ class MixedTypeHintTest extends TestCase
         yield [null];
     }
 
-    /**
-     * @test
-     * @dataProvider acceptableFunctionParameters
-     */
+    #[Test]
+    #[DataProvider('acceptableParameters')]
     public function mixedTypeHintedFunctionParamReceivesProperValue(mixed $acceptable): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\acceptMixed');
@@ -80,10 +78,8 @@ class MixedTypeHintTest extends TestCase
         yield [null];
     }
 
-    /**
-     * @test
-     * @dataProvider acceptableFunctionReturnValues
-     */
+    #[Test]
+    #[DataProvider('acceptableParameters')]
     public function mixedTypeHintedFunctionReturnsProperValue(mixed $acceptable): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\returnMixed');

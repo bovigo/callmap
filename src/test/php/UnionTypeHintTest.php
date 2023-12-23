@@ -13,6 +13,9 @@ namespace bovigo\callmap;
 use bovigo\callmap\helper\AnotherTestHelperClass;
 use bovigo\callmap\helper\ClassWithUnionTypeHints;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
@@ -27,11 +30,10 @@ use function bovigo\callmap\verify;
 /**
  * Tests for method and functions which are declared with union type hints.
  *
- * @requires PHP >= 8
  * @since 6.2.0
- * @group typehint
- * @group union
  */
+#[Group('typehint')]
+#[Group('union')]
 class UnionTypeHintTest extends TestCase
 {
     /**
@@ -51,10 +53,10 @@ class UnionTypeHintTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider acceptableParameters
      * @param string|AnotherTestHelperClass $acceptable
      */
+    #[Test]
+    #[DataProvider('acceptableParameters')]
     public function unionTypeHintedMethodParamReceivesProperValue(
         string|AnotherTestHelperClass $acceptable
     ): void {
@@ -62,9 +64,7 @@ class UnionTypeHintTest extends TestCase
         verify($this->proxy, 'accept')->received($acceptable);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unionTypeHintedMethodParamThrowsTypeErrorWhenWrongTypeReceived(): void
     {
         expect(fn() => $this->proxy->accept(3.03))
@@ -72,9 +72,7 @@ class UnionTypeHintTest extends TestCase
              ->message(contains('Argument #1 ($something) must be of type bovigo\callmap\helper\AnotherTestHelperClass|string, float given'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unionParameterTypeHintWithSelfAcceptsInstanceOfClass(): void
     {
         $self = new ClassWithUnionTypeHints();
@@ -82,18 +80,14 @@ class UnionTypeHintTest extends TestCase
         verify($this->proxy, 'methodWithSelfParam')->received($self);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unionParameterTypeHintOnParamWithSelfAcceptsInstanceOfProxy(): void
     {
         $this->proxy->methodWithSelfParam($this->proxy);
         verify($this->proxy, 'methodWithSelfParam')->received($this->proxy);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unionReturnTypeHintWithSelfCanReturnNativeInstance(): void
     {
         $self = new ClassWithUnionTypeHints();
@@ -101,9 +95,7 @@ class UnionTypeHintTest extends TestCase
         assertThat($this->proxy->methodReturningSelf(), isSameAs($self));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unionReturnTypeHintWithSelfCanReturnProxy(): void
     {
         $this->proxy->returns(['methodReturningSelf' => $this->proxy]);
@@ -120,19 +112,17 @@ class UnionTypeHintTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider acceptableReturnValues
      * @param int|float $returnValue
      */
+    #[Test]
+    #[DataProvider('acceptableReturnValues')]
     public function unionTypeHintedMethodReturnsProperValue($returnValue): void
     {
         $this->proxy->returns(['doReturn' => $returnValue]);
         assertThat($this->proxy->doReturn(), equals($returnValue));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unionTypeHintedMethodThrowsTypeErrorWithInvalidReturnValue(): void
     {
         $this->proxy->returns(['doReturn' => 'something invalid']);
@@ -148,10 +138,8 @@ class UnionTypeHintTest extends TestCase
         yield [null];
     }
 
-    /**
-     * @test
-     * @dataProvider acceptableFunctionParameters
-     */
+    #[Test]
+    #[DataProvider('acceptableFunctionParameters')]
     public function unionTypeHintedFunctionParamReceivesProperValue(mixed $acceptable): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\exampleFunctionWithUnionTypeHints');
@@ -166,10 +154,8 @@ class UnionTypeHintTest extends TestCase
         yield [null];
     }
 
-    /**
-     * @test
-     * @dataProvider acceptableFunctionReturnValues
-     */
+    #[Test]
+    #[DataProvider('acceptableFunctionReturnValues')]
     public function unionTypeHintedFunctionReturnsProperValue(mixed $acceptable): void
     {
         $foo = NewCallable::of('bovigo\callmap\helper\exampleFunctionWithUnionTypeHints');

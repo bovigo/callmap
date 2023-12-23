@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use Countable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -31,43 +32,33 @@ class InternalInterfaceTest extends TestCase
         $this->proxy = NewInstance::of(Countable::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullIfMethodCallNotMapped(): void
     {
         assertThat($this->proxy->count(), isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToSimpleValueReturnsValueOnMethodCall(): void
     {
         $this->proxy->returns(['count' => 3]);
         assertThat($this->proxy->count(), equals(3));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapToClosureReturnsClosureReturnValueOnMethodCall(): void
     {
         $this->proxy->returns(['count' => function() { return 42; }]);
         assertThat($this->proxy->count(), equals(42));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function amountOfCallsToMethodIsZeroIfNotCalled(): void
     {
         verify($this->proxy, 'count')->wasNeverCalled();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recordsAmountOfCallsToMethod(): void
     {
         $this->proxy->count();
@@ -75,9 +66,7 @@ class InternalInterfaceTest extends TestCase
         verify($this->proxy, 'count')->wasCalled(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canVerifyThatMethodDidNotReveiveArguments(): void
     {
         $this->proxy->count();

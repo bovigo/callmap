@@ -16,6 +16,8 @@ use bovigo\callmap\helper\Fump;
 use bovigo\callmap\helper\OneMoreThing;
 use bovigo\callmap\helper\Really;
 use bovigo\callmap\helper\WithSelfReturnTypeHint;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertNull;
@@ -40,117 +42,93 @@ class ReturnSelfTest extends TestCase
         $this->proxy = NewInstance::stub(Extended::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsThis(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->yo()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassName(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->action()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsFullyQualifiedClassNameWithoutLeadingBackslash(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->moreAction()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsNonFullyQualifiedClassName(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->minorAction()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsImplementedInterface(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->foo()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsInterfaceImplementedByParentClass(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->wow()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsParentClass(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->aha()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfIfMethodCallNotMappedWhenReturnTypeIsSelf(): void
     {
         assertThat($this->proxy, isSameAs($this->proxy->baz()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotReturnSelfWhenReturnTypeHintIsTraversableEvenWhenInTypeHierarchy(): void
     {
         assertThat($this->proxy->getIterator(), isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotReturnSelfWhenReturnTypeHintIsNotInTypeHierarchy(): void
     {
         assertThat($this->proxy->other(), isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSelfForInterfacesWhenCreatedWithInstanceOfAndAccordingReturnType(): void
     {
         $proxy = NewInstance::of(OneMoreThing::class);
         assertThat($proxy, isSameAs($proxy->wow()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotReturnSelfWhenReturnTypeHintEmpty(): void
     {
         assertNull(NewInstance::of(Bar::class)->foo());
     }
 
     /**
-     * @test
      * @since 3.0.0
      */
+    #[Test]
     public function doesNotReturnSelfWhenNoReturnTypeHintInDocComment(): void
     {
         assertNull(NewInstance::of(Fump::class)->noReturn());
     }
 
     /**
-     * @test
      * @since 3.0.2
-     * @group self_type_hint
      */
+    #[Test]
+    #[Group('self_type_hint')]
     public function canWorkWithSelfReturnTypeHintForInterfaceDirectly(): void
     {
         assertThat(
@@ -160,10 +138,10 @@ class ReturnSelfTest extends TestCase
     }
 
     /**
-     * @test
      * @since 3.0.2
-     * @group self_type_hint
      */
+    #[Test]
+    #[Group('self_type_hint')]
     public function canWorkWithSelfReturnTypeHintForImplementingClass(): void
     {
         assertThat(
@@ -173,10 +151,10 @@ class ReturnSelfTest extends TestCase
     }
 
     /**
-     * @test
      * @since 3.0.2
-     * @group self_type_hint
      */
+    #[Test]
+    #[Group('self_type_hint')]
     public function canWorkWithSelfReturnTypeHintForClassDirectly(): void
     {
         assertThat(
