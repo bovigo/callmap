@@ -8,9 +8,9 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap\verification;
 
-use bovigo\assert\phpunit\ConstraintAdapter;
 use bovigo\assert\predicate\Predicate;
-use \bovigo\callmap\Invocations;
+use bovigo\callmap\Invocations;
+use bovigo\callmap\verification\phpunit\ConstraintAdapter;
 use ReflectionClass;
 use RuntimeException;
 
@@ -312,7 +312,9 @@ class Verification
             return $this->evaluateWithXpFrameworkCore($constraint, $received, $description);
         }
 
-        throw new RuntimeException('Neither bovigo/assert, PHPUnit nor xp-framework/unittest found, can not perform argument verification');
+        throw new RuntimeException(
+            'Neither bovigo/assert, PHPUnit nor xp-framework/unittest found, can not perform argument verification'
+        );
     }
 
     /**
