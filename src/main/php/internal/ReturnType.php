@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace bovigo\callmap;
+namespace bovigo\callmap\internal;
 
 use ReflectionClass;
 use ReflectionIntersectionType;

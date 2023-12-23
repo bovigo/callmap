@@ -10,6 +10,7 @@ namespace bovigo\callmap;
 
 use ArrayIterator;
 use bovigo\callmap\internal\Parameters;
+use bovigo\callmap\internal\ReturnType;
 use CallbackFilterIterator;
 use InvalidArgumentException;
 use Iterator;
