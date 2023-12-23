@@ -93,7 +93,9 @@ namespace bovigo\callmap {
 
         /** @var \ReflectionNamedType $returnType */
         if ($returnType->isBuiltin()) {
-            return ': ' . ($returnType->allowsNull() && $returnType->getName() !== 'mixed' ? '?' : '') . $returnType->getName();
+            return ': '
+                . ($returnType->allowsNull() && $returnType->getName() !== 'mixed' ? '?' : '')
+                . $returnType->getName();
         }
 
         if ('self' == $returnType->getName()) {
@@ -101,7 +103,9 @@ namespace bovigo\callmap {
                 return ': ' . ($returnType->allowsNull() ? '?' : '') . '\\' . $function->getDeclaringClass()->getName();
             }
 
-            throw new UnexpectedValueException('Function ' . $function->getName() . ' defines return type self but that is not possible.');
+            throw new UnexpectedValueException(
+                'Function ' . $function->getName() . ' defines return type self but that is not possible.'
+            );
         } elseif ('static' === $returnType->getName()) {
             return ': static';
         }
