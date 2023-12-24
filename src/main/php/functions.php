@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace bovigo\callmap {
+
+    use bovigo\callmap\internal\InvocationResults;
+    use bovigo\callmap\internal\Proxy;
     use bovigo\callmap\verification\Verification;
     use Closure;
     use Throwable;
@@ -76,7 +79,7 @@ namespace bovigo\callmap {
     /**
      * exclude some of our own classes from being displayed in PHPUnit error stacks
      */
-    if (class_exists(\PHPUnit\Util\ExcludeList::class)) {
-        \PHPUnit\Util\ExcludeList::addDirectory(__DIR__ . DIRECTORY_SEPARATOR);
-    }
+    // if (class_exists(\PHPUnit\Util\ExcludeList::class)) {
+    //     \PHPUnit\Util\ExcludeList::addDirectory(__DIR__ . DIRECTORY_SEPARATOR);
+    // }
 }

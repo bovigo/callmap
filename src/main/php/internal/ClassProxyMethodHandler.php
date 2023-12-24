@@ -6,8 +6,9 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace bovigo\callmap;
+namespace bovigo\callmap\internal;
 
+use bovigo\callmap\ClassProxy;
 use InvalidArgumentException;
 use ReflectionMethod;
 /**
@@ -82,7 +83,7 @@ trait ClassProxyMethodHandler
             }
 
             if (null !== $this->callMap && $this->callMap->hasResult($method)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Trying to stub method %s, but it was already mapped with a return value.',
                      $this->completeNameOf($method)
                 ));

@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace bovigo\callmap\verification;
 
 use bovigo\assert\predicate\Predicate;
-use bovigo\callmap\Invocations;
+use bovigo\callmap\internal\Invocations;
 use bovigo\callmap\verification\phpunit\ConstraintAdapter;
 use ReflectionClass;
 use RuntimeException;

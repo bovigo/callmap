@@ -228,7 +228,7 @@ class NewInstance
     {
         return sprintf(
             "class %sCallMapProxy %s \\%s%s\bovigo\callmap\ClassProxy {\n"
-            . "    use \bovigo\callmap\ClassProxyMethodHandler;\n",
+            . "    use \bovigo\callmap\internal\ClassProxyMethodHandler;\n",
             $class->getShortName(),
             $class->isInterface() ? 'implements ' : 'extends ',
             $class->getName(),

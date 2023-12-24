@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace bovigo\callmap;
+
+use bovigo\callmap\internal\Proxy;
+
 /**
  * A class proxy can stub method calls and record all method calls.
  */

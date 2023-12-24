@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use bovigo\callmap\internal\Proxy;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;

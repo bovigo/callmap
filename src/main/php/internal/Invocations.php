@@ -6,7 +6,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace bovigo\callmap;
+namespace bovigo\callmap\internal;
+
+use bovigo\callmap\MissingInvocation;
+
 /**
  * Collects information about invocations of a function or method.
  *

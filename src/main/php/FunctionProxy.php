@@ -8,6 +8,9 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use bovigo\callmap\internal\CallMap;
+use bovigo\callmap\internal\Invocations;
+use bovigo\callmap\internal\Proxy;
 use InvalidArgumentException;
 use LogicException;
 use Throwable;
