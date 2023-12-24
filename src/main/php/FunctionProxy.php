@@ -95,7 +95,7 @@ abstract class FunctionProxy implements Proxy
      * @api
      * @since 3.2.0
      */
-    public function throws(\Throwable $e): self
+    public function throws(Throwable $e): self
     {
         $this->callMap = new CallMap(['function' => throws($e)]);
         return $this;
