@@ -10,13 +10,10 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
 
-use function bovigo\callmap\resolveCombinedTypes;
-use function bovigo\callmap\resolveType;
-
 /**
  * @internal
  */
-class Parameters
+class Parameters extends TypeResolver
 {
     /** @var string[] */
     private array $names = [];
@@ -95,11 +92,11 @@ class Parameters
             $paramType instanceof ReflectionUnionType
             || $paramType instanceof ReflectionIntersectionType
         ) {
-            return resolveCombinedTypes($paramType, $this->containingClass) . ' ';
+            return self::resolveCombinedTypes($paramType, $this->containingClass) . ' ';
         }
         
         if ($paramType instanceof ReflectionNamedType) {
-            return resolveType($paramType->getName(), $this->containingClass);
+            return self::resolveType($paramType->getName(), $this->containingClass);
         }
 
         return '';

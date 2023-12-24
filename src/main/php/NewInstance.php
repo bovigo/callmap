@@ -17,7 +17,6 @@ use Iterator;
 use ParseError;
 use ReflectionClass;
 use ReflectionMethod;
-use Traversable;
 
 /**
  * Allows to create new instances of given class or interface.
@@ -251,27 +250,25 @@ class NewInstance
         $params  = [];
         $voidMethods = [];
         foreach (self::methodsOf($class) as $method) {
-            $return = true;
-            $returnType = determineReturnTypeOf($method, $class);
-            if (in_array($returnType, [': void', ': never'])) {
+            $returnType = ReturnType::of($method, $class);
+            if (!$returnType->returns()) {
                 $voidMethods[$method->getName()] = $method->getName();
-                $return = false;
             }
 
             $methodParams = Parameters::of($method, $class);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
-                "    #[\Override]"
+                "    #[\Override]\n"
                 . "    %s function %s(%s)%s {\n"
                 . "        %s\$this->handleMethodCall('%s', func_get_args(), %s);\n"
                 . "    }\n",
                 ($method->isPublic() ? 'public' : 'protected'),
                 $method->getName(),
                 $methodParams->code(),
-                $returnType,
-                $return ? 'return ' : '',
+                $returnType->code(),
+                $returnType->returns() ? 'return ' : '',
                 $method->getName(),
-                self::shouldReturnSelf($class, $method) ? 'true' : 'false'
+                $returnType->allowsSelfReturn($class) ? 'true' : 'false'
             );
             $methods[] = "'" . $method->getName() . "' => '" . $method->getName() . "'";
             $params[$method->getName()] = $methodParams->names();
@@ -306,43 +303,5 @@ class NewInstance
                 && !$method->isConstructor()
                 && !$method->isDestructor()
         );
-    }
-
-    /**
-     * detects whether a method should return the instance or null
-     *
-     * @template T of object
-     * @param  ReflectionClass<T> $class
-     * @param  ReflectionMethod   $method
-     * @return bool
-     */
-    private static function shouldReturnSelf(
-        ReflectionClass $class,
-        ReflectionMethod $method
-    ): bool {
-        $returnType = ReturnType::detect($method);
-        if (null === $returnType) {
-            return false;
-        }
-
-        if ($returnType->isSelf() || $returnType->represents($class)) {
-            return true;
-        }
-
-        foreach ($class->getInterfaces() as $interface) {
-            if ($interface->getName() !== Traversable::class && $returnType->represents($interface)) {
-                return true;
-            }
-        }
-
-        while ($parent = $class->getParentClass()) {
-            if ($returnType->represents($parent)) {
-                return true;
-            }
-
-            $class = $parent;
-        }
-
-        return false;
     }
 }

@@ -3,82 +3,95 @@ declare(strict_types=1);
 
 namespace bovigo\callmap\internal;
 
+use bovigo\callmap\internal\returntypes\CodedReturnType;
+use bovigo\callmap\internal\returntypes\NoReturn;
+use bovigo\callmap\internal\returntypes\StaticReturnType;
+use bovigo\callmap\internal\returntypes\UndefinedReturnType;
 use ReflectionClass;
+use ReflectionFunctionAbstract;
 use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
 
-/**
- * @internal
- */
-class ReturnType
+abstract class ReturnType extends TypeResolver
 {
-    public function __construct(private string $typeName) { }
-
     /**
-     * detects return type of method
-     *
-     * It will make use of reflection to detect the return type. In case this
-     * does not yield a result the doc comment will be parsed for the return
-     * annotation.
+     * @template T of object
+     * @param  ReflectionFunctionAbstract $function
+     * @param  ReflectionClass<T>|null    $containingClass
      */
-    public static function detect(ReflectionMethod $method): ?self
-    {
-        $returnType = $method->getReturnType();
-        if (null !== $returnType) {
-            return self::detectFromDeclaration($returnType);
-        }
+    public static function of(
+        ReflectionFunctionAbstract $function,
+        ?ReflectionClass $containingClass = null
+    ): self {
+        $returnType = $function->getReturnType();
+        if (null === $returnType) {
+            $docComment = $function->getDocComment();
+            if (false === $docComment) {
+                $docComment = '';
+            }
 
-        $docComment = $method->getDocComment();
-        if (false === $docComment) {
-            return null;
-        }
-
-        return self::detectFromDocComment($docComment);
-    }
-
-    public function represents(ReflectionClass $class): bool
-    {
-        return $class->getName() === $this->typeName
-            || $class->getShortName() === $this->typeName;
-    }
-
-    public function isSelf(): bool
-    {
-        return in_array($this->typeName, ['$this', 'self', 'static']);
-    }
-
-    private static function detectFromDeclaration(
-        ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType $returnType
-    ): ?self {
-        if ($returnType->allowsNull()) {
-            return null;
+            return new UndefinedReturnType($docComment);
         }
 
         if (
             $returnType instanceof ReflectionUnionType
             || $returnType instanceof ReflectionIntersectionType
         ) {
-            return new self((string) $returnType);
+            return CodedReturnType::forCombined(
+                self::resolveCombinedTypes($returnType, $containingClass)
+            );
         }
 
-        return new self($returnType->getName());
+        return self::createFrom($returnType, $function, $containingClass);
     }
 
-    private static function detectFromDocComment(string $docComment): ?self
+    private static function createFrom(
+        ReflectionNamedType $returnType,
+        ReflectionFunctionAbstract $function
+    ): self {
+        if ($returnType->isBuiltin() || StaticReturnType::KEYWORD === $returnType->getName()) {
+            return self::createFromBuiltIn($returnType);
+        }
+
+        if ($function instanceof ReflectionMethod && 'self' === $returnType->getName()) {
+            return CodedReturnType::forClass(
+                $returnType,
+                $function->getDeclaringClass()->getName(),
+            );
+        }
+
+        return CodedReturnType::from($returnType);
+    }
+
+    private static function createFromBuiltIn(ReflectionNamedType $returnType): self
     {
-        $returnPart = strstr($docComment, '@return');
-        if (false === $returnPart) {
-            return null;
+        $self = null;
+        switch ($returnType->getName()) {
+            case NoReturn::NEVER:
+                $self = NoReturn::withNever();
+                break;
+            case NoReturn::VOID:
+                $self = NoReturn::withVoid();
+                break;
+            case StaticReturnType::KEYWORD:
+                $self = new StaticReturnType();
+                break;
+            default:
+                $self = CodedReturnType::from($returnType);
         }
 
-        $returnParts = explode(' ', trim(str_replace('@return', '', $returnPart)));
-        $returnType  = ltrim(trim($returnParts[0]), '\\');
-        if (empty($returnType) || strpos($returnType, '*') !== false) {
-            return null;
-        }
-
-        return new self($returnType);
+        return $self;
     }
+
+    /**
+     * @template T of object
+     * @param  ReflectionClass<T> $class
+     */
+    abstract public function allowsSelfReturn(ReflectionClass $class): bool;
+
+    abstract public function returns(): bool;
+
+    abstract public function code(): string;
 }

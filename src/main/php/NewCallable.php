@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use bovigo\callmap\internal\Parameters;
+use bovigo\callmap\internal\ReturnType;
 use ParseError;
 use ReflectionClass;
 use ReflectionFunction;
@@ -119,12 +120,7 @@ class NewCallable
     private static function createProxyCode(ReflectionFunction $function): string
     {
         $parameters = Parameters::of($function);
-        $return = true;
-        $returnType = determineReturnTypeOf($function);
-        if (in_array($returnType, [': void', ': never'])) {
-            $return = false;
-        }
-
+        $returnType = ReturnType::of($function);
         $code  = sprintf(
             "class %sCallMapProxy extends \bovigo\callmap\FunctionProxy{\n"
             . "    protected array \$paramNames = %s;\n"
@@ -136,9 +132,9 @@ class NewCallable
             ucfirst($function->getShortName()),
             var_export($parameters->names(), true),
             $parameters->code(),
-            $returnType,
-            $return ? 'return ' : '',
-            $return ? 'false' : 'true'
+            $returnType->code(),
+            $returnType->returns() ? 'return ' : '',
+            $returnType->returns() ? 'false' : 'true'
         );
         if ($function->inNamespace()) {
             return sprintf(
