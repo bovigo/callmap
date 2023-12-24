@@ -44,7 +44,7 @@ abstract class ReturnType extends TypeResolver
             );
         }
 
-        return self::createFrom($returnType, $function, $containingClass);
+        return self::createFrom($returnType, $function);
     }
 
     private static function createFrom(
