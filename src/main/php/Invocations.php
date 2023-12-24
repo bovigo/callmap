@@ -86,17 +86,26 @@ class Invocations implements \Countable
             return $this->callHistory[$invocation - 1];
         }
 
-        $totalInvocations = $this->count();
         throw new MissingInvocation(sprintf(
             'Missing invocation #%d for %s, was %s.',
             $invocation,
             $this->name,
-            ($totalInvocations === 0 ?
-                'never called' :
-                ('only called ' . ($totalInvocations === 1 ?
-                    'once' : $totalInvocations . ' times')
-                )
-            )
+            $this->representationOfInvocationAmount()
         ));
+    }
+
+    private function representationOfInvocationAmount(): string
+    {
+        $totalInvocations = $this->count();
+        switch ($totalInvocations) {
+            case 0:
+                return 'never called';
+            case 1:
+                return 'only called once';
+            default:
+                return sprintf('only called %d times', $totalInvocations);
+        }
+
+
     }
 }
