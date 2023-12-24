@@ -268,7 +268,7 @@ class NewInstance
                 $returnType->code(),
                 $returnType->returns() ? 'return ' : '',
                 $method->getName(),
-                $returnType->allowsSelfReturn($class) ? 'true' : 'false'
+                $returnType->allowsSelfReturn() ? 'true' : 'false'
             );
             $methods[] = "'" . $method->getName() . "' => '" . $method->getName() . "'";
             $params[$method->getName()] = $methodParams->names();

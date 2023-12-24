@@ -11,9 +11,11 @@ use ReflectionClass;
  */
 class UndefinedReturnType extends CodedReturnType
 {
-    public function __construct(private string $docComment)
-    {
-        parent::__construct('', false);
+    public function __construct(
+        private string $docComment,
+        ?ReflectionClass $containingClass = null
+    ) {
+        parent::__construct('', false, $containingClass);
         trigger_error(
             'Support for methods and functions without a return type declaration is deprecated'
             . ' and will be removed with 9.0.0.',
@@ -22,7 +24,7 @@ class UndefinedReturnType extends CodedReturnType
     }
 
     #[Override]
-    public function allowsSelfReturn(ReflectionClass $class): bool
+    public function allowsSelfReturn(): bool
     {
         $returnType = $this->parseDocComment();
         if (null === $returnType) {
@@ -34,7 +36,7 @@ class UndefinedReturnType extends CodedReturnType
         }
 
         $this->returnType = $returnType;
-        return parent::allowsSelfReturn($class);
+        return parent::allowsSelfReturn();
     }
 
     #[Override]

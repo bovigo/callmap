@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace bovigo\callmap\internal\returntypes;
 
 use bovigo\callmap\internal\ReturnType;
-use ReflectionClass;
 
 class NoReturn extends ReturnType
 {
@@ -23,7 +22,7 @@ class NoReturn extends ReturnType
         return new self(self::NEVER);
     }
 
-    public function allowsSelfReturn(ReflectionClass $class): bool
+    public function allowsSelfReturn(): bool
     {
         return false;
     }

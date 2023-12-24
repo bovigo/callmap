@@ -32,7 +32,7 @@ abstract class ReturnType extends TypeResolver
                 $docComment = '';
             }
 
-            return new UndefinedReturnType($docComment);
+            return new UndefinedReturnType($docComment, $containingClass);
         }
 
         if (
@@ -44,12 +44,13 @@ abstract class ReturnType extends TypeResolver
             );
         }
 
-        return self::createFrom($returnType, $function);
+        return self::createFrom($returnType, $function, $containingClass);
     }
 
     private static function createFrom(
         ReflectionNamedType $returnType,
-        ReflectionFunctionAbstract $function
+        ReflectionFunctionAbstract $function,
+        ?ReflectionClass $containingClass = null
     ): self {
         if ($returnType->isBuiltin() || StaticReturnType::KEYWORD === $returnType->getName()) {
             return self::createFromBuiltIn($returnType);
@@ -58,11 +59,11 @@ abstract class ReturnType extends TypeResolver
         if ($function instanceof ReflectionMethod && 'self' === $returnType->getName()) {
             return CodedReturnType::forClass(
                 $returnType,
-                $function->getDeclaringClass()->getName(),
+                $function->getDeclaringClass(),
             );
         }
 
-        return CodedReturnType::from($returnType);
+        return CodedReturnType::from($returnType, $containingClass);
     }
 
     private static function createFromBuiltIn(ReflectionNamedType $returnType): self
@@ -85,11 +86,7 @@ abstract class ReturnType extends TypeResolver
         return $self;
     }
 
-    /**
-     * @template T of object
-     * @param  ReflectionClass<T> $class
-     */
-    abstract public function allowsSelfReturn(ReflectionClass $class): bool;
+    abstract public function allowsSelfReturn(): bool;
 
     abstract public function returns(): bool;
 

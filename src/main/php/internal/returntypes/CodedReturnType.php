@@ -13,25 +13,28 @@ class CodedReturnType extends ReturnType
     protected function __construct(
         protected string $returnType,
         private bool $allowsNull,
-        private bool $isClass = true
+        private ?ReflectionClass $declaringClass = null
     ) { }
 
-    public static function from(ReflectionNamedType $namedType): self
-    {
+    public static function from(
+        ReflectionNamedType $namedType,
+        ?ReflectionClass $declaringClass = null
+    ): self {
         return new self(
             $namedType->getName(),
             $namedType->allowsNull() && $namedType->getName() !== 'mixed',
-            !$namedType->isBuiltin()
+            $declaringClass
         );
     }
 
     public static function forClass(
         ReflectionNamedType $namedType,
-        string $type
+        ReflectionClass $declaringClass
     ): self {
         return new self(
-            $type,
-            $namedType->allowsNull()
+            $declaringClass->getName(),
+            $namedType->allowsNull(),
+            $declaringClass
         );
     }
 
@@ -39,21 +42,20 @@ class CodedReturnType extends ReturnType
     {
         return new self(
             $types,
-            false,
             false
         );
     }
 
-    public function allowsSelfReturn(ReflectionClass $class): bool
+    public function allowsSelfReturn(): bool
     {
-        if (!$this->isClass || $this->allowsNull) {
+        if (null === $this->declaringClass || $this->allowsNull) {
             return false;
         }
 
         if (
-            $this->isOfType($class)
-            || $this->implementsInterfaceOf($class)
-            || $this->isParentOf($class)
+            $this->isOfType($this->declaringClass)
+            || $this->implementsInterfaceFrom($this->declaringClass)
+            || $this->isParentOf($this->declaringClass)
         ) {
             return true;
         }
@@ -61,13 +63,13 @@ class CodedReturnType extends ReturnType
         return false;
     }
 
-    protected function isOfType(ReflectionClass $class): bool
+    private function isOfType(ReflectionClass $class): bool
     {
         return $class->getName() === $this->returnType
             || $class->getShortName() === $this->returnType;
     }
 
-    protected function implementsInterfaceOf(ReflectionClass $class): bool
+    private function implementsInterfaceFrom(ReflectionClass $class): bool
     {
         foreach ($class->getInterfaces() as $interface) {
             if ($interface->getName() !== Traversable::class && $this->isOfType($interface)) {
@@ -78,7 +80,7 @@ class CodedReturnType extends ReturnType
         return false;
     }
 
-    protected function isParentOf(ReflectionClass $class): bool
+    private function isParentOf(ReflectionClass $class): bool
     {
         while ($parent = $class->getParentClass()) {
             if ($this->isOfType($parent)) {
@@ -101,7 +103,7 @@ class CodedReturnType extends ReturnType
         return sprintf(
             ': %s%s%s',
             $this->allowsNull ? '?' : '',
-            $this->isClass ? '\\' : '',
+            (class_exists($this->returnType) || interface_exists($this->returnType)) ? '\\' : '',
             $this->returnType
         );
     }
