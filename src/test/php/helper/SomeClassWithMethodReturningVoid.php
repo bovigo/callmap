@@ -9,6 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap\helper;
+
+use Exception;
+
 /**
  * Helper class for the test.
  */
@@ -17,5 +20,10 @@ class SomeClassWithMethodReturningVoid
     public function returnNothing(): void
     {
         // intentionally empty
+    }
+
+    public function returnNever(): never
+    {
+        throw new Exception('never returns');
     }
 }

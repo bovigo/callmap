@@ -177,7 +177,7 @@ trait ClassProxyMethodHandler
     private function canNot(string $message, string $invalidMethod): string
     {
         if (isset($this->_voidMethods[$invalidMethod])) {
-            $reason = 'is declared as returning void.';
+            $reason = 'is declared as returning void or never.';
         } elseif (method_exists($this, $invalidMethod)) {
             $reason = 'is not applicable for ' . ('stub' === $message ? 'stubbing' : 'mapping') . '.';
         } else {

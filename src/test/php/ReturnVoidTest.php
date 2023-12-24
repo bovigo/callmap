@@ -52,7 +52,23 @@ class ReturnVoidTest extends TestCase
             ->withMessage(
                 'Trying to map method '
                 . SomeClassWithMethodReturningVoid::class
-                . '::returnNothing(), but it is declared as returning void.'
+                . '::returnNothing(), but it is declared as returning void or never.'
+            );
+    }
+
+    #[Test]
+    public function mapNeverMethodFails(): void
+    {
+        expect(fn() =>
+            NewInstance::of(SomeClassWithMethodReturningVoid::class)->returns([
+                'returnNever' => true
+            ])
+        )
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage(
+                'Trying to map method '
+                . SomeClassWithMethodReturningVoid::class
+                . '::returnNever(), but it is declared as returning void or never.'
             );
     }
 
