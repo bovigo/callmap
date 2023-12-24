@@ -120,11 +120,7 @@ trait ClassProxyMethodHandler
             }
         }
 
-        if ($shouldReturnSelf) {
-            return $this;
-        }
-
-        return null;
+        return $shouldReturnSelf ? $this : null;
     }
 
     /**
