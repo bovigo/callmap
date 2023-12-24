@@ -161,6 +161,10 @@ called.
     the return type is `\Traversable` and the class implements this interface
     return value will be `null`.
 
+Note: support for `@return` annotations in doc comments is deprecated and will
+be removed with release 9.0.0. Starting from 9.0.0 only explicit return type
+declarations will be supported.
+
 ### Specify a series of return values
 
 Sometimes a method gets called more than once and you need to specify different
@@ -268,6 +272,10 @@ Please note that `@inheritDoc` is not supported.
 In case this leads to a false interpretation and the instance is returned when
 in fact it should not, you can always overrule that by explicitly stating a
 return value in the callmap.
+
+Note: support for `@return` annotations in doc comments is deprecated and will
+be removed with release 9.0.0. Starting from 9.0.0 only explicit return type
+declarations will be supported.
 
 ### Which methods can be used in the callmap?
 

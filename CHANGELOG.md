@@ -2,12 +2,24 @@
 
 ## 8.0.0 (202?-??-??)
 
+### HEADS UP
+
 * Raised minimum required PHP version to 8.2
+* Deprecated support for methods and functions without a return type declaration, will be removed with 9.0.0. In case no sensible return type can be specified a "mixed" return type continues to be
+supported. Starting with 9.0.0, providing a callmap to `returns()` containing methods that don't have a return type declaration will result in an `InvalidArgumentException`.
+
+### Other changes
+
 * Added support for return type never
 
 ## 7.0.0 (2022-12-25)
 
+### HEADS UP
+
 * Raised minimum required PHP version to 8.0
+
+### Other changes
+
 * Added support for intersection types
 * Added support for combined union and intersection types
 

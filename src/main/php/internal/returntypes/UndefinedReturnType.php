@@ -6,11 +6,19 @@ namespace bovigo\callmap\internal\returntypes;
 use Override;
 use ReflectionClass;
 
+/**
+ * @deprecated will be removed with 9.0.0
+ */
 class UndefinedReturnType extends CodedReturnType
 {
     public function __construct(private string $docComment)
     {
         parent::__construct('', false);
+        trigger_error(
+            'Support for methods and functions without a return type declaration is deprecated'
+            . ' and will be removed with 9.0.0.',
+            E_USER_DEPRECATED
+        );
     }
 
     #[Override]
