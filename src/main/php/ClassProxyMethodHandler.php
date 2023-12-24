@@ -72,8 +72,6 @@ trait ClassProxyMethodHandler
      *
      * @api
      * @since  5.1.0
-     * @param  string... $methods
-     * @return ClassProxy
      * @throws InvalidArgumentException in case any of the mapped methods does not exist or is not applicable
      */
     public function stub(string ...$methods): ClassProxy
