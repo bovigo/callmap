@@ -3,6 +3,8 @@
 ## 8.0.1
 
 * Provide more details about mocked method/function in deprecation notice when method or function don't have a return type declaration.
+* Improve support for mocking `\IteratorAggregate` by providing specific return type
+information, as reflection doesn't provide a return type for `\IteratorAggregate::getIterator()`.
 
 ## 8.0.0 (2023-12-25)
 

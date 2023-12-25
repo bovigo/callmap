@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace bovigo\callmap\internal;
 
 use bovigo\callmap\internal\returntypes\CodedReturnType;
+use bovigo\callmap\internal\returntypes\IteratorAggregateReturnTypes;
 use bovigo\callmap\internal\returntypes\NoReturn;
 use bovigo\callmap\internal\returntypes\StaticReturnType;
 use bovigo\callmap\internal\returntypes\UndefinedReturnType;
+use IteratorAggregate;
 use ReflectionClass;
 use ReflectionFunctionAbstract;
 use ReflectionIntersectionType;
@@ -27,6 +29,13 @@ abstract class ReturnType extends TypeResolver
     ): self {
         $returnType = $function->getReturnType();
         if (null === $returnType) {
+            if (
+                null !== $containingClass
+                && $containingClass->getName() === IteratorAggregate::class
+            ) {
+                return new IteratorAggregateReturnTypes($function);
+            }
+
             $docComment = $function->getDocComment();
             if (false === $docComment) {
                 $docComment = '';
