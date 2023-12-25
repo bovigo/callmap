@@ -32,6 +32,13 @@ abstract class ReturnType extends TypeResolver
                 $docComment = '';
             }
 
+            $class = $containingClass ? $containingClass->getName() . '::' : '';
+            trigger_error(
+                'Created proxy for ' . $class . $function->getName() . ' with bovigo/callmap.'
+                . ' Support for methods and functions without a return type declaration is deprecated'
+                . ' and will be removed with 9.0.0.',
+                E_USER_DEPRECATED
+            );
             return new UndefinedReturnType($docComment, $containingClass);
         }
 

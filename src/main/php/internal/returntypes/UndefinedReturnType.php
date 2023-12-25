@@ -16,11 +16,6 @@ class UndefinedReturnType extends CodedReturnType
         ?ReflectionClass $containingClass = null
     ) {
         parent::__construct('', false, $containingClass);
-        trigger_error(
-            'Support for methods and functions without a return type declaration is deprecated'
-            . ' and will be removed with 9.0.0.',
-            E_USER_DEPRECATED
-        );
     }
 
     #[Override]

@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.1
+
+* Provide more details about mocked method/function in deprecation notice when method or function don't have a return type declaration.
+
 ## 8.0.0 (2023-12-25)
 
 ### HEADS UP
