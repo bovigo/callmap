@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.2 (2023-22-26)
+
+* Added proper return type hints to `bovigo\callmap\FunctionProxy::returns()` and `bovigo\callmap\FunctionProxy::throws()` so the instance is further recognized as a callable.
+
 ## 8.0.1 (2023-12-25)
 
 * Provide more details about mocked method/function in deprecation notice when method or function doesn't have a return type declaration.

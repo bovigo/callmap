@@ -74,6 +74,7 @@ abstract class FunctionProxy implements Proxy
      * sets the call map to use
      *
      * @api
+     * @return callable&FunctionProxy
      * @throws LogicException when mapped function is declared as returning void
      * @since  3.2.0
      */
@@ -96,6 +97,7 @@ abstract class FunctionProxy implements Proxy
      * shortcut for returns(throws($e))
      *
      * @api
+     * @return callable&FunctionProxy
      * @since 3.2.0
      */
     public function throws(Throwable $e): self
