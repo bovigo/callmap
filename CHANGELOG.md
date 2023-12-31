@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.3 ()
+
+* Prevent deprecation notice when calling `get_parent_class()` in generated proxy
+
 ## 8.0.2 (2023-22-26)
 
 * Added proper return type hints to `bovigo\callmap\FunctionProxy::returns()` and `bovigo\callmap\FunctionProxy::throws()` so the instance is further recognized as a callable.

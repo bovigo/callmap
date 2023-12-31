@@ -115,7 +115,7 @@ trait ClassProxyMethodHandler
             && !isset($this->stubs[$method]) && is_callable(['parent', $method])
         ) {
             // is_callable() returns true even for abstract methods
-            $refMethod = new ReflectionMethod(get_parent_class(), $method);
+            $refMethod = new ReflectionMethod(get_parent_class($this), $method);
             if (!$refMethod->isAbstract()) {
                 return parent::$method(...$arguments);
             }
