@@ -1,8 +1,9 @@
 # Changelog
 
-## 8.0.3 ()
+## 8.0.3 (2023-12-31)
 
 * Prevent deprecation notice when calling `get_parent_class()` in generated proxy
+* Replace deprecated call of `is_callable(['parent', $someMethod])`
 
 ## 8.0.2 (2023-22-26)
 
