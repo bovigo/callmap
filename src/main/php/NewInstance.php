@@ -258,10 +258,11 @@ class NewInstance
             $methodParams = Parameters::of($method, $class);
             /* @var $method \ReflectionMethod */
             $code .= sprintf(
-                "    #[\Override]\n"
+                "    #[\Override]\n%s"
                 . "    %s function %s(%s)%s {\n"
                 . "        %s\$this->handleMethodCall('%s', func_get_args(), %s);\n"
                 . "    }\n",
+                $class->isInternal() && $returnType->returns() ? "    #[\ReturnTypeWillChange]\n" : '',
                 ($method->isPublic() ? 'public' : 'protected'),
                 $method->getName(),
                 $methodParams->code(),

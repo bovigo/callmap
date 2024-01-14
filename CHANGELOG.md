@@ -1,8 +1,9 @@
 # Changelog
 
-## 8.0.5
+## 8.0.5 (2024-01-14)
 
 * Restrict deprecated support for methods and functions without a return type to user-defined methods and functions
+* Added `#[\ReturnTypeWillChange]` to generated proxy methods if a PHP-internal class is mocked to prevent deprecation notices, as their return types available via reflection are not always up to date, e.g. for `\XSLTProcessor` where reflection delivers no return type information for the single methods of this class
 
 ## 8.0.4 (2024-01-14)
 
