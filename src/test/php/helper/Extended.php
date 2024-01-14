@@ -15,6 +15,30 @@ namespace bovigo\callmap\helper;
 class Extended extends Base implements Bar, \IteratorAggregate
 {
     /**
+     * @since 8.0.4
+     */
+    public function nonoptionalnullable(?int $foofoofoo): void
+    {
+        // intentionally empty
+    }
+
+    /**
+     * @since 8.0.4
+     */
+    public function optionalnullable(int $bambambam = null): void
+    {
+        // intentionally empty
+    }
+
+    /**
+     * @since 8.0.4
+     */
+    public function optionalnullable2(?int $bambambam = null): void
+    {
+        // intentionally empty
+    }
+
+    /**
      * @return  Bar
      */
     public function foo()

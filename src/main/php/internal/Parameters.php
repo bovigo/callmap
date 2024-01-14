@@ -25,7 +25,7 @@ class Parameters extends TypeResolver
      * @param ReflectionClass<T>|null    $containingClass
      */
     private function __construct(
-        private ReflectionFunctionAbstract $function,
+        ReflectionFunctionAbstract $function,
         private ?ReflectionClass $containingClass = null
     ) {
         $paramsCode = [];
@@ -64,25 +64,37 @@ class Parameters extends TypeResolver
 
     private function createCodeFor(ReflectionParameter $parameter): string
     {
-        $paramCode = $this->resolve($parameter->getType());
-        if ($parameter->isPassedByReference()) {
-            $paramCode .= '&';
-        }
+        return sprintf(
+            '%s%s %s%s$%s%s',
+            $this->isNonOptionalNullable($parameter) ? '?' : '',
+            $this->resolve($parameter->getType()),
+            $parameter->isPassedByReference() ? '&' : '',
+            $parameter->isVariadic() ? '...' : '',
+            $parameter->getName(),
+            $this->defaultValue($parameter)
+        );
+    }
 
-        if ($parameter->isVariadic()) {
-            $paramCode .= '...';
-        }
+    private function isNonOptionalNullable(ReflectionParameter $parameter): bool
+    {
+        $type = $parameter->getType();
+        return $type instanceof ReflectionNamedType
+            && 'mixed' !== $type->getName()
+            && !$parameter->isOptional()
+            && $parameter->allowsNull();
+    }
 
-        $paramCode .= '$' . $parameter->getName();
+    private function defaultValue(ReflectionParameter $parameter): string
+    {
         if (!$parameter->isVariadic() && $parameter->isOptional()) {
-            if ($this->function->isInternal() || $parameter->allowsNull()) {
-                $paramCode .= ' = null';
-            } else {
-                $paramCode .= ' = ' . var_export($parameter->getDefaultValue(), true);
+            if ($parameter->isDefaultValueAvailable()) {
+                return ' = ' . var_export($parameter->getDefaultValue(), true);
             }
+
+            return ' = null';
         }
 
-        return $paramCode;
+        return '';
     }
 
     private function resolve(
@@ -92,11 +104,11 @@ class Parameters extends TypeResolver
             $paramType instanceof ReflectionUnionType
             || $paramType instanceof ReflectionIntersectionType
         ) {
-            return self::resolveCombinedTypes($paramType, $this->containingClass) . ' ';
+            return self::resolveCombinedTypes($paramType, $this->containingClass);
         }
         
         if ($paramType instanceof ReflectionNamedType) {
-            return self::resolveType($paramType->getName(), $this->containingClass) . ' ';
+            return self::resolveType($paramType->getName(), $this->containingClass);
         }
 
         return '';

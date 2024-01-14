@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.4 (2024-01-14)
+
+* Fixed bug with non-optional nullable parameters
+
 ## 8.0.3 (2023-12-31)
 
 * Prevent deprecation notice when calling `get_parent_class()` in generated proxy
