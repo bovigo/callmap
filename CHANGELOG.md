@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.5
+
+* Restrict deprecated support for methods and functions without a return type to user-defined methods and functions
+
 ## 8.0.4 (2024-01-14)
 
 * Fixed bug with non-optional nullable parameters
