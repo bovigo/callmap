@@ -96,7 +96,7 @@ class Parameters extends TypeResolver
         }
         
         if ($paramType instanceof ReflectionNamedType) {
-            return self::resolveType($paramType->getName(), $this->containingClass);
+            return self::resolveType($paramType->getName(), $this->containingClass) . ' ';
         }
 
         return '';
