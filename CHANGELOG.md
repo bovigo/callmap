@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.6 (2024-01-17)
+
+* Fixed optional nullable parameters with another case
+
 ## 8.0.5 (2024-01-14)
 
 * Restrict deprecated support for methods and functions without a return type to user-defined methods and functions

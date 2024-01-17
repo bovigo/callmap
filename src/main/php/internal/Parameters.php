@@ -80,8 +80,7 @@ class Parameters extends TypeResolver
         $type = $parameter->getType();
         return $type instanceof ReflectionNamedType
             && 'mixed' !== $type->getName()
-            && !$parameter->isOptional()
-            && $parameter->allowsNull();
+            && ($parameter->isOptional() || $parameter->allowsNull());
     }
 
     private function defaultValue(ReflectionParameter $parameter): string

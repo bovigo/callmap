@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use PDOStatement;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\Test;
@@ -22,7 +23,6 @@ use function PHPUnit\Framework\assertInstanceOf;
  * @since 8.0.4
  */
 #[Group('bug_nonoptional_nullable')]
-#[RequiresPhpExtension('xsl')]
 class NonOptionalNullableTest extends TestCase
 {
     /**
@@ -30,11 +30,27 @@ class NonOptionalNullableTest extends TestCase
      * a non-optional nullable parameter.
      */
     #[Test]
+    #[Group('xsl')]
+    #[RequiresPhpExtension('xsl')]
     public function canCreateClassProxy(): void
     {
         assertInstanceOf(
             ClassProxy::class,
             NewInstance::of(XSLTProcessor::class)
+        );
+    }
+
+    /**
+     * @since 8.0.6
+     */
+    #[Test]
+    #[Group('pdo')]
+    #[RequiresPhpExtension('pdo')]
+    public function canCreatePdoStatementProxy(): void
+    {
+        assertInstanceOf(
+            ClassProxy::class,
+            NewInstance::of(PDOStatement::class)
         );
     }
 }
