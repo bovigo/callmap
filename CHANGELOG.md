@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.1.0 (2024-12-28)
+
+* Raised minimum required PHP version to 8.3.0
+
 ## 8.0.6 (2024-01-17)
 
 * Fixed optional nullable parameters with another case
