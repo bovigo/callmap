@@ -13,8 +13,7 @@
     },
     "suggest": {
         "bovigo/assert": "To use argument verification",
-        "phpunit/phpunit": "Alternative option for argument verification",
-        "xp-framework/unittest": "Alternative option for argument verification"
+        "phpunit/phpunit": "Alternative option for argument verification"
     },
     "autoload": {
         "psr-4": {

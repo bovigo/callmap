@@ -376,6 +376,7 @@ class Verification
      *
      * @throws \unittest\AssertionFailedError
      */
+    #[\Deprecated]
     protected function evaluateWithXpFrameworkCore(
         mixed $constraint,
         mixed $received,
