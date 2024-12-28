@@ -4,10 +4,10 @@
     "license": "BSD-3-Clause",
     "require": {
         "php": "^8.3",
-        "bovigo/assert": "^8.0"
+        "bovigo/assert": "^8.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5",
+        "phpunit/phpunit": "^11.5",
         "xp-framework/core": "^11.6",
         "xp-framework/unittest": "^11.1"
     },
