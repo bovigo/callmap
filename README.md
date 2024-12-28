@@ -5,9 +5,9 @@ Compatible with any [unit test framework](http://en.wikipedia.org/wiki/List_of_u
 
 ## Package status
 
-![Tests](https://github.com/bovigo/callmap/workflows/Tests/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/bovigo/callmap/badge.svg?branch=master)](https://coveralls.io/github/bovigo/callmap?branch=master)
+![Tests](https://github.com/bovigo/callmap/workflows/Tests/badge.svg)
 
-[![Latest Stable Version](https://poser.pugx.org/bovigo/callmap/version.png)](https://packagist.org/packages/bovigo/callmap) [![Latest Unstable Version](https://poser.pugx.org/bovigo/callmap/v/unstable.png)](//packagist.org/packages/bovigo/callmap)
+[![Latest Stable Version](https://poser.pugx.org/bovigo/callmap/version)](https://packagist.org/packages/bovigo/callmap) [![Latest Unstable Version](https://poser.pugx.org/bovigo/callmap/v/unstable)](//packagist.org/packages/bovigo/callmap)
 
 ## Installation
 
@@ -27,7 +27,7 @@ composer require bovigo/callmap ^8.0
 
 ## Requirements
 
-_bovigo/callmap_ requires at least PHP 8.2.
+_bovigo/callmap_ requires at least PHP 8.3.
 
 For argument verification one of the following packages is required:
 
