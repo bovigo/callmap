@@ -15,7 +15,7 @@ use ReflectionMethod;
  */
 class IteratorAggregateReturnTypes extends ReturnType
 {
-    public const METHODS = ['getIterator' => ': \Traversable'];
+    public const array METHODS = ['getIterator' => ': \Traversable'];
 
     public function __construct(private ReflectionMethod $method) { }
 

@@ -7,8 +7,8 @@ use bovigo\callmap\internal\ReturnType;
 
 class NoReturn extends ReturnType
 {
-    public const VOID = 'void';
-    public const NEVER = 'never';
+    public const string VOID = 'void';
+    public const string NEVER = 'never';
 
     private function __construct(private string $keyword) { }
 

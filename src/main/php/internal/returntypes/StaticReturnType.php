@@ -7,7 +7,7 @@ use bovigo\callmap\internal\ReturnType;
 
 class StaticReturnType extends ReturnType
 {
-    public const KEYWORD = 'static';
+    public const string KEYWORD = 'static';
 
     public function allowsSelfReturn(): bool
     {
