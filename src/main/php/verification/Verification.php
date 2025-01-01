@@ -308,12 +308,8 @@ class Verification
             return $this->evaluateWithPhpUnit($constraint, $received, $description);
         }
 
-        if (class_exists('\unittest\TestCase')) {
-            return $this->evaluateWithXpFrameworkCore($constraint, $received, $description);
-        }
-
         throw new RuntimeException(
-            'Neither bovigo/assert, PHPUnit nor xp-framework/unittest found, can not perform argument verification'
+            'Neither bovigo/assert nor PHPUnit found, can not perform argument verification'
         );
     }
 
@@ -369,29 +365,5 @@ class Verification
         }
 
         return $result;
-    }
-
-    /**
-     * evaluates given constraint using xp-framework/core unittest
-     *
-     * @throws \unittest\AssertionFailedError
-     */
-    #[\Deprecated]
-    protected function evaluateWithXpFrameworkCore(
-        mixed $constraint,
-        mixed $received,
-        string $description
-    ): bool {
-        if (!\util\Objects::equal($received, $constraint)) {
-            throw new \unittest\AssertionFailedError(
-                new \unittest\ComparisonFailedMessage(
-                    $description,
-                    $constraint,
-                    $received
-                )
-            );
-        }
-
-        return true;
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81838d5491d6b3eebefd24e37047d6cd",
+    "content-hash": "4a25cc5d3140abc35fdff3206fe74207",
     "packages": [
         {
             "name": "bovigo/assert",
@@ -1744,93 +1744,6 @@
                 }
             ],
             "time": "2024-03-03T12:36:25+00:00"
-        },
-        {
-            "name": "xp-framework/core",
-            "version": "v11.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/xp-framework/core.git",
-                "reference": "f5d9747bfba7371a15caab3f0171dd95eafe29d9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/core/zipball/f5d9747bfba7371a15caab3f0171dd95eafe29d9",
-                "reference": "f5d9747bfba7371a15caab3f0171dd95eafe29d9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "suggest": {
-                "php": ">=8.0.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/main/php/__xp.php",
-                    "src/main/resources/autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "The XP framework is an all-purpose, object oriented PHP framework.",
-            "homepage": "http://xp-framework.net/",
-            "keywords": [
-                "framework",
-                "xp"
-            ],
-            "support": {
-                "issues": "https://github.com/xp-framework/core/issues",
-                "source": "https://github.com/xp-framework/core/tree/v11.9.0"
-            },
-            "time": "2024-03-16T17:58:52+00:00"
-        },
-        {
-            "name": "xp-framework/unittest",
-            "version": "v11.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/xp-framework/unittest.git",
-                "reference": "9ac7544117517811c5ec73b0c32343c93ecc052c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/xp-framework/unittest/zipball/9ac7544117517811c5ec73b0c32343c93ecc052c",
-                "reference": "9ac7544117517811c5ec73b0c32343c93ecc052c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0",
-                "xp-framework/core": "^11.0 | ^10.0 | ^9.0 | ^8.0 | ^7.0"
-            },
-            "bin": [
-                "bin/xp.xp-framework.unittest.test"
-            ],
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/main/php/autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Unittests for the XP Framework",
-            "homepage": "http://xp-framework.net/",
-            "keywords": [
-                "module",
-                "xp"
-            ],
-            "support": {
-                "issues": "https://github.com/xp-framework/unittest/issues",
-                "source": "https://github.com/xp-framework/unittest/tree/v11.4.1"
-            },
-            "abandoned": true,
-            "time": "2023-11-19T10:29:49+00:00"
         }
     ],
     "aliases": [],
