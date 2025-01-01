@@ -1,6 +1,6 @@
 # Changelog
 
-## 8.1.0 (2024-12-28)
+## 8.1.0 (2025-01-01)
 
 * Raised minimum required PHP version to 8.3.0
 * Deprecated support for argument verification with xp-framework/unittest, will be removed with 9.0.0, library was discontinued in 2023
