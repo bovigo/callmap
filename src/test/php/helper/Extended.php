@@ -9,6 +9,9 @@ declare(strict_types=1);
  * @package  bovigo_callmap
  */
 namespace bovigo\callmap\helper;
+
+use ReturnTypeWillChange;
+
 /**
  * Helper class for the test below.
  */
@@ -81,6 +84,7 @@ class Extended extends Base implements Bar, \IteratorAggregate
     /**
      * @return  \Traversable
      */
+    #[ReturnTypeWillChange]
     public function getIterator()
     {
         // no actual return on purpose
