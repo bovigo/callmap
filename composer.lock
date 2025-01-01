@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ddf60630de9345b5c9096745c6aaf96f",
+    "content-hash": "81838d5491d6b3eebefd24e37047d6cd",
     "packages": [
         {
             "name": "bovigo/assert",
