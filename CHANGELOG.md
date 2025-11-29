@@ -3,6 +3,7 @@
 ## 9.0.0 (2025-01-01)
 
 * Removed support for argument verification with xp-framework/unittest, library was discontinued in 2023
+* Postponed removal of support for methods and functions without a return type declaration to 10.0.0, is still supported with 9.0.0
 
 ## 8.1.0 (2025-01-01)
 
@@ -42,8 +43,8 @@ information, as reflection doesn't provide a return type for `\IteratorAggregate
 ### HEADS UP
 
 * Raised minimum required PHP version to 8.2
-* Deprecated support for methods and functions without a return type declaration, will be removed with 9.0.0. In case no sensible return type can be specified a "mixed" return type continues to be
-supported. Starting with 9.0.0, providing a callmap to `returns()` containing methods that don't have a return type declaration will result in an `InvalidArgumentException`.
+* Deprecated support for methods and functions without a return type declaration, will be removed with 10.0.0. In case no sensible return type can be specified a "mixed" return type continues to be
+supported. Starting with 10.0.0, providing a callmap to `returns()` containing methods that don't have a return type declaration will result in an `InvalidArgumentException`.
 
 ### Other changes
 

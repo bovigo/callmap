@@ -7,7 +7,7 @@ use Override;
 use ReflectionClass;
 
 /**
- * @deprecated will be removed with 9.0.0
+ * @deprecated will be removed with 10.0.0
  */
 class UndefinedReturnType extends CodedReturnType
 {
