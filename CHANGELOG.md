@@ -1,9 +1,10 @@
 # Changelog
 
-## 9.0.0 (2025-??-??)
+## 9.0.0 (2025-11-29)
 
 * Removed support for argument verification with xp-framework/unittest, library was discontinued in 2023
 * Postponed removal of support for methods and functions without a return type declaration to 10.0.0, is still supported with 9.0.0
+* Ensured compatibility with phpunit/phpunit 12.4 while keeping compatibility with the predecessor version 11.5
 
 ## 8.1.0 (2025-01-01)
 
