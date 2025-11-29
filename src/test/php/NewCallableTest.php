@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace bovigo\callmap;
 
 use Exception;
-use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -76,14 +75,21 @@ class NewCallableTest extends TestCase
         );
     }
 
-    public static function functionNames(): Generator
+    public static function functionNames(): iterable
+    {
+        foreach (static::functionNamesWithExpectedReturnValue() as $key => $arguments) {
+            yield $key => [$arguments[0]];
+        }
+    }
+
+    public static function functionNamesWithExpectedReturnValue(): iterable
     {
         yield ['strtoupper', 'WORLD'];
         yield ['bovigo\callmap\helper\greet', 'Hello world'];
     }
 
     #[Test]
-    #[DataProvider('functionNames')]
+    #[DataProvider('functionNamesWithExpectedReturnValue')]
     public function callsOriginalFunctionWhenNotMapped(
         string $functionName,
         string $expected
@@ -115,7 +121,7 @@ class NewCallableTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('functionNames')]
+    #[DataProvider('functionNamesWithExpectedReturnValue')]
     public function canMapWithConsecutiveCalls(string $functionName, string $expected): void
     {
         $function = NewCallable::of($functionName)

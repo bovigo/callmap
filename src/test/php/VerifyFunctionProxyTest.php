@@ -13,7 +13,6 @@ namespace bovigo\callmap;
 use \bovigo\callmap\verification\ArgumentMismatch;
 use \bovigo\callmap\verification\CallAmountViolation;
 use \bovigo\callmap\verification\Verification;
-use Generator;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -33,7 +32,7 @@ use function bovigo\callmap\helper\say;
 #[Group('verify')]
 class VerifyFunctionProxyTest extends TestCase
 {
-    public static function verificationMethods(): Generator
+    public static function verificationMethods(): iterable
     {
         yield 'wasNeverCalled' => [fn(Verification $v, callable $function) => $v->wasNeverCalled()];
         yield 'wasCalledAtMost' => [fn(Verification $v, callable $function) => $function() && $v->wasCalledAtMost(1)];
@@ -60,7 +59,14 @@ class VerifyFunctionProxyTest extends TestCase
         );
     }
 
-    public static function functionNames(): Generator
+    public static function functionNames(): iterable
+    {
+        foreach (static::functionNamesWithParamNames() as $key => $arguments) {
+            yield $key => [$arguments[0]];
+        }
+    }
+
+    public static function functionNamesWithParamNames(): iterable
     {
         yield ['strlen', '$string '];
         yield ['bovigo\callmap\helper\say', '$whom '];
@@ -358,7 +364,7 @@ class VerifyFunctionProxyTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('functionNames')]
+    #[DataProvider('functionNamesWithParamNames')]
     public function verifyReceivedPassesExceptionThrownByConstraint(
         string $functionName,
         string $parameterName
