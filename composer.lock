@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bovigo/assert",
-            "version": "v8.1.1",
+            "version": "v8.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/assert.git",
-                "reference": "83d3dcfcf74603597d3930d54ac95796597c7acc"
+                "reference": "c01ddf30f38be83fc7c506581e634e9909e6249b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/assert/zipball/83d3dcfcf74603597d3930d54ac95796597c7acc",
-                "reference": "83d3dcfcf74603597d3930d54ac95796597c7acc",
+                "url": "https://api.github.com/repos/bovigo/assert/zipball/c01ddf30f38be83fc7c506581e634e9909e6249b",
+                "reference": "c01ddf30f38be83fc7c506581e634e9909e6249b",
                 "shasum": ""
             },
             "require": {
@@ -51,9 +51,9 @@
             "description": "Provides assertions for unit tests.",
             "support": {
                 "issues": "https://github.com/bovigo/assert/issues",
-                "source": "https://github.com/bovigo/assert/tree/v8.1.1"
+                "source": "https://github.com/bovigo/assert/tree/v8.1.2"
             },
-            "time": "2025-11-29T16:01:20+00:00"
+            "time": "2025-11-30T14:04:33+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -1741,5 +1741,5 @@
         "php": "^8.3"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
