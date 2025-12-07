@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.1.0 (2025-12-??)
+
+* implemented #120 Methods returning void or never can now be mocked to throw an Exception
+
 ## 9.0.0 (2025-11-29)
 
 * Removed support for argument verification with xp-framework/unittest, library was discontinued in 2023

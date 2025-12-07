@@ -14,6 +14,8 @@ use Exception;
 
 /**
  * Helper class for the test.
+ *
+ * @since 9.1.0
  */
 class SomeClassWithMethodReturningVoid
 {
@@ -26,4 +28,20 @@ class SomeClassWithMethodReturningVoid
     {
         throw new Exception('never returns');
     }
+}
+
+/**
+ * @since 9.1.0
+ */
+function returnNothing(): void
+{
+    // intentionally empty
+}
+
+/**
+ * @since 9.1.0
+ */
+function returnNever(): never
+{
+    throw new Exception('never returns');
 }

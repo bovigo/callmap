@@ -58,8 +58,11 @@ trait ClassProxyMethodHandler
      */
     public function returns(array $callMap): ClassProxy
     {
-        foreach (array_keys($callMap) as $method) {
-            if (!isset($this->_allowedMethods[$method]) || isset($this->_voidMethods[$method])) {
+        foreach ($callMap as $method => $returnValue) {
+            if (
+                !isset($this->_allowedMethods[$method])
+                || (isset($this->_voidMethods[$method]) && !($returnValue instanceof Throwing))
+             ) {
                 throw new InvalidArgumentException($this->canNot('map', $method));
             }
         }

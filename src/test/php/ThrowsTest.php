@@ -10,6 +10,9 @@ declare(strict_types=1);
  */
 namespace bovigo\callmap;
 
+use bovigo\callmap\helper\SomeClassWithMethodReturningVoid;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
@@ -53,6 +56,38 @@ class ThrowsTest extends TestCase
         );
         assertThat($this->proxy->getName(), equals('foo'));
         expect(fn() => $_ = $this->proxy->getName()) // throws $e
+            ->throws(ReflectionException::class)
+            ->message(contains('some error'));
+    }
+
+    /**
+     * @since 9.1.0
+     */
+    public static function provideNonReturningClass(): iterable
+    {
+        yield 'does not return with void' => [
+            SomeClassWithMethodReturningVoid::class, 'returnNothing'
+        ];
+        yield 'does not return with never' => [
+            SomeClassWithMethodReturningVoid::class, 'returnNever'
+        ];
+    }
+
+    /**
+     * @since 9.1.0
+     */
+    #[Test]
+    #[DataProvider('provideNonReturningClass')]
+    #[Group('issue_120')]
+    public function canThrowExceptionFromMethodReturningVoid(
+        string $nonReturningClass,
+        string $nonReturningMethod
+    ): void {
+        $proxy = NewInstance::of($nonReturningClass)->returns([
+            $nonReturningMethod => throws(new ReflectionException('some error'))
+        ]);
+
+        expect(fn() => $_ = $proxy->$nonReturningMethod()) // throws $e
             ->throws(ReflectionException::class)
             ->message(contains('some error'));
     }

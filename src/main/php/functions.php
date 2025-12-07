@@ -10,30 +10,30 @@ namespace bovigo\callmap {
 
     use bovigo\callmap\internal\InvocationResults;
     use bovigo\callmap\internal\Proxy;
+    use bovigo\callmap\internal\Throwing;
     use bovigo\callmap\verification\Verification;
-    use Closure;
     use Throwable;
 
     /**
-     * creates a closure which throws the given exception when invoked
+     * creates a callable which throws the given exception when invoked
      *
      * @api
      * @since 0.2.0
      */
-    function throws(Throwable $e): Closure
+    function throws(Throwable $e): Throwing
     {
-        return function() use ($e) { throw $e; };
+        return new Throwing($e);
     }
 
     /**
-     * wraps given callable into a closure so that the given callable is returned and not executed
+     * wraps given callable into another callable so that the given callable is returned and not executed
      *
      * @api
      * @since 0.6.0
      */
-    function wrap(callable $callable): Closure
+    function wrap(callable $callable): callable
     {
-        return function() use ($callable) { return $callable; };
+        return fn(): callable => $callable;
     }
 
     /**
