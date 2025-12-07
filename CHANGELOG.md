@@ -1,8 +1,8 @@
 # Changelog
 
-## 9.1.0 (2025-12-??)
+## 9.1.0 (2025-12-07)
 
-* implemented #120 Methods returning void or never can now be mocked to throw an Exception
+* implemented #120 Allow methods returning void or never to be mocked to throw an Exception
 
 ## 9.0.0 (2025-11-29)
 
